@@ -1,0 +1,16 @@
+[
+{
+  "modid": "electricadvantage",
+  "name": "Electric Advantage",
+  "description": "Add electricity to your game with this Power Advantage add-on",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["DrCyano"],
+  "credits": "The Forge and FML guys, the author of this mod, and electricians everywhere",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]

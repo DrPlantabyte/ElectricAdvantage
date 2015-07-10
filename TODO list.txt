@@ -1,0 +1,16 @@
+steam-powered generator
+battery array
+arc furnace
+photovoltaic generator
+electric rock crusher
+growth chamber
+growth chamber control module
+electric oven (cooks food only)
+fabricator
+electric drill
+geothermal generator
+hydroelectric generator
+laser defense
+LED dispenser
+LED bar (lit and unlit)
+

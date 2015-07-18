@@ -57,10 +57,10 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="5.6"
-     inkscape:cx="55.809141"
+     inkscape:cx="67.594855"
      inkscape:cy="32.121024"
      inkscape:document-units="px"
-     inkscape:current-layer="layer2"
+     inkscape:current-layer="layer4"
      showgrid="true"
      units="px"
      inkscape:window-width="1680"
@@ -89,10 +89,11 @@
     </rdf:RDF>
   </metadata>
   <g
-     inkscape:label="Layer 1"
+     inkscape:label="BG"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(0,-988.36216)">
+     transform="translate(0,-988.36216)"
+     sodipodi:insensitive="true">
     <rect
        style="opacity:1;fill:url(#linearGradient4246);fill-opacity:1;stroke:none;stroke-width:6;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.78431373"
        id="rect4238"
@@ -102,6 +103,14 @@
        y="-1052.3622"
        transform="scale(-1,-1)" />
   </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer4"
+     inkscape:label="Ref" />
+  <g
+     inkscape:groupmode="layer"
+     id="layer5"
+     inkscape:label="Main" />
   <g
      inkscape:groupmode="layer"
      id="layer2"

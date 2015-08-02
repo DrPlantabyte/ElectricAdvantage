@@ -16,8 +16,8 @@
    id="svg2"
    version="1.1"
    inkscape:version="0.91 r13725"
-   sodipodi:docname="block machine front base.svg"
-   inkscape:export-filename="/mnt/MediaDrive/Programming/Minecraft Mods/1.8.0/mod-src/electric-advantage/src/main/resources/assets/electricadvantage/textures/blocks/electric_fabricator_on.png"
+   sodipodi:docname="growth chamber controller front.svg"
+   inkscape:export-filename="/mnt/MediaDrive/Programming/Minecraft Mods/1.8.0/mod-src/electric-advantage/src/main/resources/assets/electricadvantage/textures/blocks/growth_chamber_controller.png"
    inkscape:export-xdpi="90"
    inkscape:export-ydpi="90">
   <defs
@@ -56,9 +56,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="7.919596"
-     inkscape:cx="32.174032"
-     inkscape:cy="19.961971"
+     inkscape:zoom="5.6"
+     inkscape:cx="20.129916"
+     inkscape:cy="31.006411"
      inkscape:document-units="px"
      inkscape:current-layer="layer5"
      showgrid="true"
@@ -70,7 +70,8 @@
      inkscape:window-maximized="1"
      inkscape:object-nodes="true"
      inkscape:snap-smooth-nodes="false"
-     inkscape:snap-text-baseline="true">
+     inkscape:snap-text-baseline="true"
+     showguides="false">
     <inkscape:grid
        type="xygrid"
        id="grid4136"
@@ -110,12 +111,42 @@
   <g
      inkscape:groupmode="layer"
      id="layer5"
-     inkscape:label="Main" />
+     inkscape:label="Main">
+    <rect
+       style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.49803922"
+       id="rect4165"
+       width="36"
+       height="36"
+       x="10"
+       y="18" />
+    <path
+       style="opacity:1;fill:#292929;fill-opacity:1;stroke:#7f7f7f;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       d="m 10,10 44,0 0,44 -44,0 z"
+       id="path4169"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccccc" />
+    <image
+       y="13"
+       x="13"
+       id="image4349"
+       xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACYAAAAmCAYAAACoPemuAAAABHNCSVQICAgIfAhkiAAAARFJREFU
+WIXtmMsOgzAMBMeo///L6aFFDcF52wmH7hnsYb2xIuCvDgWC7Ga4KRAAngX2hYKngEVAAAjyegSI
+Ih+whsY1zYMZQGgay5gTDADyYepzzBMoURvYQqBT5VFaAglSrSc/nrxjFlBRo956OtgMlCRTGKx1
+H2VvoRRkFCapc3Wsp6CRMzmNLdiJ7LS36GngBaTE4Rh6ecFek6ZG0vjcGIG6S+uOeUIVVAbzhsq4
+BXBkm25y6pTuWOFLzFTpUR7lJrdAA3uAW1BybEPgY7UvWAt1TOMKtvkkxjqWZAq6s7tmlAMfr7/g
+fHNoka9jEzHx+UVgkFub+/q1oslhsnPM+HTPh99p3dSLKj/VPEBSvQE+OUpRZ2BU8AAAAABJRU5E
+rkJggg==
+"
+       style="image-rendering:optimizeSpeed"
+       preserveAspectRatio="none"
+       height="38"
+       width="38" />
+  </g>
   <g
      inkscape:groupmode="layer"
      id="layer2"
      inkscape:label="OFF"
-     style="display:inline"
+     style="display:none"
      sodipodi:insensitive="true">
     <rect
        transform="translate(0,-988.36216)"

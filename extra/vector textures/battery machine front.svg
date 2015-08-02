@@ -16,8 +16,8 @@
    id="svg2"
    version="1.1"
    inkscape:version="0.91 r13725"
-   sodipodi:docname="block machine front base.svg"
-   inkscape:export-filename="/mnt/MediaDrive/Programming/Minecraft Mods/1.8.0/mod-src/electric-advantage/src/main/resources/assets/electricadvantage/textures/blocks/electric_fabricator_on.png"
+   sodipodi:docname="battery machine front.svg"
+   inkscape:export-filename="/mnt/MediaDrive/Programming/Minecraft Mods/1.8.0/mod-src/electric-advantage/src/main/resources/assets/electricadvantage/textures/blocks/electric_battery_array.png"
    inkscape:export-xdpi="90"
    inkscape:export-ydpi="90">
   <defs
@@ -57,8 +57,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="7.919596"
-     inkscape:cx="32.174032"
-     inkscape:cy="19.961971"
+     inkscape:cx="17.324846"
+     inkscape:cy="33.416038"
      inkscape:document-units="px"
      inkscape:current-layer="layer5"
      showgrid="true"
@@ -110,12 +110,69 @@
   <g
      inkscape:groupmode="layer"
      id="layer5"
-     inkscape:label="Main" />
+     inkscape:label="Main">
+    <rect
+       style="opacity:1;fill:#000000;fill-opacity:0.49803922;stroke:#000000;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.49803922"
+       id="rect4305"
+       width="24"
+       height="8"
+       x="4"
+       y="4" />
+    <rect
+       y="20"
+       x="4"
+       height="8"
+       width="24"
+       id="rect4307"
+       style="opacity:1;fill:#000000;fill-opacity:0.49803922;stroke:#000000;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.49803922" />
+    <rect
+       style="opacity:1;fill:#000000;fill-opacity:0.49803922;stroke:#000000;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.49803922"
+       id="rect4309"
+       width="24"
+       height="8"
+       x="4"
+       y="36" />
+    <rect
+       y="52"
+       x="4"
+       height="8"
+       width="24"
+       id="rect4311"
+       style="opacity:1;fill:#000000;fill-opacity:0.49803922;stroke:#000000;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.49803922" />
+    <rect
+       y="4"
+       x="36"
+       height="8"
+       width="24"
+       id="rect4313"
+       style="opacity:1;fill:#000000;fill-opacity:0.49803922;stroke:#000000;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.49803922" />
+    <rect
+       style="opacity:1;fill:#000000;fill-opacity:0.49803922;stroke:#000000;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.49803922"
+       id="rect4315"
+       width="24"
+       height="8"
+       x="36"
+       y="20" />
+    <rect
+       y="36"
+       x="36"
+       height="8"
+       width="24"
+       id="rect4317"
+       style="opacity:1;fill:#000000;fill-opacity:0.49803922;stroke:#000000;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.49803922" />
+    <rect
+       style="opacity:1;fill:#000000;fill-opacity:0.49803922;stroke:#000000;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.49803922"
+       id="rect4319"
+       width="24"
+       height="8"
+       x="36"
+       y="52" />
+  </g>
   <g
      inkscape:groupmode="layer"
      id="layer2"
      inkscape:label="OFF"
-     style="display:inline"
+     style="display:none"
      sodipodi:insensitive="true">
     <rect
        transform="translate(0,-988.36216)"

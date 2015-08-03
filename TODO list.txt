@@ -11,6 +11,6 @@ electric drill
 geothermal generator
 hydroelectric generator
 laser defense
-LED dispenser
-LED bar (lit and unlit)
+LED bar (lit and unlit, conducts electricity)
+Electric cable
 

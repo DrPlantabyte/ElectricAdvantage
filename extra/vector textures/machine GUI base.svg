@@ -303,9 +303,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="3.959798"
-     inkscape:cx="101.03967"
-     inkscape:cy="197.01124"
+     inkscape:zoom="11.2"
+     inkscape:cx="185.24347"
+     inkscape:cy="221.76071"
      inkscape:document-units="px"
      inkscape:current-layer="layer3"
      showgrid="true"
@@ -386,6 +386,14 @@
      inkscape:groupmode="layer"
      id="layer3"
      inkscape:label="Layer 3">
+    <rect
+       style="opacity:1;fill:#cec9ce;fill-opacity:1;stroke:none;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.24705882"
+       id="rect4233-4"
+       width="36"
+       height="12"
+       x="178"
+       y="25"
+       ry="0" />
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:12.12499976px;line-height:100%;font-family:Xolonium;-inkscape-font-specification:'Xolonium, Bold';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;"
@@ -634,6 +642,14 @@
        id="circle4208-6"
        style="opacity:1;fill:url(#radialGradient4216-9);fill-opacity:1;stroke:none;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.78977272"
        r="1.4977678" />
+    <rect
+       style="opacity:1;fill:#cec9ce;fill-opacity:1;stroke:none;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.24705882"
+       id="rect4233-4-8"
+       width="36"
+       height="12"
+       x="178"
+       y="14"
+       ry="0" />
     <rect
        style="opacity:1;fill:#1a191f;fill-opacity:1;stroke:#1a191f;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
        id="rect4214-2"

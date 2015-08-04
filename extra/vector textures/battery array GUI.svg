@@ -17,9 +17,9 @@
    version="1.1"
    inkscape:version="0.91 r13725"
    sodipodi:docname="battery array GUI.svg"
-   inkscape:export-filename="/mnt/MediaDrive/Programming/Minecraft Mods/1.8.0/mod-src/electric-advantage/extra/vector textures/machine GUI base.png"
-   inkscape:export-xdpi="90"
-   inkscape:export-ydpi="90">
+   inkscape:export-filename="/mnt/MediaDrive/Programming/Minecraft Mods/1.8.0/mod-src/electric-advantage/src/main/resources/assets/electricadvantage/textures/gui/container/electric_battery_array_gui.png"
+   inkscape:export-xdpi="180"
+   inkscape:export-ydpi="180">
   <defs
      id="defs4">
     <linearGradient
@@ -169,9 +169,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="5.6"
-     inkscape:cx="137.87367"
-     inkscape:cy="196.65716"
+     inkscape:zoom="3.959798"
+     inkscape:cx="135.84793"
+     inkscape:cy="206.04237"
      inkscape:document-units="px"
      inkscape:current-layer="layer3"
      showgrid="true"
@@ -196,7 +196,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -382,6 +382,14 @@
          y="49"
          ry="0" />
     </g>
+    <rect
+       style="opacity:1;fill:#cec9ce;fill-opacity:1;stroke:none;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.24705882"
+       id="rect4233-1"
+       width="36"
+       height="12"
+       x="178"
+       y="25"
+       ry="0" />
     <g
        id="g4445">
       <rect

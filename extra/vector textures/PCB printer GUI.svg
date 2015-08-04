@@ -17,9 +17,9 @@
    version="1.1"
    inkscape:version="0.91 r13725"
    sodipodi:docname="PCB printer GUI.svg"
-   inkscape:export-filename="/mnt/MediaDrive/Programming/Minecraft Mods/1.8.0/mod-src/electric-advantage/extra/vector textures/machine GUI base.png"
-   inkscape:export-xdpi="90"
-   inkscape:export-ydpi="90">
+   inkscape:export-filename="/mnt/MediaDrive/Programming/Minecraft Mods/1.8.0/mod-src/electric-advantage/src/main/resources/assets/electricadvantage/textures/gui/container/pcb_printer_gui.png"
+   inkscape:export-xdpi="180"
+   inkscape:export-ydpi="180">
   <defs
      id="defs4">
     <linearGradient
@@ -203,9 +203,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="3.959798"
-     inkscape:cx="95.156128"
-     inkscape:cy="171.53585"
+     inkscape:zoom="11.2"
+     inkscape:cx="176.30904"
+     inkscape:cy="222.28462"
      inkscape:document-units="px"
      inkscape:current-layer="layer3"
      showgrid="true"
@@ -402,6 +402,14 @@
        id="circle4208-6"
        style="opacity:1;fill:url(#radialGradient4216-9);fill-opacity:1;stroke:none;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.78977272"
        r="1.4977678" />
+    <rect
+       style="opacity:1;fill:#cec9ce;fill-opacity:1;stroke:none;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.24705882"
+       id="rect4233-1"
+       width="36"
+       height="12"
+       x="178"
+       y="25"
+       ry="0" />
     <g
        id="g4445"
        transform="matrix(-1,0,0,1,392,0)">

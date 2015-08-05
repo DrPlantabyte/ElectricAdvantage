@@ -1,0 +1,12 @@
+{
+    "variants": {
+        "active=true,facing=east":   { "model": "electricadvantage:geothermal_generator",  "y": 90  },
+        "active=true,facing=north":  { "model": "electricadvantage:geothermal_generator"   },
+        "active=true,facing=south":  { "model": "electricadvantage:geothermal_generator",  "y": 180 },
+        "active=true,facing=west":   { "model": "electricadvantage:geothermal_generator",  "y": 270 },
+        "active=false,facing=east":  { "model": "electricadvantage:geothermal_generator", "y": 90  },
+        "active=false,facing=north": { "model": "electricadvantage:geothermal_generator"  },
+        "active=false,facing=south": { "model": "electricadvantage:geothermal_generator", "y": 180 },
+        "active=false,facing=west":  { "model": "electricadvantage:geothermal_generator", "y": 270 }
+    }
+}

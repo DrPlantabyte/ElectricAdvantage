@@ -1,2 +1,26 @@
 language_support_goals=english (en_US,en_EN,en_CA,en_GB, en_AU, en_PT), spanish (es_MX,es_ES), chinese (zh_CN), japanese (ja_JA), portugese (pt_BR), german (de_DE), italian (it_IT), korean (ko_KR)
 
+item.electricadvantage.blank_circuit_board.name=Circuit Board (Blank)
+item.electricadvantage.control_circuit.name=Control Circuit
+item.electricadvantage.integrated_circuit.name=IC Chip
+item.electricadvantage.psu.name=Power Supply Unit
+item.electricadvantage.silicon_ingot.name=Silicon Ingot
+item.electricadvantage.silicon_mix.name=Silicon Blend
+item.electricadvantage.solder_mix.name=Solder Blend
+item.electricadvantage.solder.name=Solder
+
+tile.electricadvantage.electric_battery_array.name=Battery Array
+tile.electricadvantage.electric_crusher.name=Electric Rock Crusher
+tile.electricadvantage.electric_defense_turret.name=Laser Defense Turret
+tile.electricadvantage.electric_drill.name=Electric Mining Drill
+tile.electricadvantage.electric_fabricator.name=Automated Assembler
+tile.electricadvantage.electric_furnace.name=Electric Arc Furnace
+tile.electricadvantage.electric_oven.name=Electric Oven
+tile.electricadvantage.electric_pcb_printer.name=PCB Printer
+tile.electricadvantage.geothermal_generator.name=Geothermal Generator
+tile.electricadvantage.hydroelectric_generator.name=Hydroelectric Generator
+tile.electricadvantage.photovoltaic_generator.name=Photovoltaic Generator
+tile.electricadvantage.steam_powered_generator.name=Steam-Powered Electric Generator
+tile.electricadvantage.growth_chamber.name=Growth Chamber
+tile.electricadvantage.growth_chamber.name=Growth Chamber Control Unit
+

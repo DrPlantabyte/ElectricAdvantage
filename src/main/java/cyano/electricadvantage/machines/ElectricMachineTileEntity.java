@@ -52,7 +52,8 @@ public abstract class ElectricMachineTileEntity extends cyano.poweradvantage.api
 	
 	protected void setActive(boolean active){
 		IBlockState old = getWorld().getBlockState(getPos());
-		if(old.getBlock() instanceof ElectricMachineBlock){
+		if(old.getBlock() instanceof ElectricMachineBlock 
+				&& (Boolean)old.getValue(ElectricMachineBlock.ACTIVE) != active){
 			getWorld().setBlockState(getPos(), old.withProperty(ElectricMachineBlock.ACTIVE, active));
 		}
 	}

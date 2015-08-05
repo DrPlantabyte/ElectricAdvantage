@@ -42,7 +42,8 @@ public abstract class ElectricGeneratorTileEntity extends cyano.poweradvantage.a
 	
 	protected void setActive(boolean active){
 		IBlockState old = getWorld().getBlockState(getPos());
-		if(old.getBlock() instanceof ElectricGeneratorBlock){
+		if(old.getBlock() instanceof ElectricGeneratorBlock 
+				&& (Boolean)old.getValue(ElectricGeneratorBlock.ACTIVE) != active){
 			getWorld().setBlockState(getPos(), old.withProperty(ElectricGeneratorBlock.ACTIVE, active));
 		}
 	}

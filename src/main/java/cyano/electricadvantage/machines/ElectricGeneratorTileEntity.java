@@ -4,6 +4,7 @@ import java.util.Arrays;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.relauncher.Side;
@@ -15,8 +16,9 @@ public abstract class ElectricGeneratorTileEntity extends cyano.poweradvantage.a
 	private final ItemStack[] inventory;
 	private final int[] inputSlots;
 	
+	
 	public ElectricGeneratorTileEntity(String name,int numInputSlots) {
-		super(Power.electric_power, 2000, name);
+		super(Power.ELECTRIC_POWER, 2000, name);
 		inventory = new ItemStack[numInputSlots];
 		inputSlots = new int[numInputSlots];
 		for(int i = 0; i < inventory.length; i++){
@@ -38,6 +40,9 @@ public abstract class ElectricGeneratorTileEntity extends cyano.poweradvantage.a
 		}
 	}
 	
+	protected boolean hasRedstoneSignal(){
+		return redstone;
+	}
 
 	
 	protected void setActive(boolean active){
@@ -49,7 +54,6 @@ public abstract class ElectricGeneratorTileEntity extends cyano.poweradvantage.a
 	}
 
 	
-	@SideOnly(Side.CLIENT)
 	public abstract float getPowerOutput();
 
 	public ItemStack getInputSlot(int i){
@@ -95,5 +99,21 @@ public abstract class ElectricGeneratorTileEntity extends cyano.poweradvantage.a
 	public int getComparatorOutput(){
 		return (int)(15 * this.getEnergy() / this.getEnergyCapacity());
 	}
+
+	
+	@Override
+	public void writeToNBT(NBTTagCompound tagRoot){
+		super.writeToNBT(tagRoot);
+		saveTo(tagRoot);
+	}
+	
+	@Override
+	public void readFromNBT(NBTTagCompound tagRoot){
+		super.readFromNBT(tagRoot);
+		loadFrom(tagRoot);
+	}
+	
+	protected abstract void saveTo(NBTTagCompound tagRoot);
+	protected abstract void loadFrom(NBTTagCompound tagRoot);
 
 }

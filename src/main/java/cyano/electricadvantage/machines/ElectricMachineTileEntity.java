@@ -21,7 +21,7 @@ public abstract class ElectricMachineTileEntity extends cyano.poweradvantage.api
 	private final int[] otherSlots;
 	
 	public ElectricMachineTileEntity(String name,int numInputSlots, int numOutputSlots, int numOtherSlots) {
-		super(Power.electric_power, 1000f, name);
+		super(Power.ELECTRIC_POWER, 1000f, name);
 		inventory = new ItemStack[numInputSlots+numOutputSlots+numOtherSlots];
 		inputSlots = new int[numInputSlots];
 		outputSlots = new int[numOutputSlots];
@@ -49,6 +49,9 @@ public abstract class ElectricMachineTileEntity extends cyano.poweradvantage.api
 		}
 	}
 
+	protected boolean hasRedstoneSignal(){
+		return redstone;
+	}
 	
 	protected void setActive(boolean active){
 		IBlockState old = getWorld().getBlockState(getPos());
@@ -96,7 +99,6 @@ public abstract class ElectricMachineTileEntity extends cyano.poweradvantage.api
 		return inventory;
 	}
 
-	@SideOnly(Side.CLIENT)
 	public abstract float[] getProgress();
 	
 	@Override

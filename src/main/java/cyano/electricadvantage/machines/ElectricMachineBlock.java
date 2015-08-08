@@ -22,7 +22,7 @@ public abstract class ElectricMachineBlock extends cyano.poweradvantage.api.simp
 	public static final PropertyBool ACTIVE = PropertyBool.create("active");
 
 	public ElectricMachineBlock() {
-		super(Material.piston, 0.75f, Power.electric_power);
+		super(Material.piston, 0.75f, Power.ELECTRIC_POWER);
 		this.setDefaultState(getDefaultState().withProperty(ACTIVE, false).withProperty(FACING, EnumFacing.NORTH));
 	}
 	

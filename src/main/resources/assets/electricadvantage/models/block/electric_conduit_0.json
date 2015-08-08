@@ -1,0 +1,7 @@
+{
+    "parent": "poweradvantage:block/pipe2_0",
+    "textures": {
+        "texture": "electricadvantage:blocks/electric_conduit",
+        "particle": "electricadvantage:materials/machine_case"
+    }
+}

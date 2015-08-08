@@ -1,0 +1,10 @@
+{
+    "parent": "electricadvantage:block/electric_machine_base",
+    "textures": {
+        "front": "electricadvantage:blocks/geothermal_generator_side",
+        "top":   "electricadvantage:blocks/geothermal_generator_top",
+        "bottom":"electricadvantage:blocks/geothermal_generator_side",
+        "back":  "electricadvantage:blocks/geothermal_generator_side",
+        "side":  "electricadvantage:blocks/geothermal_generator_side"
+    }
+}

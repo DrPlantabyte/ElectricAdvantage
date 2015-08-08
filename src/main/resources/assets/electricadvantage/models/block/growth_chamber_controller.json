@@ -1,0 +1,10 @@
+{
+    "parent": "electricadvantage:block/electric_machine_base",
+    "textures": {
+        "front": "electricadvantage:blocks/growth_chamber_controller",
+        "top":   "electricadvantage:blocks/machine_top",
+        "bottom":"electricadvantage:blocks/machine_top",
+        "back":  "electricadvantage:blocks/machine_back",
+        "side":  "electricadvantage:blocks/machine_side"
+    }
+}

@@ -8,6 +8,13 @@ item.electricadvantage.silicon_ingot.name=Silicon Ingot
 item.electricadvantage.silicon_mix.name=Silicon Blend
 item.electricadvantage.solder_mix.name=Solder Blend
 item.electricadvantage.solder.name=Solder
+item.electricadvantage.li_powder.name=Powdered Lithium
+item.electricadvantage.li_ingot.name=Lithium Ingot
+item.electricadvantage.sulfur_powder.name=Powdered Sulfur
+item.electricadvantage.lead_acid_battery.name=Lead-Acid Battery
+item.electricadvantage.nickel_hydride_battery.name=Nickel-Metal Hydride Battery
+item.electricadvantage.alkaline_battery.name=Alkaline Battery
+item.electricadvantage.lithium_battery.name=Lithium-Ion Battery
 
 tile.electricadvantage.electric_conduit.name=Electric Power Cable
 tile.electricadvantage.electric_battery_array.name=Battery Array
@@ -24,4 +31,8 @@ tile.electricadvantage.photovoltaic_generator.name=Photovoltaic Generator
 tile.electricadvantage.steam_powered_generator.name=Steam-Powered Electric Generator
 tile.electricadvantage.growth_chamber.name=Growth Chamber
 tile.electricadvantage.growth_chamber.name=Growth Chamber Control Unit
+tile.electricadvantage.li_ore.name=Lithium Ore
+tile.electricadvantage.sulfur_ore.name=Sulfur Ore
 
+tooltip.battery.charge=Charge
+tooltip.battery.capacity=Capacity

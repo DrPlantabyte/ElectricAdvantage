@@ -25,6 +25,7 @@ public abstract class Recipes {
 		
 		// Recipes for all recipe modes
 		OreDictionary.registerOre("blockBrick", net.minecraft.init.Blocks.brick_block);
+		OreDictionary.registerOre("gunpowder", net.minecraft.init.Items.gunpowder);
 		
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Blocks.electric_conduit,6),"xxx","ccc","xxx",'x',"plastic",'c',"ingotCopper"));
 		if(OreDictionary.getOres("rubber") != null && OreDictionary.getOres("rubber").isEmpty() == false)GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Blocks.electric_conduit,6),"xxx","ccc","xxx",'x',"rubber",'c',"ingotCopper"));
@@ -37,6 +38,10 @@ public abstract class Recipes {
 		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(Items.solder_blend,3),"dustTin","dustTin","dustLead"));
 		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(Items.solder_blend,3),"dustTin","dustTin","dustSilver"));
 		
+		GameRegistry.addRecipe(batteryRecipe(Items.lead_acid_battery,"ingotLead","sulfur",net.minecraft.init.Items.water_bucket));
+		GameRegistry.addRecipe(batteryRecipe(Items.nickel_hydride_battery,"ingotNickel","dustRedstone",net.minecraft.init.Items.water_bucket));
+		GameRegistry.addRecipe(batteryRecipe(Items.alkaline_battery,"ingotIron","gunpowder","ingotZinc"));
+		GameRegistry.addRecipe(batteryRecipe(Items.lithium_battery,"ingotLitium","dustRedstone","dustCarbon"));
 		
 		// non-apocalyctic recipes (high-tech machines cannot be crafted in post-apocalyspe mode)
 		if(recipeMode != RecipeMode.APOCALYPTIC){
@@ -82,5 +87,9 @@ public abstract class Recipes {
 
 	private static ShapedOreRecipe electricMachineRecipe(Block output, Object item1, Object item2){
 		return new ShapedOreRecipe(output, "uXY","pmp",'X',item1,'Y',item2,'u',"PSU",'p',"plateSteel",'m',"frameSteel");
+	}
+	
+	private static ShapedOreRecipe batteryRecipe(Item output, Object top, Object middle, Object bottom){
+		return new ShapedOreRecipe(output, "pXp","pYp","pZp",'X',top,'Y',middle,'Z',bottom,'p',"plastic");
 	}
 }

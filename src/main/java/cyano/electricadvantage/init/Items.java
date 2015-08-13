@@ -13,6 +13,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
 import cyano.electricadvantage.ElectricAdvantage;
+import cyano.electricadvantage.items.BatteryItem;
 
 public abstract class Items {
 
@@ -28,6 +29,14 @@ public abstract class Items {
 	public static Item silicon_blend;
 	public static Item solder_blend;
 	public static Item solder;
+	public static Item lead_acid_battery;
+	public static Item nickel_hydride_battery;
+	public static Item alkaline_battery;
+	public static Item lithium_battery;
+
+	public static Item lithium_ingot;
+	public static Item lithium_powder;
+	public static Item sulfur_powder;
 	
 	private static boolean initDone = false;
 	public static void init(){
@@ -42,6 +51,10 @@ public abstract class Items {
 		silicon_blend = addItem("silicon_mix",new Item());
 		solder_blend = addItem("solder_mix",new Item());
 		solder = addItem("solder",new Item(),"solder","ingotSolder");
+		lead_acid_battery = addItem("lead_acid_battery",new BatteryItem(Power.LEAD_ACID_BATTERY_CAPACITY),"battery");
+		nickel_hydride_battery = addItem("nickel_hydride_battery",new BatteryItem(Power.NICKEL_HYDRIDE_BATTERY_CAPACITY),"battery");
+		alkaline_battery = addItem("alkaline_battery",new BatteryItem(Power.ALKALINE_BATTERY_CAPACITY),"battery");
+		lithium_battery = addItem("lithium_battery",new BatteryItem(Power.LITHIUM_BATTERY_CAPACITY),"battery");
 
 		initDone = true;
 	}

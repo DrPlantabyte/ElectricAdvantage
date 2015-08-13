@@ -22,7 +22,7 @@ public abstract class ElectricMachineTileEntity extends cyano.poweradvantage.api
 	
 	
 	public ElectricMachineTileEntity(String name,int numInputSlots, int numOutputSlots, int numOtherSlots) {
-		super(Power.ELECTRIC_POWER, 1000f, name);
+		super(Power.ELECTRIC_POWER, 500f, name);
 		inventory = new ItemStack[numInputSlots+numOutputSlots+numOtherSlots];
 		inputSlots = new int[numInputSlots];
 		outputSlots = new int[numOutputSlots];

@@ -21,7 +21,7 @@ public abstract class ElectricGeneratorTileEntity extends cyano.poweradvantage.a
 	
 	
 	public ElectricGeneratorTileEntity(String name,int numInputSlots) {
-		super(Power.ELECTRIC_POWER, 2000, name);
+		super(Power.ELECTRIC_POWER, 1000, name);
 		inventory = new ItemStack[numInputSlots];
 		inputSlots = new int[numInputSlots];
 		for(int i = 0; i < inventory.length; i++){

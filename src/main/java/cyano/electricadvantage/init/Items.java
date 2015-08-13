@@ -20,14 +20,29 @@ public abstract class Items {
 	public static final Map<String,Item> allItems = new HashMap<>();
 
 	
+	public static Item blank_circuit_board;
+	public static Item control_circuit;
+	public static Item integrated_circuit;
+	public static Item power_supply_unit;
+	public static Item silicon_ingot;
+	public static Item silicon_blend;
+	public static Item solder_blend;
+	public static Item solder;
 	
 	private static boolean initDone = false;
 	public static void init(){
 		if(initDone) return;
 		Blocks.init();
 
+		blank_circuit_board = addItem("blank_circuit_board",new Item());
+		control_circuit = addItem("control_circuit",new Item(),"circuitBoard");
+		integrated_circuit = addItem("integrated_circuit",new Item(),"microchip");
+		power_supply_unit = addItem("psu",new Item(),"PSU");
+		silicon_ingot = addItem("silicon_ingot",new Item(),"ingotSilicon","silicon");
+		silicon_blend = addItem("silicon_mix",new Item());
+		solder_blend = addItem("solder_mix",new Item());
+		solder = addItem("solder",new Item(),"solder","ingotSolder");
 
-		
 		initDone = true;
 	}
 

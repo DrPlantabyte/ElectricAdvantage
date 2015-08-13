@@ -1,12 +1,13 @@
 package cyano.electricadvantage.machines;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.world.World;
 
 public class PhotovoltaicGeneratorBlock extends ElectricGeneratorBlock{
 
 	public PhotovoltaicGeneratorBlock(){
-		super();
+		super(Material.rock);
 		this.setStepSound(soundTypeGlass);
 	}
 	

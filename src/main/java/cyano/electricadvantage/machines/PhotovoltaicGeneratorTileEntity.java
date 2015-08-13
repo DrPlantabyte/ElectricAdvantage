@@ -31,6 +31,12 @@ public class PhotovoltaicGeneratorTileEntity extends ElectricGeneratorTileEntity
 		return (int)(15 * powerOutput);
 	}
 
+
+	@Override
+	public boolean isActive(){
+		return (hasRedstoneSignal() == false) && powerOutput > 0.0001;
+	}
+	
 	@Override
 	protected boolean isValidInputItem(ItemStack item) {
 		return false;
@@ -66,13 +72,22 @@ public class PhotovoltaicGeneratorTileEntity extends ElectricGeneratorTileEntity
 	public void tickUpdate(boolean isServer) {
 		// do nothing
 	}
-	
+	float oldPower = 0;
 	@Override
 	public void powerUpdate(){
-		float solar = getLightIntensityAt(getPos(),getWorld());
-		float power = Math.max(0,MAX_SOLAR_OUTPUT * solar);
-		this.addEnergy(power, Power.ELECTRIC_POWER);
+		float power;
+		if(hasRedstoneSignal() == false){
+			float solar = getLightIntensityAt(getPos(),getWorld());
+			power = Math.max(0,MAX_SOLAR_OUTPUT * solar);
+			this.addEnergy(power, Power.ELECTRIC_POWER);
+		} else {
+			power = 0f;
+		}
 		powerOutput = power / MAX_SOLAR_OUTPUT;
+		if(powerOutput != oldPower){
+			oldPower = powerOutput;
+			this.sync();
+		}
 		
 		super.powerUpdate();
 	}

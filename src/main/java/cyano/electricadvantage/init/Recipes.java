@@ -6,12 +6,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
+import net.minecraftforge.oredict.ShapelessOreRecipe;
 import cyano.basemetals.registry.CrusherRecipeRegistry;
 import cyano.poweradvantage.PowerAdvantage;
 import cyano.poweradvantage.RecipeMode;
 import cyano.electricadvantage.ElectricAdvantage;
 
-public class Recipes {
+public abstract class Recipes {
 
 	private static boolean initDone = false;
 	public static void init(){
@@ -19,33 +20,67 @@ public class Recipes {
 		
 		Blocks.init();
 		Items.init();
-		
+
+		RecipeMode recipeMode = PowerAdvantage.recipeMode;
 		
 		// Recipes for all recipe modes
+		OreDictionary.registerOre("blockBrick", net.minecraft.init.Blocks.brick_block);
 		
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Blocks.electric_conduit,6),"xxx","ccc","xxx",'x',"plastic",'c',"ingotCopper"));
+		if(OreDictionary.getOres("rubber") != null && OreDictionary.getOres("rubber").isEmpty() == false)GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Blocks.electric_conduit,6),"xxx","ccc","xxx",'x',"rubber",'c',"ingotCopper"));
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Items.power_supply_unit,1),"wcw"," s ",'w',"wire",'c',"circuitBoard",'s',"plateSteel"));
+		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(Items.blank_circuit_board,2),"plastic","plateCopper"));
+		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(Items.control_circuit,1),Items.blank_circuit_board,"microchip","solder"));
+		GameRegistry.addSmelting(Items.silicon_blend, new ItemStack(Items.silicon_ingot), 0.5f);
+		GameRegistry.addSmelting(Items.solder_blend, new ItemStack(Items.solder), 0.5f);
+		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(Items.silicon_blend,1),"sand","dustCarbon"));
+		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(Items.solder_blend,3),"dustTin","dustTin","dustLead"));
+		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(Items.solder_blend,3),"dustTin","dustTin","dustSilver"));
+		
+		
+		// non-apocalyctic recipes (high-tech machines cannot be crafted in post-apocalyspe mode)
+		if(recipeMode != RecipeMode.APOCALYPTIC){
+			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Blocks.photovoltaic_generator,1),"ggg","sss","uww",'g',"paneGlass",'s',"ingotSilicon",'w',"wire",'u',"PSU"));
+		}
 		
 		
 		// recipe-mode specific recipes
-		RecipeMode recipeMode = PowerAdvantage.recipeMode;
 		if(recipeMode == RecipeMode.TECH_PROGRESSION){
-			
+			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Items.integrated_circuit,3),"prp","sss","ccc",'p',"plastic",'s',"ingotSilicon",'r',"dustRedstone",'c',"nuggetCopper"));
+			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Items.integrated_circuit,3),"prp","sss","ccc",'p',"plastic",'s',"ingotSilicon",'r',"dustRedstone",'c',"nuggetTin"));
+			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Items.integrated_circuit,3),"prp","sss","ccc",'p',"plastic",'s',"ingotSilicon",'r',"dustRedstone",'c',"nuggetGold"));
 		} else if(recipeMode == RecipeMode.APOCALYPTIC){
+			CrusherRecipeRegistry.addNewCrusherRecipe(Blocks.steam_powered_generator, new ItemStack(Items.power_supply_unit,1));
+			CrusherRecipeRegistry.addNewCrusherRecipe(Blocks.electric_furnace, new ItemStack(Items.power_supply_unit,1));
+			CrusherRecipeRegistry.addNewCrusherRecipe(Blocks.photovoltaic_generator, new ItemStack(Items.power_supply_unit,1));
+			CrusherRecipeRegistry.addNewCrusherRecipe(Items.power_supply_unit, new ItemStack(Items.control_circuit,1));
+			CrusherRecipeRegistry.addNewCrusherRecipe(Items.control_circuit, new ItemStack(Items.integrated_circuit,1));
 			
 		} else {
 			// normal
-			
+			OreDictionary.registerOre("solder", cyano.basemetals.init.Items.lead_ingot);
+			OreDictionary.registerOre("solder", cyano.basemetals.init.Items.tin_ingot);
+			OreDictionary.registerOre("solder", cyano.basemetals.init.Items.silver_ingot);
+			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Items.integrated_circuit,3),"sss","ccc",'s',"ingotSilicon",'c',"nuggetCopper"));
+			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Items.integrated_circuit,3),"sss","ccc",'s',"ingotSilicon",'c',"nuggetTin"));
+			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Items.integrated_circuit,3),"sss","ccc",'s',"ingotSilicon",'c',"nuggetGold"));
+			GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(Items.blank_circuit_board,2),"plastic","ingotCopper"));
+			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Items.power_supply_unit,1),"iii","wrw","iii",'w',"wire",'r',"blockRedstone",'i',"ingotIron"));
 		}
 
+		// Machine recipes
+		GameRegistry.addRecipe(electricMachineRecipe(Blocks.steam_powered_generator, "conduitSteam","governor"));
+		GameRegistry.addRecipe(new ShapedOreRecipe(Blocks.electric_furnace, "bbb","bub","bbb",'b',"blockBrick",'u',"PSU"));
 		
 		
 		initDone = true;
 	}
 
-	private static ShapedOreRecipe steamMachineRecipe(Block output, Object item){
-		return new ShapedOreRecipe(output, "gXg","pmp",'X',item,'g',"governor",'p',"plateIron",'m',"frameSteel");
+	private static ShapedOreRecipe electricMachineRecipe(Block output, Object item){
+		return new ShapedOreRecipe(output, "uX ","pmp",'X',item,'u',"PSU",'p',"plateSteel",'m',"frameSteel");
 	}
 
-	private static ShapedOreRecipe steamMachineRecipe(Block output, Object item1, Object item2){
-		return new ShapedOreRecipe(output, " Y ","gXg","pmp",'X',item1,'Y',item2,'g',"governor",'p',"plateIron",'m',"frameSteel");
+	private static ShapedOreRecipe electricMachineRecipe(Block output, Object item1, Object item2){
+		return new ShapedOreRecipe(output, "uXY","pmp",'X',item1,'Y',item2,'u',"PSU",'p',"plateSteel",'m',"frameSteel");
 	}
 }

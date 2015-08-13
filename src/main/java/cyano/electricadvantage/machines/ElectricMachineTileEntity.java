@@ -2,15 +2,15 @@ package cyano.electricadvantage.machines;
 
 import java.util.Arrays;
 
+import cyano.electricadvantage.init.Power;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.common.FMLLog;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-import cyano.electricadvantage.init.Power;
 
 public abstract class ElectricMachineTileEntity extends cyano.poweradvantage.api.simple.TileEntitySimplePowerConsumer{
 
@@ -47,8 +47,10 @@ public abstract class ElectricMachineTileEntity extends cyano.poweradvantage.api
 		if(oldEnergy != this.getEnergy()){
 			this.sync();
 		}
+		
 	}
 
+	
 	protected boolean hasRedstoneSignal(){
 		return redstone;
 	}
@@ -57,8 +59,18 @@ public abstract class ElectricMachineTileEntity extends cyano.poweradvantage.api
 		IBlockState old = getWorld().getBlockState(getPos());
 		if(old.getBlock() instanceof ElectricMachineBlock 
 				&& (Boolean)old.getValue(ElectricMachineBlock.ACTIVE) != active){
-			getWorld().setBlockState(getPos(), old.withProperty(ElectricMachineBlock.ACTIVE, active));
+			final TileEntity save = this;
+			final World w = getWorld();
+			final BlockPos pos = this.getPos();
+			w.setBlockState(pos, old.withProperty(ElectricMachineBlock.ACTIVE, active),3);
+			save.validate();
+			w.setTileEntity(pos, save);
 		}
+	}
+	
+
+	public boolean isActive(){
+		return this.getEnergy() > 0 && !this.hasRedstoneSignal();
 	}
 
 	public ItemStack getInputSlot(int i){
@@ -72,7 +84,7 @@ public abstract class ElectricMachineTileEntity extends cyano.poweradvantage.api
 	
 	public ItemStack getOutputSlot(int i){
 		if(i < outputSlots.length){
-			return inventory[inputSlots.length + outputSlots[i]];
+			return inventory[outputSlots[i]];
 		} else {
 			FMLLog.warning("Bug in class %s. StackTrace: %s",this.getClass().getName(),Arrays.toString(Thread.currentThread().getStackTrace()).replace(',','\n'));
 			return null;
@@ -81,10 +93,33 @@ public abstract class ElectricMachineTileEntity extends cyano.poweradvantage.api
 	
 	public ItemStack getOtherSlot(int i){
 		if(i < otherSlots.length){
-			return inventory[inputSlots.length + outputSlots.length + otherSlots[i]];
+			return inventory[otherSlots[i]];
 		} else {
 			FMLLog.warning("Bug in class %s. StackTrace: %s",this.getClass().getName(),Arrays.toString(Thread.currentThread().getStackTrace()).replace(',','\n'));
 			return null;
+		}
+	}
+	public void setInputSlot(int i, ItemStack item){
+		if(i < inputSlots.length){
+			inventory[inputSlots[i]] = item;
+		} else {
+			FMLLog.warning("Bug in class %s. StackTrace: %s",this.getClass().getName(),Arrays.toString(Thread.currentThread().getStackTrace()).replace(',','\n'));
+		}
+	}
+	
+	public void setOutputSlot(int i, ItemStack item){
+		if(i < outputSlots.length){
+			inventory[ outputSlots[i]] = item;
+		} else {
+			FMLLog.warning("Bug in class %s. StackTrace: %s",this.getClass().getName(),Arrays.toString(Thread.currentThread().getStackTrace()).replace(',','\n'));
+		}
+	}
+	
+	public void setOtherSlot(int i, ItemStack item){
+		if(i < otherSlots.length){
+			inventory[otherSlots[i]] = item;
+		} else {
+			FMLLog.warning("Bug in class %s. StackTrace: %s",this.getClass().getName(),Arrays.toString(Thread.currentThread().getStackTrace()).replace(',','\n'));
 		}
 	}
 	
@@ -127,6 +162,44 @@ public abstract class ElectricMachineTileEntity extends cyano.poweradvantage.api
 		return isInArray(slot,outputSlots);
 	}
 
+	public boolean hasSpaceForItemInOutputSlots(ItemStack stack){
+		ItemStack item = stack.copy();
+		for(int slot = 0; slot < numberOfOutputSlots(); slot++){
+			ItemStack dest = getOutputSlot(slot);
+			if(dest == null) return true;
+			int stackLimit = Math.min(dest.getMaxStackSize(), this.getInventoryStackLimit());
+			if(dest.stackSize >= stackLimit) continue;
+			int combinedStackSize = item.stackSize + dest.stackSize;
+			if(ItemStack.areItemsEqual(item, dest) ){
+				if(combinedStackSize <= stackLimit){
+					return true;
+				} else if (item.stackSize <= stackLimit) {
+					item.stackSize -= stackLimit - dest.stackSize;
+				}
+			}
+		}
+		return false;
+	}
+	
+	public boolean hasSpaceForItemInInputSlots(ItemStack stack){
+		ItemStack item = stack.copy();
+		for(int slot = 0; slot < numberOfInputSlots(); slot++){
+			ItemStack dest = getInputSlot(slot);
+			if(dest == null) return true;
+			int stackLimit = Math.min(dest.getMaxStackSize(), this.getInventoryStackLimit());
+			if(dest.stackSize >= stackLimit) continue;
+			int combinedStackSize = item.stackSize + dest.stackSize;
+			if(ItemStack.areItemsEqual(item, dest) ){
+				if(combinedStackSize <= stackLimit){
+					return true;
+				} else if (item.stackSize <= stackLimit) {
+					item.stackSize -= stackLimit - dest.stackSize;
+				}
+			}
+		}
+		return false;
+	}
+	
 	@Override
 	public boolean canInsertItem(final int slot, final ItemStack srcItem, final EnumFacing side) {
 		return isValidInputItem(srcItem) && isInArray(slot,inputSlots);
@@ -147,20 +220,19 @@ public abstract class ElectricMachineTileEntity extends cyano.poweradvantage.api
 	}
 	
 	public ItemStack insertItemToInputSlots(ItemStack itemStack){
-		Item item = itemStack.getItem();
-		for(int i = 0; i < inputSlots.length; i++){
-			int slot = inputSlots[i];
-			ItemStack slotContent = inventory[slot];
+		itemStack = itemStack.copy();
+		for(int slot = 0; slot < numberOfInputSlots(); slot++){
+			ItemStack slotContent = this.getInputSlot(slot);
 			if(slotContent == null){
 				// empty slot
-				inventory[slot] = itemStack.copy();
-				itemStack.stackSize = 0;
+				this.setInputSlot(slot,itemStack);
 				return null;
-			} else if(slotContent.getItem().equals(item)){
+			} else if(ItemStack.areItemsEqual(itemStack, slotContent)){
+				int stackLimit = Math.min(slotContent.getMaxStackSize(), this.getInventoryStackLimit());
 				// found slot with same item
-				if(slotContent.stackSize < slotContent.getMaxStackSize()){
+				if(slotContent.stackSize < stackLimit){
 					// increase stack
-					int delta = Math.min(itemStack.stackSize, slotContent.getMaxStackSize() - slotContent.stackSize);
+					int delta = Math.min(itemStack.stackSize, stackLimit - slotContent.stackSize);
 					slotContent.stackSize += delta;
 					itemStack.stackSize -= delta;
 					if(itemStack.stackSize <= 0) return null; // done
@@ -172,20 +244,19 @@ public abstract class ElectricMachineTileEntity extends cyano.poweradvantage.api
 	}
 	
 	public ItemStack insertItemToOutputSlots(ItemStack itemStack){
-		Item item = itemStack.getItem();
-		for(int i = 0; i < outputSlots.length; i++){
-			int slot = outputSlots[i];
-			ItemStack slotContent = inventory[slot];
+		itemStack = itemStack.copy();
+		for(int slot = 0; slot < numberOfOutputSlots(); slot++){
+			ItemStack slotContent = this.getOutputSlot(slot);
 			if(slotContent == null){
 				// empty slot
-				inventory[slot] = itemStack.copy();
-				itemStack.stackSize = 0;
+				this.setOutputSlot(slot,itemStack);
 				return null;
-			} else if(slotContent.getItem().equals(item)){
+			} else if(ItemStack.areItemsEqual(itemStack, slotContent)){
+				int stackLimit = Math.min(slotContent.getMaxStackSize(), this.getInventoryStackLimit());
 				// found slot with same item
-				if(slotContent.stackSize < slotContent.getMaxStackSize()){
+				if(slotContent.stackSize < stackLimit){
 					// increase stack
-					int delta = Math.min(itemStack.stackSize, slotContent.getMaxStackSize() - slotContent.stackSize);
+					int delta = Math.min(itemStack.stackSize, stackLimit - slotContent.stackSize);
 					slotContent.stackSize += delta;
 					itemStack.stackSize -= delta;
 					if(itemStack.stackSize <= 0) return null; // done
@@ -212,4 +283,6 @@ public abstract class ElectricMachineTileEntity extends cyano.poweradvantage.api
 		return 15 * sum / total;
 	}
 
+	
+	@Override public int getInventoryStackLimit(){return 64;}
 }

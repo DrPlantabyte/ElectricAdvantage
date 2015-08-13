@@ -5,7 +5,10 @@ import java.util.Arrays;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -47,10 +50,19 @@ public abstract class ElectricGeneratorTileEntity extends cyano.poweradvantage.a
 	
 	protected void setActive(boolean active){
 		IBlockState old = getWorld().getBlockState(getPos());
-		if(old.getBlock() instanceof ElectricGeneratorBlock 
-				&& (Boolean)old.getValue(ElectricGeneratorBlock.ACTIVE) != active){
-			getWorld().setBlockState(getPos(), old.withProperty(ElectricGeneratorBlock.ACTIVE, active));
+		if(old.getBlock() instanceof ElectricMachineBlock 
+				&& (Boolean)old.getValue(ElectricMachineBlock.ACTIVE) != active){
+			final TileEntity save = this;
+			final World w = getWorld();
+			final BlockPos pos = this.getPos();
+			w.setBlockState(pos, old.withProperty(ElectricMachineBlock.ACTIVE, active),3);
+			save.validate();
+			w.setTileEntity(pos, save);
 		}
+	}
+	
+	public boolean isActive(){
+		return (Boolean)getWorld().getBlockState(getPos()).getValue(ElectricGeneratorBlock.ACTIVE);
 	}
 
 	
@@ -116,4 +128,5 @@ public abstract class ElectricGeneratorTileEntity extends cyano.poweradvantage.a
 	protected abstract void saveTo(NBTTagCompound tagRoot);
 	protected abstract void loadFrom(NBTTagCompound tagRoot);
 
+	@Override public int getInventoryStackLimit(){return 64;}
 }

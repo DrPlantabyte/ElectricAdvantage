@@ -2,13 +2,14 @@ language_support_goals=english (en_US,en_EN,en_CA,en_GB, en_AU, en_PT), spanish 
 
 item.electricadvantage.blank_circuit_board.name=Circuit Board (Blank)
 item.electricadvantage.control_circuit.name=Control Circuit
-item.electricadvantage.integrated_circuit.name=IC Chip
+item.electricadvantage.integrated_circuit.name=Microchip
 item.electricadvantage.psu.name=Power Supply Unit
 item.electricadvantage.silicon_ingot.name=Silicon Ingot
 item.electricadvantage.silicon_mix.name=Silicon Blend
 item.electricadvantage.solder_mix.name=Solder Blend
 item.electricadvantage.solder.name=Solder
 
+tile.electricadvantage.electric_conduit.name=Electric Power Cable
 tile.electricadvantage.electric_battery_array.name=Battery Array
 tile.electricadvantage.electric_crusher.name=Electric Rock Crusher
 tile.electricadvantage.electric_defense_turret.name=Laser Defense Turret

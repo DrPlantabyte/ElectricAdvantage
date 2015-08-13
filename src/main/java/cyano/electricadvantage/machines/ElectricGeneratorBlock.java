@@ -22,7 +22,12 @@ public abstract class ElectricGeneratorBlock extends cyano.poweradvantage.api.si
 	public static final PropertyBool ACTIVE = PropertyBool.create("active");
 
 	public ElectricGeneratorBlock() {
-		super(Material.piston, 0.75f, Power.ELECTRIC_POWER);
+		this(Material.piston);
+	}
+	
+
+	public ElectricGeneratorBlock(Material m) {
+		super(m, 0.75f, Power.ELECTRIC_POWER);
 		this.setDefaultState(getDefaultState().withProperty(ACTIVE, false).withProperty(FACING, EnumFacing.NORTH));
 	}
 	

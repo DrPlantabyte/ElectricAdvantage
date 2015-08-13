@@ -5,7 +5,7 @@ import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraftforge.common.ChestGenHooks;
 import cyano.poweradvantage.PowerAdvantage;
 
-public class TreasureChests {
+public abstract class TreasureChests {
 
 	private static boolean initDone = false;
 	public static void init(){

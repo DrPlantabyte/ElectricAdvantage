@@ -2,9 +2,9 @@ package cyano.electricadvantage.init;
 
 import net.minecraft.enchantment.Enchantment;
 import net.minecraftforge.fml.common.FMLLog;
-import cyano.electricadvantage.enchanments.*;
+//import cyano.electricadvantage.enchanments.*;
 
-public class Enchantments {
+public abstract class Enchantments {
 
 	
 	private static boolean initDone = false;

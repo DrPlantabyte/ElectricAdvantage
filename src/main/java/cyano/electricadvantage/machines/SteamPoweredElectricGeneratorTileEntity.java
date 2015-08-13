@@ -15,7 +15,8 @@ public class SteamPoweredElectricGeneratorTileEntity extends ElectricGeneratorTi
 	
 	private final float maxSteam = 32;
 	private float steam = 0;
-	private final float steamDecay = 1f;
+	private final float steamDecay = 0.0625f*8;
+	private final float maxSteamConversionPerTick = 1.75f;
 	
 	private float lastTransmissionCurrent = 0;
 	
@@ -26,10 +27,10 @@ public class SteamPoweredElectricGeneratorTileEntity extends ElectricGeneratorTi
 	}
 
 	@Override public void powerUpdate(){
-		steam -= steamDecay;
+		if(steam > steamDecay)steam -= steamDecay;
 		if(hasRedstoneSignal() == false){
 			float steamDemand = (getEnergyCapacity() - getEnergy()) * Power.ELECTRICITY_TO_STEAM;
-			float delta = Math.min(steam, steamDemand);
+			float delta = Math.min(Math.min(steam, steamDemand),maxSteamConversionPerTick*8);
 			steam -= delta;
 			addEnergy(delta * Power.STEAM_TO_ELECTRICITY, Power.ELECTRIC_POWER);
 			super.setActive(steam > 0);
@@ -58,6 +59,11 @@ public class SteamPoweredElectricGeneratorTileEntity extends ElectricGeneratorTi
 	}
 
 	@Override
+	public boolean isActive(){
+		return (hasRedstoneSignal() == false) && steam > 0;
+	}
+	
+	@Override
 	public void onDataFieldUpdate() {
 		this.setEnergy(Float.intBitsToFloat(dataArray[0]), Power.ELECTRIC_POWER);
 		this.setEnergy(Float.intBitsToFloat(dataArray[1]), SteamPoweredElectricGeneratorBlock.STEAM_POWER);
@@ -68,7 +74,7 @@ public class SteamPoweredElectricGeneratorTileEntity extends ElectricGeneratorTi
 	public void prepareDataFieldsForSync() {
 		dataArray[0] = Float.floatToIntBits(getEnergy());
 		dataArray[1] = Float.floatToIntBits(steam);
-		dataArray[3] = Float.floatToIntBits(lastTransmissionCurrent);
+		dataArray[2] = Float.floatToIntBits(lastTransmissionCurrent);
 	}
 
 	@Override

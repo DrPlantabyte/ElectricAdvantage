@@ -50,15 +50,23 @@ public abstract class ElectricGeneratorTileEntity extends cyano.poweradvantage.a
 	
 	protected void setActive(boolean active){
 		IBlockState old = getWorld().getBlockState(getPos());
-		if(old.getBlock() instanceof ElectricMachineBlock 
-				&& (Boolean)old.getValue(ElectricMachineBlock.ACTIVE) != active){
+		if(old.getBlock() instanceof ElectricGeneratorBlock 
+				&& (Boolean)old.getValue(ElectricGeneratorBlock.ACTIVE) != active){
 			final TileEntity save = this;
 			final World w = getWorld();
 			final BlockPos pos = this.getPos();
-			w.setBlockState(pos, old.withProperty(ElectricMachineBlock.ACTIVE, active),3);
+			w.setBlockState(pos, old.withProperty(ElectricGeneratorBlock.ACTIVE, active),3);
+			w.removeTileEntity(pos);
 			save.validate();
 			w.setTileEntity(pos, save);
 		}
+	}
+
+	@Override
+	public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newSate)
+	{
+		// used to allow change in blockstate without interrupting the TileEntity or the GUI
+		return (oldState.getBlock() != newSate.getBlock());
 	}
 	
 	public boolean isActive(){

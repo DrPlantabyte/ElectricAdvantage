@@ -37,6 +37,8 @@ guiContainer.drawTexturedModalRect(x+79, y+35, 0, 0, arrowLength, 17); // x, y, 
 			ElectricGeneratorTileEntity te = (ElectricGeneratorTileEntity)srcEntity;
 			boolean on = te.isActive();
 			GUIHelper.drawIndicatorLight(on, guiContainer,x,y);
+			float powerOutput = te.getPowerOutput();
+			GUIHelper.drawProgressBar(x+72, y+60, powerOutput, guiContainer);
 		}
 	}
 

@@ -12,7 +12,7 @@ import net.minecraft.nbt.NBTTagShort;
 public class ElectricFurnaceTileEntity extends ElectricMachineTileEntity{
 	
 
-	public static final float ENERGY_PER_TICK = 16f;
+	public static final float ENERGY_PER_TICK = 8f;
 
 	
 
@@ -27,13 +27,15 @@ public class ElectricFurnaceTileEntity extends ElectricMachineTileEntity{
 	}
 
 
-	
 	@Override
 	public void tickUpdate(boolean isServerWorld) {
 		if(isServerWorld){
-			boolean flag = false;
 			boolean active = false;
 			for(int i = 0; i < this.numberOfInputSlots(); i++){
+				if(getInputSlot(i) == null){
+					burnTime[i] = 0;
+					continue;
+				}
 				if(getEnergy() > ENERGY_PER_TICK){
 					if(canSmelt(i)){
 						subtractEnergy(ENERGY_PER_TICK,Power.ELECTRIC_POWER);
@@ -42,7 +44,6 @@ public class ElectricFurnaceTileEntity extends ElectricMachineTileEntity{
 							doSmelt(i);
 							burnTime[i] = 0;
 						}
-						flag = true;
 						active = true;
 					} else {
 						burnTime[i] = 0;
@@ -56,12 +57,33 @@ public class ElectricFurnaceTileEntity extends ElectricMachineTileEntity{
 			}
 			this.setActive(active && getEnergy() >= ENERGY_PER_TICK);
 			
-			if (flag){
-				this.sync();
-			}
+			
 		}
 	}
 	
+
+	short[] oldValues = null;
+	@Override
+	public void powerUpdate(){
+		super.powerUpdate();
+		if(oldValues == null){
+			oldValues = new short[burnTime.length];
+		}
+		if (areNotEqual(oldValues,burnTime)){
+			System.arraycopy(burnTime, 0, oldValues, 0, burnTime.length);
+			this.sync();
+		}
+	}
+	
+	private static boolean areNotEqual(short[] a, short[] b){
+		if(a.length == b.length){
+			for(int i = 0; i < a.length; i++){
+				if(a[i] != b[i]) return true;
+			}
+			return false;
+		}
+		return true;
+	}
 	
 	private boolean canSmelt(int slot){
 		ItemStack input = this.getInputSlot(slot);

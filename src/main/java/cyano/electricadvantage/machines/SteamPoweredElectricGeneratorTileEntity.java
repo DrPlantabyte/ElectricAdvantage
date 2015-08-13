@@ -3,6 +3,7 @@ package cyano.electricadvantage.machines;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
+import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import cyano.electricadvantage.init.Power;
@@ -28,19 +29,22 @@ public class SteamPoweredElectricGeneratorTileEntity extends ElectricGeneratorTi
 
 	@Override public void powerUpdate(){
 		if(steam > steamDecay)steam -= steamDecay;
+		boolean flag = false;
 		if(hasRedstoneSignal() == false){
+			float max = maxSteamConversionPerTick*8;
 			float steamDemand = (getEnergyCapacity() - getEnergy()) * Power.ELECTRICITY_TO_STEAM;
-			float delta = Math.min(Math.min(steam, steamDemand),maxSteamConversionPerTick*8);
+			flag = steam > 0;
+			float delta = Math.min(Math.min(steam, steamDemand),max);
 			steam -= delta;
+			lastTransmissionCurrent = delta / max;
 			addEnergy(delta * Power.STEAM_TO_ELECTRICITY, Power.ELECTRIC_POWER);
-			super.setActive(steam > 0);
+			this.sync();
 		} else {
-			super.setActive(false);
+			lastTransmissionCurrent = 0;
+			flag = false;
 		}
-		float before = getEnergy();
 		super.powerUpdate();
-		float after = getEnergy();
-		lastTransmissionCurrent = Math.max(1f, (before - after) * Power.ELECTRICITY_TO_STEAM / (maxSteam - steamDecay));
+		super.setActive(flag);
 	}
 
 	@Override
@@ -58,10 +62,7 @@ public class SteamPoweredElectricGeneratorTileEntity extends ElectricGeneratorTi
 		return dataArray;
 	}
 
-	@Override
-	public boolean isActive(){
-		return (hasRedstoneSignal() == false) && steam > 0;
-	}
+	
 	
 	@Override
 	public void onDataFieldUpdate() {

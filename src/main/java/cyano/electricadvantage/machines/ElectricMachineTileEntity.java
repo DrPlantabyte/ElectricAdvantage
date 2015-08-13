@@ -20,6 +20,7 @@ public abstract class ElectricMachineTileEntity extends cyano.poweradvantage.api
 	private final int[] ioSlots;
 	private final int[] otherSlots;
 	
+	
 	public ElectricMachineTileEntity(String name,int numInputSlots, int numOutputSlots, int numOtherSlots) {
 		super(Power.ELECTRIC_POWER, 1000f, name);
 		inventory = new ItemStack[numInputSlots+numOutputSlots+numOtherSlots];
@@ -35,7 +36,6 @@ public abstract class ElectricMachineTileEntity extends cyano.poweradvantage.api
 		}
 	}
 	
-
 	private boolean redstone = false;
 	private float oldEnergy = 0f;
 	@Override
@@ -56,21 +56,29 @@ public abstract class ElectricMachineTileEntity extends cyano.poweradvantage.api
 	}
 	
 	protected void setActive(boolean active){
-		IBlockState old = getWorld().getBlockState(getPos());
-		if(old.getBlock() instanceof ElectricMachineBlock 
-				&& (Boolean)old.getValue(ElectricMachineBlock.ACTIVE) != active){
+		IBlockState oldState = getWorld().getBlockState(getPos());
+		if(oldState.getBlock() instanceof ElectricMachineBlock 
+				&& (Boolean)oldState.getValue(ElectricMachineBlock.ACTIVE) != active){
 			final TileEntity save = this;
 			final World w = getWorld();
 			final BlockPos pos = this.getPos();
-			w.setBlockState(pos, old.withProperty(ElectricMachineBlock.ACTIVE, active),3);
+			IBlockState newState = oldState.withProperty(ElectricMachineBlock.ACTIVE, active);
+			w.setBlockState(pos, newState,3);
+			w.removeTileEntity(pos);
 			save.validate();
 			w.setTileEntity(pos, save);
 		}
 	}
 	
+	@Override
+	public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newSate)
+	{
+		// used to allow change in blockstate without interrupting the TileEntity or the GUI
+		return (oldState.getBlock() != newSate.getBlock());
+	}
 
 	public boolean isActive(){
-		return this.getEnergy() > 0 && !this.hasRedstoneSignal();
+		return !this.hasRedstoneSignal() && (this.getEnergy() > 0 || (Boolean)getWorld().getBlockState(getPos()).getValue(ElectricMachineBlock.ACTIVE));
 	}
 
 	public ItemStack getInputSlot(int i){

@@ -10,6 +10,7 @@ item.electricadvantage.solder_mix.name=Solder Blend
 item.electricadvantage.solder.name=Solder
 item.electricadvantage.li_powder.name=Powdered Lithium
 item.electricadvantage.li_ingot.name=Lithium Ingot
+item.electricadvantage.li_nugget.name=Lithium Nugget
 item.electricadvantage.sulfur_powder.name=Powdered Sulfur
 item.electricadvantage.lead_acid_battery.name=Lead-Acid Battery
 item.electricadvantage.nickel_hydride_battery.name=Nickel-Metal Hydride Battery

@@ -26,6 +26,12 @@ public abstract class Recipes {
 		// Recipes for all recipe modes
 		OreDictionary.registerOre("blockBrick", net.minecraft.init.Blocks.brick_block);
 		OreDictionary.registerOre("gunpowder", net.minecraft.init.Items.gunpowder);
+		GameRegistry.addSmelting(Items.lithium_powder,new ItemStack(Items.lithium_ingot),0.5f);
+		GameRegistry.addSmelting(Blocks.lithium_ore,new ItemStack(Items.lithium_ingot),0.5f);
+		CrusherRecipeRegistry.addNewCrusherRecipe("oreLithium",new ItemStack(Items.lithium_powder,2));
+		CrusherRecipeRegistry.addNewCrusherRecipe("ingotLithium",new ItemStack(Items.lithium_powder,1));
+		CrusherRecipeRegistry.addNewCrusherRecipe("oreSulfur",new ItemStack(Items.sulfur_powder,4));
+		
 		
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Blocks.electric_conduit,6),"xxx","ccc","xxx",'x',"plastic",'c',"ingotCopper"));
 		if(OreDictionary.getOres("rubber") != null && OreDictionary.getOres("rubber").isEmpty() == false)GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Blocks.electric_conduit,6),"xxx","ccc","xxx",'x',"rubber",'c',"ingotCopper"));
@@ -41,7 +47,7 @@ public abstract class Recipes {
 		GameRegistry.addRecipe(batteryRecipe(Items.lead_acid_battery,"ingotLead","sulfur",net.minecraft.init.Items.water_bucket));
 		GameRegistry.addRecipe(batteryRecipe(Items.nickel_hydride_battery,"ingotNickel","dustRedstone",net.minecraft.init.Items.water_bucket));
 		GameRegistry.addRecipe(batteryRecipe(Items.alkaline_battery,"ingotIron","gunpowder","ingotZinc"));
-		GameRegistry.addRecipe(batteryRecipe(Items.lithium_battery,"ingotLitium","dustRedstone","dustCarbon"));
+		GameRegistry.addRecipe(batteryRecipe(Items.lithium_battery,"ingotLithium","dustRedstone","dustCarbon"));
 		
 		// non-apocalyctic recipes (high-tech machines cannot be crafted in post-apocalyspe mode)
 		if(recipeMode != RecipeMode.APOCALYPTIC){

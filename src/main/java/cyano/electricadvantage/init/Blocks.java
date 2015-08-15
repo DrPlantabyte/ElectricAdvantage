@@ -3,24 +3,29 @@ package cyano.electricadvantage.init;
 import java.util.HashMap;
 import java.util.Map;
 
+import cyano.electricadvantage.ElectricAdvantage;
+import cyano.electricadvantage.blocks.ElectricConduitBlock;
+import cyano.electricadvantage.blocks.Ore;
+import cyano.electricadvantage.machines.ElectricFurnaceBlock;
+import cyano.electricadvantage.machines.PhotovoltaicGeneratorBlock;
+import cyano.electricadvantage.machines.SteamPoweredElectricGeneratorBlock;
+import cyano.poweradvantage.api.GUIBlock;
 import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.model.ModelResourceLocation;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
-import cyano.poweradvantage.api.GUIBlock;
-import cyano.electricadvantage.ElectricAdvantage;
-import cyano.electricadvantage.blocks.*;
-import cyano.electricadvantage.machines.*;
 
 public abstract class Blocks {
 	private static final Map<String,Block> allBlocks = new HashMap<>();
 
 	public static Block electric_conduit;
+	public static Block lithium_ore;
+	public static Block sulfur_ore;
 	
 	public static GUIBlock steam_powered_generator;
 	public static GUIBlock photovoltaic_generator;
@@ -32,8 +37,11 @@ public abstract class Blocks {
 	private static boolean initDone = false;
 	public static void init(){
 		if(initDone) return;
+		Items.init();
 		
 		electric_conduit = addBlock(new ElectricConduitBlock(),"electric_conduit","wire","conduitElectricity","powerCable","cableElectric");
+		lithium_ore = addBlock(new Ore(1),"li_ore","oreLithium");
+		sulfur_ore = addBlock(new Ore(new ItemStack(Items.sulfur_powder,1),0,3),"sulfur_ore","oreSulfur");
 
 		photovoltaic_generator = (GUIBlock)addBlock(new PhotovoltaicGeneratorBlock(),"photovoltaic_generator");
 		steam_powered_generator = (GUIBlock)addBlock(new SteamPoweredElectricGeneratorBlock(),"steam_powered_generator");

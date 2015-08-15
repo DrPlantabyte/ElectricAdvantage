@@ -1,0 +1,6 @@
+{
+    "parent": "electricadvantage:item/battery_base",
+    "textures": {
+        "item_texture": "electricadvantage:items/lead_acid_battery"
+    }
+}

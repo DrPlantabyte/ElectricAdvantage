@@ -36,12 +36,12 @@ public abstract class Items {
 
 	public static Item lithium_ingot;
 	public static Item lithium_powder;
+	public static Item lithium_nugget;
 	public static Item sulfur_powder;
 	
 	private static boolean initDone = false;
 	public static void init(){
 		if(initDone) return;
-		Blocks.init();
 
 		blank_circuit_board = addItem("blank_circuit_board",new Item());
 		control_circuit = addItem("control_circuit",new Item(),"circuitBoard");
@@ -51,6 +51,11 @@ public abstract class Items {
 		silicon_blend = addItem("silicon_mix",new Item());
 		solder_blend = addItem("solder_mix",new Item());
 		solder = addItem("solder",new Item(),"solder","ingotSolder");
+		lithium_ingot = addItem("li_ingot",new Item(),"ingotLithium");
+		lithium_powder = addItem("li_powder",new Item(),"dustLithium");
+		lithium_nugget = addItem("li_nugget",new Item(),"nuggetLithium");
+		sulfur_powder = addItem("sulfur_powder",new Item(),"sulfur","dustSulfur","sulphur","dustSulphur");
+		
 		lead_acid_battery = addItem("lead_acid_battery",new BatteryItem(Power.LEAD_ACID_BATTERY_CAPACITY),"battery");
 		nickel_hydride_battery = addItem("nickel_hydride_battery",new BatteryItem(Power.NICKEL_HYDRIDE_BATTERY_CAPACITY),"battery");
 		alkaline_battery = addItem("alkaline_battery",new BatteryItem(Power.ALKALINE_BATTERY_CAPACITY),"battery");

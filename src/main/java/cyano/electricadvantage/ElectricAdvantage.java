@@ -1,8 +1,21 @@
 package cyano.electricadvantage;
 
-import cyano.electricadvantage.init.*;
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Arrays;
+
+import cyano.electricadvantage.init.Blocks;
+import cyano.electricadvantage.init.Enchantments;
+import cyano.electricadvantage.init.Entities;
+import cyano.electricadvantage.init.GUI;
+import cyano.electricadvantage.init.Items;
+import cyano.electricadvantage.init.Recipes;
+import cyano.electricadvantage.init.TreasureChests;
 import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -36,6 +49,18 @@ public class ElectricAdvantage
 		Configuration config = new Configuration(event.getSuggestedConfigurationFile());
 		config.load();
 
+		Path orespawnFolder = Paths.get(event.getSuggestedConfigurationFile().toPath().getParent().toString(),"orespawn");
+		Path orespawnFile = Paths.get(orespawnFolder.toString(),MODID+".json");
+		if(!Files.exists(orespawnFile)){
+			try{
+				Files.createDirectories(orespawnFile.getParent());
+				Files.write(orespawnFile, Arrays.asList(Data.ORESPAWN_FILE_CONTENTS.split("\n")), Charset.forName("UTF-8"));
+				cyano.basemetals.BaseMetals.oreSpawnConfigFiles.add(orespawnFile);
+			} catch (IOException e) {
+				FMLLog.severe(MODID+": Error: Failed to write file "+orespawnFile);
+			}
+		}
+		
 		config.save();
 
 

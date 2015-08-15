@@ -6,9 +6,7 @@ import java.util.Map;
 import cyano.electricadvantage.ElectricAdvantage;
 import cyano.electricadvantage.blocks.ElectricConduitBlock;
 import cyano.electricadvantage.blocks.Ore;
-import cyano.electricadvantage.machines.ElectricFurnaceBlock;
-import cyano.electricadvantage.machines.PhotovoltaicGeneratorBlock;
-import cyano.electricadvantage.machines.SteamPoweredElectricGeneratorBlock;
+import cyano.electricadvantage.machines.*;
 import cyano.poweradvantage.api.GUIBlock;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -29,8 +27,9 @@ public abstract class Blocks {
 	
 	public static GUIBlock steam_powered_generator;
 	public static GUIBlock photovoltaic_generator;
-	
-	public static GUIBlock electric_furnace;
+
+	public static GUIBlock arc_furnace;
+	public static GUIBlock battery_array;
 	
 
 	
@@ -46,7 +45,8 @@ public abstract class Blocks {
 		photovoltaic_generator = (GUIBlock)addBlock(new PhotovoltaicGeneratorBlock(),"photovoltaic_generator");
 		steam_powered_generator = (GUIBlock)addBlock(new SteamPoweredElectricGeneratorBlock(),"steam_powered_generator");
 
-		electric_furnace = (GUIBlock)addBlock(new ElectricFurnaceBlock(),"electric_furnace");
+		arc_furnace = (GUIBlock)addBlock(new ElectricFurnaceBlock(),"electric_furnace");
+		battery_array = (GUIBlock)addBlock(new ElectricBatteryArrayBlock(),"electric_battery_array");
 		
 		initDone = true;
 	}

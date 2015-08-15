@@ -21,6 +21,7 @@ public abstract class Entities {
 		registerTileEntity(ElectricFurnaceTileEntity.class);
 		registerTileEntity(PhotovoltaicGeneratorTileEntity.class);
 		registerTileEntity(SteamPoweredElectricGeneratorTileEntity.class);
+		registerTileEntity(ElectricBatteryArrayTileEntity.class);
 		
 		
 		initDone = true;

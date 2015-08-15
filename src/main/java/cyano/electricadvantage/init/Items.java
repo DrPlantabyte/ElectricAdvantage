@@ -13,6 +13,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
 import cyano.electricadvantage.ElectricAdvantage;
+import cyano.electricadvantage.common.IRechargeableItem;
 import cyano.electricadvantage.items.BatteryItem;
 
 public abstract class Items {

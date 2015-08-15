@@ -12,7 +12,7 @@ public class PhotovoltaicGeneratorTileEntity extends ElectricGeneratorTileEntity
 
 	private static final float PI = (float)Math.PI;
 	private static final float SUM_OF_SINE_TICKS = 24000 / PI / 8;
-	public static final float SOLAR_PER_DAY = 25000; // half the energy of a piece of coal per day
+	public static final float SOLAR_PER_DAY = 12500; // quarter the energy of a piece of coal per day
 	public static final float MAX_SOLAR_OUTPUT = PI * SOLAR_PER_DAY / SUM_OF_SINE_TICKS;
 	public static final float BLOCKLIGHT_FACTOR = 0.1f; // light from blocks less effective than sunlight
 	private float powerOutput = 0;
@@ -78,6 +78,9 @@ public class PhotovoltaicGeneratorTileEntity extends ElectricGeneratorTileEntity
 		float power;
 		if(hasRedstoneSignal() == false){
 			float solar = getLightIntensityAt(getPos(),getWorld());
+			if(getWorld().isRaining()){
+				solar *= 0.25f;
+			}
 			power = Math.max(0,MAX_SOLAR_OUTPUT * solar);
 			this.addEnergy(power, Power.ELECTRIC_POWER);
 		} else {

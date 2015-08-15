@@ -62,7 +62,7 @@ public abstract class Recipes {
 			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Items.integrated_circuit,3),"prp","sss","ccc",'p',"plastic",'s',"ingotSilicon",'r',"dustRedstone",'c',"nuggetGold"));
 		} else if(recipeMode == RecipeMode.APOCALYPTIC){
 			CrusherRecipeRegistry.addNewCrusherRecipe(Blocks.steam_powered_generator, new ItemStack(Items.power_supply_unit,1));
-			CrusherRecipeRegistry.addNewCrusherRecipe(Blocks.electric_furnace, new ItemStack(Items.power_supply_unit,1));
+			CrusherRecipeRegistry.addNewCrusherRecipe(Blocks.arc_furnace, new ItemStack(Items.power_supply_unit,1));
 			CrusherRecipeRegistry.addNewCrusherRecipe(Blocks.photovoltaic_generator, new ItemStack(Items.power_supply_unit,1));
 			CrusherRecipeRegistry.addNewCrusherRecipe(Items.power_supply_unit, new ItemStack(Items.control_circuit,1));
 			CrusherRecipeRegistry.addNewCrusherRecipe(Items.control_circuit, new ItemStack(Items.integrated_circuit,1));
@@ -81,7 +81,8 @@ public abstract class Recipes {
 
 		// Machine recipes
 		GameRegistry.addRecipe(electricMachineRecipe(Blocks.steam_powered_generator, "conduitSteam","governor"));
-		GameRegistry.addRecipe(new ShapedOreRecipe(Blocks.electric_furnace, "bbb","bub","bbb",'b',"blockBrick",'u',"PSU"));
+		GameRegistry.addRecipe(new ShapedOreRecipe(Blocks.arc_furnace, "bbb","bub","bbb",'b',"blockBrick",'u',"PSU"));
+		GameRegistry.addRecipe(electricMachineRecipe(Blocks.battery_array, "chest"));
 		
 		
 		initDone = true;

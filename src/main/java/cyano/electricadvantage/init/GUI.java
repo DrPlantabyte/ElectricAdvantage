@@ -15,8 +15,9 @@ public abstract class GUI {
 
 		Blocks.steam_powered_generator.setGuiID(MachineGUIRegistry.addGUI(new PowerGeneratorGUI()), PowerAdvantage.getInstance());
 		Blocks.photovoltaic_generator.setGuiID(MachineGUIRegistry.addGUI(new PowerGeneratorGUI()), PowerAdvantage.getInstance());
-		
-		Blocks.electric_furnace.setGuiID(MachineGUIRegistry.addGUI(new ArcFurnaceGUI()), PowerAdvantage.getInstance());
+
+		Blocks.arc_furnace.setGuiID(MachineGUIRegistry.addGUI(new ArcFurnaceGUI()), PowerAdvantage.getInstance());
+		Blocks.battery_array.setGuiID(MachineGUIRegistry.addGUI(new BatteryArrayGUI()), PowerAdvantage.getInstance());
 		
 		initDone = true;
 	}

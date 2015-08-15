@@ -51,7 +51,7 @@ public abstract class Recipes {
 		
 		// non-apocalyctic recipes (high-tech machines cannot be crafted in post-apocalyspe mode)
 		if(recipeMode != RecipeMode.APOCALYPTIC){
-			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Blocks.photovoltaic_generator,1),"ggg","sss","uww",'g',"paneGlass",'s',"ingotSilicon",'w',"wire",'u',"PSU"));
+			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Blocks.photovoltaic_generator,1),"ggg","sss","wuw",'g',"paneGlass",'s',"ingotSilicon",'w',"wire",'u',"PSU"));
 		}
 		
 		
@@ -83,6 +83,7 @@ public abstract class Recipes {
 		GameRegistry.addRecipe(electricMachineRecipe(Blocks.steam_powered_generator, "conduitSteam","governor"));
 		GameRegistry.addRecipe(new ShapedOreRecipe(Blocks.arc_furnace, "bbb","bub","bbb",'b',"blockBrick",'u',"PSU"));
 		GameRegistry.addRecipe(electricMachineRecipe(Blocks.battery_array, "chest"));
+		GameRegistry.addRecipe(electricMachineRecipe(Blocks.rock_crusher, net.minecraft.init.Blocks.piston, "sprocket"));
 		
 		
 		initDone = true;

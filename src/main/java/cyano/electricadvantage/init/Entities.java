@@ -19,6 +19,8 @@ public abstract class Entities {
 		Blocks.init();
 
 		registerTileEntity(ElectricFurnaceTileEntity.class);
+		registerTileEntity(ElectricCrusherTileEntity.class);
+		
 		registerTileEntity(PhotovoltaicGeneratorTileEntity.class);
 		registerTileEntity(SteamPoweredElectricGeneratorTileEntity.class);
 		registerTileEntity(ElectricBatteryArrayTileEntity.class);

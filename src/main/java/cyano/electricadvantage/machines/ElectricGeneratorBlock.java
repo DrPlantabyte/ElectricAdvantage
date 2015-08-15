@@ -7,6 +7,8 @@ import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
@@ -81,6 +83,19 @@ public abstract class ElectricGeneratorBlock extends cyano.poweradvantage.api.si
 	@Override
 	public boolean hasComparatorInputOverride() {
 		return true;
+	}
+
+
+	@Override
+	public void breakBlock(World world, BlockPos pos, IBlockState state){
+		TileEntity te = world.getTileEntity(pos);
+		if (te instanceof IInventory)
+		{
+			InventoryHelper.dropInventoryItems(world, pos, (IInventory)te);
+			((IInventory)te).clear();
+			world.updateComparatorOutputLevel(pos, this);
+		}
+		super.breakBlock(world, pos, state);
 	}
 
 }

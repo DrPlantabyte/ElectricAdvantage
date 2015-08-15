@@ -78,9 +78,6 @@ public class PhotovoltaicGeneratorTileEntity extends ElectricGeneratorTileEntity
 		float power;
 		if(hasRedstoneSignal() == false){
 			float solar = getLightIntensityAt(getPos(),getWorld());
-			if(getWorld().isRaining()){
-				solar *= 0.25f;
-			}
 			power = Math.max(0,MAX_SOLAR_OUTPUT * solar);
 			this.addEnergy(power, Power.ELECTRIC_POWER);
 		} else {
@@ -100,6 +97,12 @@ public class PhotovoltaicGeneratorTileEntity extends ElectricGeneratorTileEntity
 		if(w.canSeeSky(pos) && (w.provider.getHasNoSky() == false)){
 			// outdoor light imposes no penalty
 			light = MathHelper.sin((float)w.getWorldTime() * 2.61799E-4f); // (worldTime * pi / 12000);
+			// handle weather
+			if(w.isThundering()){
+				light *= 0.2f;
+			} else if(w.isRaining()){
+				light *= 0.35f;
+			}
 		} else {
 			float blockLight = w.getLightFromNeighbors(pos) * 6.66666E-2f; // block light / 15
 			light = BLOCKLIGHT_FACTOR * blockLight;

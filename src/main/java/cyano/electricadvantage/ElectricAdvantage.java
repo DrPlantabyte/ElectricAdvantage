@@ -37,6 +37,7 @@ public class ElectricAdvantage
 	/** The version of this mod, in the format major.minor.update */
 	public static final String VERSION = "0.0.4";
 
+	public static ElectricAdvantage INSTANCE = null;
 
 	/**
 	 * Pre-initialization step. Used for initializing objects and reading the 
@@ -46,6 +47,7 @@ public class ElectricAdvantage
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event)
 	{
+		INSTANCE = this;
 		Configuration config = new Configuration(event.getSuggestedConfigurationFile());
 		config.load();
 

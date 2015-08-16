@@ -9,7 +9,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 
-public class LaserTurretEntity extends net.minecraft.entity.EntityLivingBase{
+public class LaserTurretEntity extends net.minecraft.entity.EntityLiving{
 // LASER attacks based on the guardian
 	
 
@@ -35,36 +35,6 @@ public class LaserTurretEntity extends net.minecraft.entity.EntityLivingBase{
 	{
 		this.attackTarget = target;
 		net.minecraftforge.common.ForgeHooks.onLivingSetAttackTarget(this, target);
-	}
-
-	@Override
-	public ItemStack getHeldItem() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public ItemStack getEquipmentInSlot(int slotIn) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public ItemStack getCurrentArmor(int slotIn) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void setCurrentItemOrArmor(int slotIn, ItemStack stack) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public ItemStack[] getInventory() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 

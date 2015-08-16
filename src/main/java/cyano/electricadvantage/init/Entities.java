@@ -1,14 +1,20 @@
 package cyano.electricadvantage.init;
 
-import net.minecraftforge.fml.client.registry.ClientRegistry;
+import cyano.electricadvantage.ElectricAdvantage;
+import cyano.electricadvantage.entities.LaserTurretEntity;
+import cyano.electricadvantage.graphics.LaserTurretRenderer;
+import cyano.electricadvantage.machines.ElectricBatteryArrayTileEntity;
+import cyano.electricadvantage.machines.ElectricCrusherTileEntity;
+import cyano.electricadvantage.machines.ElectricFurnaceTileEntity;
+import cyano.electricadvantage.machines.PhotovoltaicGeneratorTileEntity;
+import cyano.electricadvantage.machines.SteamPoweredElectricGeneratorTileEntity;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraftforge.fml.client.registry.RenderingRegistry;
+import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import java.util.Locale;
-
-import cyano.electricadvantage.ElectricAdvantage;
-import cyano.electricadvantage.machines.*;
 
 public abstract class Entities {
 
@@ -25,16 +31,31 @@ public abstract class Entities {
 		registerTileEntity(SteamPoweredElectricGeneratorTileEntity.class);
 		registerTileEntity(ElectricBatteryArrayTileEntity.class);
 		
+		registerEntity(LaserTurretEntity.class);
 		
 		initDone = true;
 	}
 	
+	
+
 	private static void registerTileEntity(Class tileEntityClass){
 		String name = tileEntityClass.getSimpleName();
 		if(name.endsWith("TileEntity")){
 			name = name.substring(0, name.lastIndexOf("TileEntity"));
 		}
 		GameRegistry.registerTileEntity(tileEntityClass,ElectricAdvantage.MODID+"."+toUnderscoreStyle(name));
+	}
+
+	private static int entityIndex = 0;
+	private static void registerEntity(Class entityClass) {
+		String name=ElectricAdvantage.MODID+"."+entityClass.getSimpleName();
+		if(name.endsWith("Entity")){
+			name = name.substring(0, name.lastIndexOf("Entity"));
+		} else if(name.startsWith("Entity")){
+			name = name.substring("Entity".length(),name.length());
+		}
+		EntityRegistry.registerGlobalEntityID(entityClass,name,EntityRegistry.findGlobalUniqueEntityId());
+		EntityRegistry.registerModEntity(entityClass, name, entityIndex++, ElectricAdvantage.INSTANCE, 64, 1, true);
 	}
 	
 	private static String toUnderscoreStyle(String camelCase){
@@ -53,6 +74,9 @@ public abstract class Entities {
 	
 	@SideOnly(Side.CLIENT)
 	public static void registerRenderers(){
+		RenderManager rm = Minecraft.getMinecraft().getRenderManager();
+		
+		RenderingRegistry.registerEntityRenderingHandler(LaserTurretEntity.class,new LaserTurretRenderer(rm));
 		//ClientRegistry.bindTileEntitySpecialRenderer(MyTileEntity.class, new cyano.electricadvantage.graphics.MyRenderer());
 	}
 }

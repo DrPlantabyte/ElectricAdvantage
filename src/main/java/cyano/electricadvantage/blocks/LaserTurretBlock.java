@@ -73,13 +73,15 @@ public class LaserTurretBlock extends Block implements ITileEntityProvider {
 	@Override
 	public void addCollisionBoxesToList(final World w, final BlockPos coord, final IBlockState bs, 
 			final AxisAlignedBB bb, final List list, final Entity e) {
-		this.setBlockBounds(0.125f, 0.0f, 0.125f, 0.875f, 1.0f, 0.875f);
+		this.setBlockBoundsBasedOnState(w,coord);
+		super.addCollisionBoxesToList(w, coord, bs, bb, list, e);
+		this.setBlockBounds(0.25f, 0.25f, 0.25f, 0.75f, 1.0f, 0.75f);
 		super.addCollisionBoxesToList(w, coord, bs, bb, list, e);
 	}
 
 	@Override
 	public void setBlockBoundsBasedOnState(final IBlockAccess bs, final BlockPos coord) {
-		this.setBlockBounds(0.25f, 0.25f, 0.25f, 0.75f, 0.75f, 0.75f);
+		this.setBlockBounds(0.125f, 0.0f, 0.125f, 0.875f, 0.25f, 0.875f);
 	}
 
 

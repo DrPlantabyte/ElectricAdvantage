@@ -21,6 +21,7 @@ tile.electricadvantage.electric_conduit.name=Electric Power Cable
 tile.electricadvantage.electric_battery_array.name=Battery Array
 tile.electricadvantage.electric_crusher.name=Electric Rock Crusher
 tile.electricadvantage.electric_defense_turret.name=Laser Defense Turret
+tile.electricadvantage.laser_turret.name=LASER
 tile.electricadvantage.electric_drill.name=Electric Mining Drill
 tile.electricadvantage.electric_fabricator.name=Automated Assembler
 tile.electricadvantage.electric_furnace.name=Electric Arc Furnace

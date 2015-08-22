@@ -64,14 +64,21 @@ public class LaserTurretRenderer extends TileEntitySpecialRenderer{
 			endV0 = 0.5f;
 			endV1 = 1.0f;
 		}
+
+		final float laserU0 = 0;
+		final float laserU1 = 0.5f;
+		final float laserV0 = 0.5f;
+		final float laserV1 = 1.0f;
+
 		final float radius = 0.25f;
+		final float laserRadius = 0.125f;
 		
 
 		float tickRemainder = 1 - partialTick;
 		float yaw = -1*(tickRemainder * e.rotOldYaw + partialTick * e.rotYaw) - 90;
 		float pitch = tickRemainder * e.rotOldPitch + partialTick * e.rotPitch;
 
-		GlStateManager.translate(0.5f, 1.0f, 0.5f);
+		GlStateManager.translate(0.5f, 0.75f, 0.5f);
 		GlStateManager.rotate(yaw, 0.0f, 1.0f, 0.0f);
 		GlStateManager.rotate(pitch, 1.0f, 0.0f, 0.0f);
 
@@ -106,6 +113,44 @@ public class LaserTurretRenderer extends TileEntitySpecialRenderer{
 		worldRenderer.addVertexWithUV(-radius,-radius, -radius, sideU0, sideV1);
 		worldRenderer.addVertexWithUV( radius,-radius, -radius, sideU1, sideV1);
 		worldRenderer.addVertexWithUV( radius,-radius,  radius, sideU1, sideV0);
+		
+		if(e.showLaserLine() && e.laserBlastLength > 0){
+			final double x1, y1, z1, x2, y2, z2,  x3, y3, z3, x4, y4, z4;
+			x1 = 0;
+			y1 = -laserRadius;
+			z1 = 0;
+			x2 = 0;
+			y2 = laserRadius;
+			z2 = -e.laserBlastLength;
+			
+			x3 = -laserRadius;
+			y3 = 0;
+			z3 = z1;
+			x4 = laserRadius;
+			y4 = 0;
+			z4 = z2;
+
+			worldRenderer.addVertexWithUV( x1, y1, z1, laserU0, laserV1);
+			worldRenderer.addVertexWithUV( x2, y1, z2, laserU1, laserV1);
+			worldRenderer.addVertexWithUV( x2, y2, z2, laserU1, laserV0);
+			worldRenderer.addVertexWithUV( x1, y2, z1, laserU0, laserV0);
+			
+			worldRenderer.addVertexWithUV( x1, y2, z1, laserU0, laserV1);
+			worldRenderer.addVertexWithUV( x2, y2, z2, laserU1, laserV1);
+			worldRenderer.addVertexWithUV( x2, y1, z2, laserU1, laserV0);
+			worldRenderer.addVertexWithUV( x1, y1, z1, laserU0, laserV0);
+
+
+			worldRenderer.addVertexWithUV( x3, y3, z3, laserU0, laserV1);
+			worldRenderer.addVertexWithUV( x3, y4, z4, laserU1, laserV1);
+			worldRenderer.addVertexWithUV( x4, y4, z4, laserU1, laserV0);
+			worldRenderer.addVertexWithUV( x4, y3, z3, laserU0, laserV0);
+			
+			worldRenderer.addVertexWithUV( x4, y3, z3, laserU0, laserV1);
+			worldRenderer.addVertexWithUV( x4, y4, z4, laserU1, laserV1);
+			worldRenderer.addVertexWithUV( x3, y4, z4, laserU1, laserV0);
+			worldRenderer.addVertexWithUV( x3, y3, z3, laserU0, laserV0);
+		}
 		
 		instance.draw();
 	}

@@ -55,9 +55,17 @@ public class LaserTurretRenderer extends TileEntitySpecialRenderer{
 		final float sideV1 = 0.5f;
 		final float endU0 = 0.5f;
 		final float endU1 = 1;
-		final float endV0 = 0;
-		final float endV1 = 0.5f;
+		final float endV0;
+		final float endV1;
+		if(e.powered){
+			endV0 = 0;
+			endV1 = 0.5f;
+		}else{
+			endV0 = 0.5f;
+			endV1 = 1.0f;
+		}
 		final float radius = 0.25f;
+		
 
 		float tickRemainder = 1 - partialTick;
 		float yaw = -1*(tickRemainder * e.rotOldYaw + partialTick * e.rotYaw) - 90;

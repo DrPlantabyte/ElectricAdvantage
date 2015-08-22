@@ -34,6 +34,8 @@ public class LaserTurretTileEntity extends TileEntity implements IUpdatePlayerLi
 	public float rotOldPitch=0;
 	/** true when tracking a target, alse otherwise */
 	public boolean targetLocked = false;
+	/** if false, look droopy */
+	public boolean powered = false;
 	/** entityID of target (used by server) */
 	private int targetID = Integer.MIN_VALUE;
 	
@@ -49,25 +51,32 @@ public class LaserTurretTileEntity extends TileEntity implements IUpdatePlayerLi
 		if(getWorld().isRemote){
 			// client-side only
 			World w = getWorld();
-			if(targetLocked == false){
-				storeOld();
-				rotPitch = 0;
-				rotYaw += IDLE_ROTATION_PER_TICK;
-				if(rotYaw > 180 ){
-					rotYaw -= 360;
-					rotOldYaw -= 360;
+			if(powered){
+				if(targetLocked == false){
+					storeOld();
+					rotPitch = 0;
+					rotYaw += IDLE_ROTATION_PER_TICK;
+					if(rotYaw > 180 ){
+						rotYaw -= 360;
+						rotOldYaw -= 360;
+					}
+				} else {
+					storeOld();
+					if((rotTargetYaw - rotYaw) > 180){
+						rotYaw += 360;
+						rotOldYaw += 360;
+					} else if((rotTargetYaw - rotYaw) < -180){
+						rotYaw -= 360;
+						rotOldYaw -= 360;
+					}
+					rotYaw = clampDelta(rotYaw,rotTargetYaw,speed);
+					rotPitch = clampDelta(rotPitch,rotTargetPitch,speed);
 				}
 			} else {
 				storeOld();
-				if((rotTargetYaw - rotYaw) > 180){
-					rotYaw += 360;
-					rotOldYaw += 360;
-				} else if((rotTargetYaw - rotYaw) < -180){
-					rotYaw -= 360;
-					rotOldYaw -= 360;
+				if(rotPitch > -30){
+					rotPitch -= IDLE_ROTATION_PER_TICK;
 				}
-				rotYaw = clampDelta(rotYaw,rotTargetYaw,speed);
-				rotPitch = clampDelta(rotPitch,rotTargetPitch,speed);
 			}
 			
 			//TODO: remove testing code

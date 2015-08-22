@@ -37,3 +37,6 @@ tile.electricadvantage.sulfur_ore.name=Sulfur Ore
 
 tooltip.battery.charge=Charge
 tooltip.battery.capacity=Capacity
+
+death.attack.laser=%1$s vaporized
+death.attack.laser.player=%2$s vaporized %1$s 

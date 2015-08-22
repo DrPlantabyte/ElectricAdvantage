@@ -56,9 +56,11 @@ public abstract class ElectricGeneratorTileEntity extends cyano.poweradvantage.a
 			final World w = getWorld();
 			final BlockPos pos = this.getPos();
 			w.setBlockState(pos, old.withProperty(ElectricGeneratorBlock.ACTIVE, active),3);
-			w.removeTileEntity(pos);
-			save.validate();
-			w.setTileEntity(pos, save);
+			if(save != null){
+				w.removeTileEntity(pos);
+				save.validate();
+				w.setTileEntity(pos, save);
+			}
 		}
 	}
 

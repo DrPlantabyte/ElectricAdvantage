@@ -19,4 +19,5 @@ public abstract class Power {
 	// made from lead and sulfur
 	public static final float LEAD_ACID_BATTERY_CAPACITY = 1000f;
 	
+	public static final DamageSource laser_damage = new DamageSource("laser");
 }

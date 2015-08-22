@@ -64,9 +64,11 @@ public abstract class ElectricMachineTileEntity extends cyano.poweradvantage.api
 			final BlockPos pos = this.getPos();
 			IBlockState newState = oldState.withProperty(ElectricMachineBlock.ACTIVE, active);
 			w.setBlockState(pos, newState,3);
-			w.removeTileEntity(pos);
-			save.validate();
-			w.setTileEntity(pos, save);
+			if(save != null){
+				w.removeTileEntity(pos);
+				save.validate();
+				w.setTileEntity(pos, save);
+			}
 		}
 	}
 	

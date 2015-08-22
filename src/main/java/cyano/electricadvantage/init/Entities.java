@@ -1,15 +1,12 @@
 package cyano.electricadvantage.init;
 
 import cyano.electricadvantage.ElectricAdvantage;
-import cyano.electricadvantage.entities.LaserTurretEntity;
+import cyano.electricadvantage.entities.LaserTurretTileEntity;
 import cyano.electricadvantage.graphics.LaserTurretRenderer;
-import cyano.electricadvantage.machines.ElectricBatteryArrayTileEntity;
-import cyano.electricadvantage.machines.ElectricCrusherTileEntity;
-import cyano.electricadvantage.machines.ElectricFurnaceTileEntity;
-import cyano.electricadvantage.machines.PhotovoltaicGeneratorTileEntity;
-import cyano.electricadvantage.machines.SteamPoweredElectricGeneratorTileEntity;
+import cyano.electricadvantage.machines.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -31,7 +28,7 @@ public abstract class Entities {
 		registerTileEntity(SteamPoweredElectricGeneratorTileEntity.class);
 		registerTileEntity(ElectricBatteryArrayTileEntity.class);
 		
-		registerEntity(LaserTurretEntity.class);
+		registerTileEntity(LaserTurretTileEntity.class);
 		
 		initDone = true;
 	}
@@ -76,7 +73,7 @@ public abstract class Entities {
 	public static void registerRenderers(){
 		RenderManager rm = Minecraft.getMinecraft().getRenderManager();
 		
-		RenderingRegistry.registerEntityRenderingHandler(LaserTurretEntity.class,new LaserTurretRenderer(rm));
-		//ClientRegistry.bindTileEntitySpecialRenderer(MyTileEntity.class, new cyano.electricadvantage.graphics.MyRenderer());
+		//RenderingRegistry.registerEntityRenderingHandler(LaserTurretEntity.class,new LaserTurretRenderer(rm));
+		ClientRegistry.bindTileEntitySpecialRenderer(LaserTurretTileEntity.class, new cyano.electricadvantage.graphics.LaserTurretRenderer());
 	}
 }

@@ -5,7 +5,7 @@ public abstract class Data {
 	public static final String ORESPAWN_FILE_CONTENTS = "{\n"
 + "	\"dimensions\":[\n"
 + "		{\n"
-+ "			\"dimension\":\"0\",\n"
++ "			\"dimension\":\"+\",\n"
 + "			\"ores\":[\n"
 + "				{\n"
 + "					\"blockID\":\"electricadvantage:li_ore\",\n"

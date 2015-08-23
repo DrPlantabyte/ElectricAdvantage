@@ -48,6 +48,8 @@ public abstract class Recipes {
 		GameRegistry.addRecipe(batteryRecipe(Items.alkaline_battery,"ingotIron","gunpowder","ingotZinc"));
 		GameRegistry.addRecipe(batteryRecipe(Items.lithium_battery,"ingotLithium","dustRedstone","dustCarbon"));
 		
+		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(Blocks.electric_track,1),Blocks.electric_conduit, cyano.poweradvantage.init.Blocks.steel_frame));
+		
 		// non-apocalyctic recipes (high-tech machines cannot be crafted in post-apocalyspe mode)
 		if(recipeMode != RecipeMode.APOCALYPTIC){
 			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Blocks.photovoltaic_generator,1),"ggg","sss","wuw",'g',"paneGlass",'s',"ingotSilicon",'w',"wire",'u',"PSU"));

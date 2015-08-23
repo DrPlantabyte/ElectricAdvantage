@@ -18,6 +18,7 @@ item.electricadvantage.alkaline_battery.name=Alkaline Battery
 item.electricadvantage.lithium_battery.name=Lithium-Ion Battery
 
 tile.electricadvantage.electric_conduit.name=Electric Power Cable
+tile.electricadvantage.electric_track.name=Electric Scaffold
 tile.electricadvantage.electric_battery_array.name=Battery Array
 tile.electricadvantage.electric_crusher.name=Electric Rock Crusher
 tile.electricadvantage.laser_turret.name=Laser Defense Turret

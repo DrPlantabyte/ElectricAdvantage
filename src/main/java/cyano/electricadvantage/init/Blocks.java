@@ -5,6 +5,7 @@ import java.util.Map;
 
 import cyano.electricadvantage.ElectricAdvantage;
 import cyano.electricadvantage.blocks.ElectricConduitBlock;
+import cyano.electricadvantage.blocks.ElectricScaffoldBlock;
 import cyano.electricadvantage.blocks.Ore;
 import cyano.electricadvantage.machines.*;
 import cyano.poweradvantage.api.GUIBlock;
@@ -25,7 +26,7 @@ public abstract class Blocks {
 	public static Block lithium_ore;
 	public static Block sulfur_ore;
 
-	public static GUIBlock laser_turret;
+	public static Block electric_track;
 	
 	public static GUIBlock steam_powered_generator;
 	public static GUIBlock photovoltaic_generator;
@@ -33,6 +34,8 @@ public abstract class Blocks {
 	public static GUIBlock arc_furnace;
 	public static GUIBlock battery_array;
 	public static GUIBlock rock_crusher;
+	public static GUIBlock laser_turret;
+	
 	
 
 	
@@ -45,6 +48,7 @@ public abstract class Blocks {
 		lithium_ore = addBlock(new Ore(1),"li_ore","oreLithium");
 		sulfur_ore = addBlock(new Ore(new ItemStack(Items.sulfur_powder,1),0,3),"sulfur_ore","oreSulfur");
 		
+		electric_track = addBlock(new ElectricScaffoldBlock(),"electric_track");
 		laser_turret = (GUIBlock)addBlock(new LaserTurretBlock(),"laser_turret");
 
 		photovoltaic_generator = (GUIBlock)addBlock(new PhotovoltaicGeneratorBlock(),"photovoltaic_generator");

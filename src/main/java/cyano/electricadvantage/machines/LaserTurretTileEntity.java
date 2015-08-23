@@ -1,4 +1,4 @@
-package cyano.electricadvantage.entities;
+package cyano.electricadvantage.machines;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,6 +8,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
@@ -22,7 +23,7 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.FMLLog;
 
-public class LaserTurretTileEntity extends TileEntity implements IUpdatePlayerListBox{
+public class LaserTurretTileEntity extends ElectricMachineTileEntity implements IUpdatePlayerListBox{
 
 	private static final float RADIANS_TO_DEGREES = (float)(180 / Math.PI);
 	private static final float DEGREES_TO_RADIANS = (float)(Math.PI / 180);
@@ -31,17 +32,16 @@ public class LaserTurretTileEntity extends TileEntity implements IUpdatePlayerLi
 	private static final byte BLAST_TIME = 10;
 	private static final byte HIT_TIME = 7;
 	private final static int BURN_TIME = 3;
-	public static float ATTACK_DAMAGE = 5f;
+	public static float ATTACK_DAMAGE = 7f;
 	
-	public final static int COST_PER_SHOT = 100;
-	public final static int COST_PER_TICK = 1;
-	public final static int MAX_BUFFER = COST_PER_SHOT * 4;
-	// TODO: energy
-	private int energyBuffer = 0;
+	public final static float ENERGY_PER_SHOT = 1000;
+	public final static float ENERGY_PER_TICK = 1;
+	public final static float MAX_BUFFER = ENERGY_PER_SHOT * 2;
+	
 	// TODO: team recognition
 	
 
-	public static final int TARGET_RANGE = 8;
+	public static final int TARGET_RANGE = 16;
 	public static final int ATTACK_RANGE = 32;
 	/** target rotation around Y axis */
 	public float rotTargetYaw=0;
@@ -57,8 +57,6 @@ public class LaserTurretTileEntity extends TileEntity implements IUpdatePlayerLi
 	public float rotOldPitch=0;
 	/** true when tracking a target, alse otherwise */
 	public boolean targetLocked = false;
-	/** if false, look droopy */
-	public boolean powered = true;
 	/** entityID of target */
 	private int targetID = Integer.MIN_VALUE;
 	/** laser attack charge-up */
@@ -72,18 +70,28 @@ public class LaserTurretTileEntity extends TileEntity implements IUpdatePlayerLi
 	public final float speed = 9f;
 	
 	public LaserTurretTileEntity(){
-		super();
+		super(LaserTurretTileEntity.class.getSimpleName(),MAX_BUFFER,0,0,0);
 	}
 
 	@Override
-	public void update() {
+	public boolean isActive(){
+		return  (this.getEnergy() > ENERGY_PER_SHOT) && (!this.hasRedstoneSignal());
+	}
+	@Override
+	protected void setActive(boolean active){
+		// do nothing
+	}
+	
+	@Override
+	public void tickUpdate(boolean b) {
 		World w = getWorld();
 		if(laserAttack > 0){
 			laserAttack--;
 		}
+		boolean isActive = isActive();
 		if(w.isRemote){
 			// client-side only
-			if(powered){
+			if(isActive){
 				if(targetLocked == false){
 					storeOld();
 					rotPitch = 0;
@@ -121,47 +129,68 @@ public class LaserTurretTileEntity extends TileEntity implements IUpdatePlayerLi
 			}
 			
 		} else {
-
-			//TODO: remove testing code
-			if(targetLocked == false){
-				double x = this.getOpticPosition().xCoord;
-				double y = this.getOpticPosition().yCoord;
-				double z = this.getOpticPosition().zCoord;
-				List<Entity> entities = w.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(x-TARGET_RANGE, y-TARGET_RANGE, z-TARGET_RANGE, x+TARGET_RANGE, y+TARGET_RANGE, z+TARGET_RANGE));
-				final double maxRangeSquared = TARGET_RANGE * TARGET_RANGE;
-				for(Entity e : entities){
-					if(e.getPositionVector().squareDistanceTo(getOpticPosition()) > maxRangeSquared) continue;
-					if(e.isCreatureType(EnumCreatureType.MONSTER, false)){
-						if(canSeeEntity(e)){
-							setTarget(e);
+			// Server side only
+			if(isActive){
+				if(targetLocked == false){
+					double x = this.getOpticPosition().xCoord;
+					double y = this.getOpticPosition().yCoord;
+					double z = this.getOpticPosition().zCoord;
+					List<Entity> entities = w.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(x-TARGET_RANGE, y-TARGET_RANGE, z-TARGET_RANGE, x+TARGET_RANGE, y+TARGET_RANGE, z+TARGET_RANGE));
+					final double maxRangeSquared = TARGET_RANGE * TARGET_RANGE;
+					for(Entity e : entities){
+						if(e.getPositionVector().squareDistanceTo(getOpticPosition()) > maxRangeSquared) continue;
+						if(e.isCreatureType(EnumCreatureType.MONSTER, false)){
+							if(canSeeEntity(e)){
+								setTarget(e);
+							}
 						}
 					}
-				}
-			} 
-				// end of testing code
+				} 
 
-			validateTarget();
-			if(targetLocked ){
-				if(laserAttack == HIT_TIME){
-					// dish out the laser damage
-					w.playSoundEffect(getOpticPosition().xCoord, getOpticPosition().yCoord, getOpticPosition().zCoord,
-							"random.explode",1F,1.7F);
-					List<Entity> victims = getLaserAttackVictims();
-					Entity e = w.getEntityByID(targetID);
-					EntityPlayer p = w.getClosestPlayer(getOpticPosition().xCoord, getOpticPosition().yCoord, getOpticPosition().zCoord, TARGET_RANGE);
-					for(Entity v : victims){
-						hurtVictim(v,p);
+				validateTarget();
+				if(targetLocked ){
+					if(laserAttack == HIT_TIME){
+						// dish out the laser damage
+						w.playSoundEffect(getOpticPosition().xCoord, getOpticPosition().yCoord, getOpticPosition().zCoord,
+								"note.bass",3F,1.1F);
+						List<Entity> victims = getLaserAttackVictims();
+						Entity e = w.getEntityByID(targetID);
+						EntityPlayer p = w.getClosestPlayer(getOpticPosition().xCoord, getOpticPosition().yCoord, getOpticPosition().zCoord, TARGET_RANGE);
+						for(Entity v : victims){
+							hurtVictim(v,p);
+						}
+						this.subtractEnergy(ENERGY_PER_SHOT, getType());
+						if(e.isDead){
+							setTarget(null);
+						}
+						this.sync();
+					} else if(laserAttack == 1){
+						laserAttack = LASER_CHARGEUP_TIME;
+						this.sync();
 					}
-				} else if(laserAttack == 1){
-					laserAttack = LASER_CHARGEUP_TIME;
-					this.sync();
+				}
+				this.subtractEnergy(ENERGY_PER_TICK, getType());
+			} else {
+				if(targetLocked){
+					setTarget(null);
 				}
 			}
+
+		}
+	}
+	
+	private float oldEnergy = 0;
+	@Override
+	public void powerUpdate(){
+		super.powerUpdate();
+		if(oldEnergy != getEnergy()){
+			oldEnergy = getEnergy();
+			sync();
 		}
 	}
 	
 	public boolean showLaserLine(){
-		return laserAttack > 0 && laserAttack <= BLAST_TIME;
+		return targetLocked && laserAttack > 0 && laserAttack <= BLAST_TIME;
 	}
 	
 	
@@ -389,45 +418,10 @@ public class LaserTurretTileEntity extends TileEntity implements IUpdatePlayerLi
 		rotOldYaw = rotYaw;
 		rotOldPitch = rotPitch;
 	}
-	/**
-	 * Tells Minecraft to synchronize this tile entity
-	 */
-	private final void sync(){
-		this.getWorld().markBlockForUpdate(getPos());
-		this.markDirty();
-	}
 	
 	
-	@Override
-	public void writeToNBT(NBTTagCompound root){
-		super.writeToNBT(root);
-		root.setFloat("pitch", rotPitch);
-		root.setFloat("yaw", rotYaw);
-		root.setBoolean("lock", targetLocked);
-		root.setBoolean("power",powered);
-	}
 	
-
-	@Override
-	public void readFromNBT(NBTTagCompound root){
-		super.readFromNBT(root);
-		if(root.hasKey("pitch")){
-			this.rotPitch = root.getFloat("pitch");
-			this.rotOldPitch = rotPitch;
-			this.rotTargetPitch = rotPitch;
-		}
-		if(root.hasKey("yaw")){
-			this.rotYaw = root.getFloat("yaw");
-			this.rotOldYaw = rotYaw;
-			this.rotTargetYaw = rotYaw;
-		}
-		if(root.hasKey("lock")){
-			targetLocked = root.getBoolean("lock");
-		}
-		if(root.hasKey("power")){
-			powered = root.getBoolean("power");
-		}
-	}
+	
 
 	/**
 	 * Turns the data field NBT into a network packet
@@ -435,7 +429,7 @@ public class LaserTurretTileEntity extends TileEntity implements IUpdatePlayerLi
 	@Override 
 	public Packet getDescriptionPacket(){
 		NBTTagCompound nbtTag = new NBTTagCompound();
-		nbtTag.setBoolean("power", powered);
+		nbtTag.setFloat("energy", getEnergy());
 		nbtTag.setBoolean("lock", targetLocked);
 		if(targetLocked){
 			if(targetID != Integer.MIN_VALUE && getWorld().getEntityByID(targetID) != null){
@@ -472,9 +466,61 @@ public class LaserTurretTileEntity extends TileEntity implements IUpdatePlayerLi
 				this.laserAttack = target.getByte("attack");
 			}
 		}
-		if(tag.hasKey("power")){
-			this.powered = tag.getBoolean("power");
+		if(tag.hasKey("energy")){
+			this.setEnergy(tag.getFloat("energy"),getType());
 		}
 	}
+
+	@Override
+	public float[] getProgress() {
+		// not used
+		return new float[0];
+	}
+
+	@Override
+	protected void saveTo(NBTTagCompound root) {
+		root.setFloat("pitch", rotPitch);
+		root.setFloat("yaw", rotYaw);
+		root.setBoolean("lock", targetLocked);
+	}
+
+	@Override
+	protected void loadFrom(NBTTagCompound root) {
+		if(root.hasKey("pitch")){
+			this.rotPitch = root.getFloat("pitch");
+			this.rotOldPitch = rotPitch;
+			this.rotTargetPitch = rotPitch;
+		}
+		if(root.hasKey("yaw")){
+			this.rotYaw = root.getFloat("yaw");
+			this.rotOldYaw = rotYaw;
+			this.rotTargetYaw = rotYaw;
+		}
+		if(root.hasKey("lock")){
+			targetLocked = root.getBoolean("lock");
+		}
+	}
+
+	@Override
+	protected boolean isValidInputItem(ItemStack item) {
+		return false;
+	}
+
+	@Override
+	public int[] getDataFieldArray() {
+		// not used
+		return new int[0];
+	}
+
+	@Override
+	public void onDataFieldUpdate() {
+		// not used
+	}
+
+	@Override
+	public void prepareDataFieldsForSync() {
+		// not used
+	}
+
 
 }

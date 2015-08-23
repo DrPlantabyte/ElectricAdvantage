@@ -1,12 +1,12 @@
-package cyano.electricadvantage.blocks;
+package cyano.electricadvantage.machines;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-import cyano.electricadvantage.entities.LaserTurretTileEntity;
 import cyano.electricadvantage.init.Power;
-import net.minecraft.block.Block;
+import cyano.poweradvantage.api.ConduitBlock;
+import cyano.poweradvantage.api.ConduitType;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -21,12 +21,12 @@ import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public class LaserTurretBlock extends Block implements ITileEntityProvider {
+public class LaserTurretBlock extends ConduitBlock implements ITileEntityProvider {
 
 	
 	public LaserTurretBlock() {
 		super(Material.iron);
-		this.setHardness(5.0F).setResistance(2000.0F);
+		this.setHardness(5.0F).setResistance(100.0F);
 	}
 
 	@Override
@@ -34,19 +34,6 @@ public class LaserTurretBlock extends Block implements ITileEntityProvider {
 		return new LaserTurretTileEntity();
 	}
 
-	@Override
-	public Item getItemDropped(IBlockState bs, Random rand, int fortune){
-		return null;
-	}
-	
-	@Override 
-	public int quantityDropped(IBlockState state, int fortune, Random random){
-		return 0;
-	}
-	
-	@Override public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, IBlockState state, int fortune){
-		return Collections.EMPTY_LIST;
-	}
 	
 	/**
 	 * 3 = normal block (model specified in assets folder as .json model)<br>
@@ -81,28 +68,46 @@ public class LaserTurretBlock extends Block implements ITileEntityProvider {
 
 	@Override
 	public void setBlockBoundsBasedOnState(final IBlockAccess bs, final BlockPos coord) {
-		this.setBlockBounds(0.125f, 0.0f, 0.125f, 0.875f, 0.25f, 0.875f);
+		this.setBlockBounds(0.0f, 0.0f, 0.0f, 1.0f, 0.25f, 1.0f);
 	}
 
 
-	@Override
-	public void onEntityCollidedWithBlock(final World world, final BlockPos coord, final IBlockState bs, 
-			final Entity victim) {
-		victim.attackEntityFrom(Power.laser_damage, 2.0f);
-	}
 	
 	@Override
 	public void onBlockDestroyedByPlayer(World w, BlockPos coord, IBlockState state){
 		super.onBlockDestroyedByPlayer(w, coord, state);
 		w.removeTileEntity(coord);
-		w.destroyBlock(coord.down(), true);
 	}
 
 	@Override
 	public void onBlockDestroyedByExplosion(World w, BlockPos coord, Explosion boom){
 		super.onBlockDestroyedByExplosion(w, coord, boom);
 		w.removeTileEntity(coord);
-		w.destroyBlock(coord.down(), true);
+	}
+
+	@Override
+	public boolean canAcceptType(ConduitType t) {
+		return ConduitType.areSameType(t, Power.ELECTRIC_POWER);
+	}
+
+	@Override
+	public boolean canAcceptType(ConduitType t, EnumFacing face) {
+		return face != EnumFacing.UP && ConduitType.areSameType(t, Power.ELECTRIC_POWER);
+	}
+
+	@Override
+	public ConduitType getType() {
+		return Power.ELECTRIC_POWER;
+	}
+
+	@Override
+	public boolean isPowerSink() {
+		return true;
+	}
+
+	@Override
+	public boolean isPowerSource() {
+		return false;
 	}
 
 	

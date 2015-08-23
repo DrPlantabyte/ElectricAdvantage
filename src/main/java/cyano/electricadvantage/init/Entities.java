@@ -1,7 +1,6 @@
 package cyano.electricadvantage.init;
 
 import cyano.electricadvantage.ElectricAdvantage;
-import cyano.electricadvantage.entities.LaserTurretTileEntity;
 import cyano.electricadvantage.graphics.LaserTurretRenderer;
 import cyano.electricadvantage.machines.*;
 import net.minecraft.client.Minecraft;

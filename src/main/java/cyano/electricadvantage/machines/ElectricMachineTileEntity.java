@@ -21,8 +21,8 @@ public abstract class ElectricMachineTileEntity extends cyano.poweradvantage.api
 	private final int[] otherSlots;
 	
 	
-	public ElectricMachineTileEntity(String name,int numInputSlots, int numOutputSlots, int numOtherSlots) {
-		super(Power.ELECTRIC_POWER, 500f, name);
+	public ElectricMachineTileEntity(String name, float bufferSize,int numInputSlots, int numOutputSlots, int numOtherSlots) {
+		super(Power.ELECTRIC_POWER, bufferSize, name);
 		inventory = new ItemStack[numInputSlots+numOutputSlots+numOtherSlots];
 		inputSlots = new int[numInputSlots];
 		outputSlots = new int[numOutputSlots];
@@ -34,6 +34,9 @@ public abstract class ElectricMachineTileEntity extends cyano.poweradvantage.api
 			if(i < ioSlots.length)ioSlots[i] = i;
 			if(i < otherSlots.length)otherSlots[i] = inputSlots.length + outputSlots.length + i;
 		}
+	}
+	public ElectricMachineTileEntity(String name,int numInputSlots, int numOutputSlots, int numOtherSlots) {
+		this(name,500f,numInputSlots,numOutputSlots,numOtherSlots);
 	}
 	
 	private boolean redstone = false;

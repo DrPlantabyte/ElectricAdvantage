@@ -1,7 +1,7 @@
 package cyano.electricadvantage.graphics;
 
 import cyano.electricadvantage.ElectricAdvantage;
-import cyano.electricadvantage.entities.LaserTurretTileEntity;
+import cyano.electricadvantage.machines.LaserTurretTileEntity;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
@@ -57,7 +57,7 @@ public class LaserTurretRenderer extends TileEntitySpecialRenderer{
 		final float endU1 = 1;
 		final float endV0;
 		final float endV1;
-		if(e.powered){
+		if(e.isActive()){
 			endV0 = 0;
 			endV1 = 0.5f;
 		}else{

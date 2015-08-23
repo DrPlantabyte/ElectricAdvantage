@@ -5,7 +5,6 @@ import java.util.Map;
 
 import cyano.electricadvantage.ElectricAdvantage;
 import cyano.electricadvantage.blocks.ElectricConduitBlock;
-import cyano.electricadvantage.blocks.LaserTurretBlock;
 import cyano.electricadvantage.blocks.Ore;
 import cyano.electricadvantage.machines.*;
 import cyano.poweradvantage.api.GUIBlock;

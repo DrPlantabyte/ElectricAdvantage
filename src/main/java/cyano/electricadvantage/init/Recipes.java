@@ -35,7 +35,6 @@ public abstract class Recipes {
 		
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Blocks.electric_conduit,6),"xxx","ccc","xxx",'x',"plastic",'c',"ingotCopper"));
 		if(OreDictionary.getOres("rubber") != null && OreDictionary.getOres("rubber").isEmpty() == false)GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Blocks.electric_conduit,6),"xxx","ccc","xxx",'x',"rubber",'c',"ingotCopper"));
-		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Items.power_supply_unit,1),"wcw"," s ",'w',"wire",'c',"circuitBoard",'s',"plateSteel"));
 		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(Items.blank_circuit_board,2),"plastic","plateCopper"));
 		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(Items.control_circuit,1),Items.blank_circuit_board,"microchip","solder"));
 		GameRegistry.addSmelting(Items.silicon_blend, new ItemStack(Items.silicon_ingot), 0.5f);
@@ -60,13 +59,14 @@ public abstract class Recipes {
 			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Items.integrated_circuit,3),"prp","sss","ccc",'p',"plastic",'s',"ingotSilicon",'r',"dustRedstone",'c',"nuggetCopper"));
 			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Items.integrated_circuit,3),"prp","sss","ccc",'p',"plastic",'s',"ingotSilicon",'r',"dustRedstone",'c',"nuggetTin"));
 			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Items.integrated_circuit,3),"prp","sss","ccc",'p',"plastic",'s',"ingotSilicon",'r',"dustRedstone",'c',"nuggetGold"));
+			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Items.power_supply_unit,1),"wcw"," s ",'w',"wire",'c',"circuitBoard",'s',"plateSteel"));
 		} else if(recipeMode == RecipeMode.APOCALYPTIC){
 			CrusherRecipeRegistry.addNewCrusherRecipe(Blocks.steam_powered_generator, new ItemStack(Items.power_supply_unit,1));
 			CrusherRecipeRegistry.addNewCrusherRecipe(Blocks.arc_furnace, new ItemStack(Items.power_supply_unit,1));
 			CrusherRecipeRegistry.addNewCrusherRecipe(Blocks.photovoltaic_generator, new ItemStack(Items.power_supply_unit,1));
 			CrusherRecipeRegistry.addNewCrusherRecipe(Items.power_supply_unit, new ItemStack(Items.control_circuit,1));
 			CrusherRecipeRegistry.addNewCrusherRecipe(Items.control_circuit, new ItemStack(Items.integrated_circuit,1));
-			
+			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Items.power_supply_unit,1),"wcw"," s ",'w',"wire",'c',"circuitBoard",'s',"plateSteel"));
 		} else {
 			// normal
 			OreDictionary.registerOre("solder", cyano.basemetals.init.Items.lead_ingot);
@@ -76,7 +76,8 @@ public abstract class Recipes {
 			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Items.integrated_circuit,3),"sss","ccc",'s',"ingotSilicon",'c',"nuggetTin"));
 			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Items.integrated_circuit,3),"sss","ccc",'s',"ingotSilicon",'c',"nuggetGold"));
 			GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(Items.blank_circuit_board,2),"plastic","ingotCopper"));
-			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Items.power_supply_unit,1),"iii","wrw","iii",'w',"wire",'r',"blockRedstone",'i',"ingotIron"));
+			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Items.power_supply_unit,1),"wcw"," s ",'w',"wire",'c',"circuitBoard",'s',"ingotSteel"));
+			GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Items.power_supply_unit,1),"wcw"," s ",'w',"wire",'c',"circuitBoard",'s',"ingotIron"));
 		}
 
 		// Machine recipes
@@ -84,6 +85,8 @@ public abstract class Recipes {
 		GameRegistry.addRecipe(new ShapedOreRecipe(Blocks.arc_furnace, "bbb","bub","bbb",'b',"blockBrick",'u',"PSU"));
 		GameRegistry.addRecipe(electricMachineRecipe(Blocks.battery_array, "chest"));
 		GameRegistry.addRecipe(electricMachineRecipe(Blocks.rock_crusher, net.minecraft.init.Blocks.piston, "sprocket"));
+		GameRegistry.addRecipe(electricMachineRecipe(Blocks.laser_turret, "gemDiamond", "gemEmerald"));
+		GameRegistry.addRecipe(electricMachineRecipe(Blocks.laser_turret, "gemEmerald", "gemDiamond"));
 		
 		
 		initDone = true;

@@ -25,7 +25,7 @@ public abstract class Blocks {
 	public static Block lithium_ore;
 	public static Block sulfur_ore;
 
-	public static Block laser_turret;
+	public static GUIBlock laser_turret;
 	
 	public static GUIBlock steam_powered_generator;
 	public static GUIBlock photovoltaic_generator;
@@ -45,7 +45,7 @@ public abstract class Blocks {
 		lithium_ore = addBlock(new Ore(1),"li_ore","oreLithium");
 		sulfur_ore = addBlock(new Ore(new ItemStack(Items.sulfur_powder,1),0,3),"sulfur_ore","oreSulfur");
 		
-		laser_turret = addBlock(new LaserTurretBlock(),"laser_turret");
+		laser_turret = (GUIBlock)addBlock(new LaserTurretBlock(),"laser_turret");
 
 		photovoltaic_generator = (GUIBlock)addBlock(new PhotovoltaicGeneratorBlock(),"photovoltaic_generator");
 		steam_powered_generator = (GUIBlock)addBlock(new SteamPoweredElectricGeneratorBlock(),"steam_powered_generator");

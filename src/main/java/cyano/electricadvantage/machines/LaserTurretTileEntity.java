@@ -78,7 +78,7 @@ public class LaserTurretTileEntity extends ElectricMachineTileEntity implements 
 
 	@Override
 	public boolean isActive(){
-		return  (this.getEnergy() > ENERGY_PER_SHOT) && (!this.hasRedstoneSignal());
+		return  (this.getEnergy() >= ENERGY_PER_SHOT) && (!this.hasRedstoneSignal());
 	}
 	
 	@Override
@@ -201,6 +201,7 @@ public class LaserTurretTileEntity extends ElectricMachineTileEntity implements 
 		super.powerUpdate();
 		if(oldEnergy != getEnergy()){
 			oldEnergy = getEnergy();
+			super.setActiveState(isActive());
 			sync();
 		}
 	}
@@ -578,16 +579,7 @@ public class LaserTurretTileEntity extends ElectricMachineTileEntity implements 
 
 	@Override
 	public boolean isPowered() {
-		return getEnergy() > ENERGY_PER_SHOT;
+		return getEnergy() > ENERGY_PER_TICK;
 	}
-	@Override
-	protected void setActiveState(boolean active){
-		// do nothing
-	}
-	@Override
-	protected void setPowerState(boolean powered){
-		// do nothing
-	}
-	
 
 }

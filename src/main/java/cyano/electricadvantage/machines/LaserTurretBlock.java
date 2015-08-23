@@ -3,8 +3,9 @@ package cyano.electricadvantage.machines;
 import java.util.List;
 
 import cyano.electricadvantage.init.Power;
-import cyano.poweradvantage.api.ConduitBlock;
 import cyano.poweradvantage.api.ConduitType;
+import cyano.poweradvantage.api.GUIBlock;
+import cyano.poweradvantage.api.ITypedConduit;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -20,42 +21,21 @@ import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public class LaserTurretBlock extends ConduitBlock implements ITileEntityProvider {
+public class LaserTurretBlock extends ElectricMachineBlock {
 
 	
 	public LaserTurretBlock() {
-		super(Material.iron);
+		super();
 		this.setHardness(5.0F).setResistance(100.0F);
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World arg0, int arg1) {
+	public ElectricMachineTileEntity createNewTileEntity(World arg0, int arg1) {
 		return new LaserTurretTileEntity();
 	}
 
 	
-	/**
-	 * 3 = normal block (model specified in assets folder as .json model)<br>
-	 * -1 = special renderer
-	 */
-	@Override
-	public int getRenderType()
-	{
-		return 3;
-	}
 
-	//And this tell it that you can see through this block, and neighbor blocks should be rendered.
-	@Override
-	public boolean isOpaqueCube()
-	{
-		return false;
-	}
-	
-	@Override
-	public boolean isFullCube(){
-		return false;
-	}
-	
 	@Override
 	public void addCollisionBoxesToList(final World w, final BlockPos coord, final IBlockState bs, 
 			final AxisAlignedBB bb, final List list, final Entity e) {
@@ -79,45 +59,4 @@ public class LaserTurretBlock extends ConduitBlock implements ITileEntityProvide
 		}
 	}
 
-
-	
-	@Override
-	public void onBlockDestroyedByPlayer(World w, BlockPos coord, IBlockState state){
-		super.onBlockDestroyedByPlayer(w, coord, state);
-		w.removeTileEntity(coord);
-	}
-
-	@Override
-	public void onBlockDestroyedByExplosion(World w, BlockPos coord, Explosion boom){
-		super.onBlockDestroyedByExplosion(w, coord, boom);
-		w.removeTileEntity(coord);
-	}
-
-	@Override
-	public boolean canAcceptType(ConduitType t) {
-		return ConduitType.areSameType(t, Power.ELECTRIC_POWER);
-	}
-
-	@Override
-	public boolean canAcceptType(ConduitType t, EnumFacing face) {
-		return face != EnumFacing.UP && ConduitType.areSameType(t, Power.ELECTRIC_POWER);
-	}
-
-	@Override
-	public ConduitType getType() {
-		return Power.ELECTRIC_POWER;
-	}
-
-	@Override
-	public boolean isPowerSink() {
-		return true;
-	}
-
-	@Override
-	public boolean isPowerSource() {
-		return false;
-	}
-
-	
-	
 }

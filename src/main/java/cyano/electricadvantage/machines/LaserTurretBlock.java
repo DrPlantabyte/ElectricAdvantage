@@ -1,8 +1,6 @@
 package cyano.electricadvantage.machines;
 
-import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 
 import cyano.electricadvantage.init.Power;
 import cyano.poweradvantage.api.ConduitBlock;
@@ -11,7 +9,8 @@ import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
-import net.minecraft.item.Item;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
@@ -69,6 +68,15 @@ public class LaserTurretBlock extends ConduitBlock implements ITileEntityProvide
 	@Override
 	public void setBlockBoundsBasedOnState(final IBlockAccess bs, final BlockPos coord) {
 		this.setBlockBounds(0.0f, 0.0f, 0.0f, 1.0f, 0.25f, 1.0f);
+	}
+	
+	@Override
+	public void onBlockPlacedBy(World w, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
+		super.onBlockPlacedBy(w, pos, state, placer, stack);
+		TileEntity te = w.getTileEntity(pos);
+		if(placer instanceof EntityPlayer && te instanceof LaserTurretTileEntity){
+			((LaserTurretTileEntity)te).setOwner((EntityPlayer)placer);
+		}
 	}
 
 

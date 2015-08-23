@@ -13,6 +13,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
+import net.minecraft.scoreboard.Team;
 import net.minecraft.server.gui.IUpdatePlayerListBox;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
@@ -38,9 +39,10 @@ public class LaserTurretTileEntity extends ElectricMachineTileEntity implements 
 	public final static float ENERGY_PER_TICK = 1;
 	public final static float MAX_BUFFER = ENERGY_PER_SHOT * 2;
 	
-	// TODO: team recognition
-	
+	private String teamIdentity = null;
+	private String playerOwner = null;
 
+	public static final int BLAME_RANGE = 4;
 	public static final int TARGET_RANGE = 16;
 	public static final int ATTACK_RANGE = 32;
 	/** target rotation around Y axis */
@@ -139,9 +141,16 @@ public class LaserTurretTileEntity extends ElectricMachineTileEntity implements 
 					final double maxRangeSquared = TARGET_RANGE * TARGET_RANGE;
 					for(Entity e : entities){
 						if(e.getPositionVector().squareDistanceTo(getOpticPosition()) > maxRangeSquared) continue;
+						if(e instanceof EntityPlayer){
+							if(isEnemy((EntityPlayer)e)){
+								setTarget(e);
+								break;
+							}
+						}
 						if(e.isCreatureType(EnumCreatureType.MONSTER, false)){
 							if(canSeeEntity(e)){
 								setTarget(e);
+								break;
 							}
 						}
 					}
@@ -155,9 +164,8 @@ public class LaserTurretTileEntity extends ElectricMachineTileEntity implements 
 								"note.bass",3F,1.1F);
 						List<Entity> victims = getLaserAttackVictims();
 						Entity e = w.getEntityByID(targetID);
-						EntityPlayer p = w.getClosestPlayer(getOpticPosition().xCoord, getOpticPosition().yCoord, getOpticPosition().zCoord, TARGET_RANGE);
 						for(Entity v : victims){
-							hurtVictim(v,p);
+							hurtVictim(v);
 						}
 						this.subtractEnergy(ENERGY_PER_SHOT, getType());
 						if(e.isDead){
@@ -179,6 +187,17 @@ public class LaserTurretTileEntity extends ElectricMachineTileEntity implements 
 		}
 	}
 	
+	private boolean isEnemy(EntityPlayer player) {
+		if(player.capabilities.isCreativeMode) return false;
+		if(this.teamIdentity == null || this.teamIdentity.isEmpty()){
+			return false;
+		} else if(player.getTeam() == null){
+			return true;
+		} else{
+			return !teamIdentity.equals(player.getTeam().getRegisteredName());
+		}
+	}
+
 	private float oldEnergy = 0;
 	@Override
 	public void powerUpdate(){
@@ -222,12 +241,15 @@ public class LaserTurretTileEntity extends ElectricMachineTileEntity implements 
 	
 	
 
-	private void hurtVictim(Entity e, EntityPlayer closestPlayer){
+	private void hurtVictim(Entity e){
 		e.setFire(BURN_TIME);
 		if(e instanceof EntityLivingBase){
 			((EntityLivingBase)e).attackEntityFrom(Power.laser_damage, ATTACK_DAMAGE);
-			if(closestPlayer != null){
-				((EntityLivingBase)e).setRevengeTarget(closestPlayer);
+			if(playerOwner != null && !playerOwner.isEmpty()){
+				EntityPlayer p = getWorld().getPlayerEntityByName(playerOwner);
+				if(p != null){
+					((EntityLivingBase) e).setRevengeTarget(p);
+				}
 			}
 		}
 	}
@@ -365,6 +387,19 @@ public class LaserTurretTileEntity extends ElectricMachineTileEntity implements 
 		return opticPosition;
 	}
 	
+	public void setOwner(EntityPlayer owner){
+		this.setTeam(owner.getTeam());
+		playerOwner = owner.getName();
+	}
+	
+	public void setTeam(Team t){
+		if(t == null) {
+			teamIdentity = null;
+		} else {
+			teamIdentity = t.getRegisteredName();
+		}
+	}
+	
 	@Override 
 	public void setPos(BlockPos p){
 		super.setPos(p);
@@ -482,6 +517,16 @@ public class LaserTurretTileEntity extends ElectricMachineTileEntity implements 
 		root.setFloat("pitch", rotPitch);
 		root.setFloat("yaw", rotYaw);
 		root.setBoolean("lock", targetLocked);
+		if(this.teamIdentity == null){
+			root.setString("team", "");
+		} else {
+			root.setString("team", teamIdentity);
+		}
+		if(this.playerOwner == null){
+			root.setString("player", "");
+		} else {
+			root.setString("player", playerOwner);
+		}
 	}
 
 	@Override
@@ -498,6 +543,18 @@ public class LaserTurretTileEntity extends ElectricMachineTileEntity implements 
 		}
 		if(root.hasKey("lock")){
 			targetLocked = root.getBoolean("lock");
+		}
+		if(root.hasKey("team")){
+			String teamName = root.getString("team");
+			if(teamName.isEmpty()){
+				this.teamIdentity = null;
+			}else{
+				this.teamIdentity = teamName;
+			}
+		}
+
+		if(root.hasKey("player")){
+			playerOwner = root.getString("player");
 		}
 	}
 

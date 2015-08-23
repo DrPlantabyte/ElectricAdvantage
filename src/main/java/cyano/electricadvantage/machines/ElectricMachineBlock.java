@@ -22,6 +22,10 @@ public abstract class ElectricMachineBlock extends cyano.poweradvantage.api.simp
 	 * Blockstate property
 	 */
 	public static final PropertyBool ACTIVE = PropertyBool.create("active");
+	/**
+	 * Blockstate property
+	 */
+	public static final PropertyBool POWERED = PropertyBool.create("powered");
 
 	public ElectricMachineBlock() {
 		this(Material.piston);
@@ -29,7 +33,7 @@ public abstract class ElectricMachineBlock extends cyano.poweradvantage.api.simp
 	
 	public ElectricMachineBlock(Material m) {
 		super(m, 0.75f, Power.ELECTRIC_POWER);
-		this.setDefaultState(getDefaultState().withProperty(ACTIVE, false).withProperty(FACING, EnumFacing.NORTH));
+		this.setDefaultState(getDefaultState().withProperty(ACTIVE, false).withProperty(POWERED, false).withProperty(FACING, EnumFacing.NORTH));
 	}
 	
 	/**
@@ -37,7 +41,7 @@ public abstract class ElectricMachineBlock extends cyano.poweradvantage.api.simp
 	 */
 	@Override
 	protected BlockState createBlockState() {
-		return new BlockState(this, new IProperty[] { ACTIVE,FACING });
+		return new BlockState(this, new IProperty[] { ACTIVE,FACING,POWERED });
 	}
 
 	/**
@@ -63,11 +67,14 @@ public abstract class ElectricMachineBlock extends cyano.poweradvantage.api.simp
 		} else {
 			extraBit = 0;
 		}
+		if((Boolean)(bs.getValue(POWERED))){
+			extraBit = extraBit | 0x10;
+		}
 		return ((EnumFacing)bs.getValue( FACING)).getIndex() | extraBit;
 	}
 	
 	@Override
-	public abstract ElectricMachineTileEntity createNewTileEntity(World arg0, int arg1);
+	public abstract ElectricMachineTileEntity createNewTileEntity(World w, int m);
 
 	@Override
 	public int getComparatorInputOverride(World w, BlockPos p) {

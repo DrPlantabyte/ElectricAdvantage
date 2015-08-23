@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cyano.electricadvantage.init.Power;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureType;
@@ -78,10 +79,6 @@ public class LaserTurretTileEntity extends ElectricMachineTileEntity implements 
 	@Override
 	public boolean isActive(){
 		return  (this.getEnergy() > ENERGY_PER_SHOT) && (!this.hasRedstoneSignal());
-	}
-	@Override
-	protected void setActive(boolean active){
-		// do nothing
 	}
 	
 	@Override
@@ -579,5 +576,18 @@ public class LaserTurretTileEntity extends ElectricMachineTileEntity implements 
 		// not used
 	}
 
+	@Override
+	public boolean isPowered() {
+		return getEnergy() > ENERGY_PER_SHOT;
+	}
+	@Override
+	protected void setActiveState(boolean active){
+		// do nothing
+	}
+	@Override
+	protected void setPowerState(boolean powered){
+		// do nothing
+	}
+	
 
 }

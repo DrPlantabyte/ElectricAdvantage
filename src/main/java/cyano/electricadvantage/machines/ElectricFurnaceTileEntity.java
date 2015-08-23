@@ -52,7 +52,7 @@ public class ElectricFurnaceTileEntity extends ElectricMachineTileEntity{
 					if(burnTime[i] > 0) burnTime[i]--;
 				}
 			}
-			this.setActive(active && getEnergy() >= ENERGY_PER_TICK);
+			this.setActiveState(active && getEnergy() >= ENERGY_PER_TICK);
 		}
 	}
 
@@ -154,6 +154,12 @@ public class ElectricFurnaceTileEntity extends ElectricMachineTileEntity{
 		for(int i = 0; i < numberOfInputSlots(); i++){
 			arr[i] = burnTime[i];
 		}
+	}
+
+
+	@Override
+	public boolean isPowered() {
+		return getEnergy() > ENERGY_PER_TICK;
 	}
 
 }

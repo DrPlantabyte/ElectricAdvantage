@@ -47,6 +47,7 @@ public abstract class ElectricMachineTileEntity extends cyano.poweradvantage.api
 		
 		redstone = getWorld().isBlockPowered(getPos());
 		
+		this.setPowerState(this.isPowered());
 		if(oldEnergy != this.getEnergy()){
 			this.sync();
 		}
@@ -57,15 +58,31 @@ public abstract class ElectricMachineTileEntity extends cyano.poweradvantage.api
 	protected boolean hasRedstoneSignal(){
 		return redstone;
 	}
-	
-	protected void setActive(boolean active){
+
+	protected void setActiveState(boolean active){
 		IBlockState oldState = getWorld().getBlockState(getPos());
 		if(oldState.getBlock() instanceof ElectricMachineBlock 
-				&& (Boolean)oldState.getValue(ElectricMachineBlock.ACTIVE) != active){
+				&& (Boolean)oldState.getValue(ElectricMachineBlock.ACTIVE) != active ){
 			final TileEntity save = this;
 			final World w = getWorld();
 			final BlockPos pos = this.getPos();
 			IBlockState newState = oldState.withProperty(ElectricMachineBlock.ACTIVE, active);
+			w.setBlockState(pos, newState,3);
+			if(save != null){
+				w.removeTileEntity(pos);
+				save.validate();
+				w.setTileEntity(pos, save);
+			}
+		}
+	}
+	protected void setPowerState(boolean powered){
+		IBlockState oldState = getWorld().getBlockState(getPos());
+		if(oldState.getBlock() instanceof ElectricMachineBlock 
+				&& (Boolean)oldState.getValue(ElectricMachineBlock.POWERED) != powered ){
+			final TileEntity save = this;
+			final World w = getWorld();
+			final BlockPos pos = this.getPos();
+			IBlockState newState = oldState.withProperty(ElectricMachineBlock.POWERED, powered);
 			w.setBlockState(pos, newState,3);
 			if(save != null){
 				w.removeTileEntity(pos);
@@ -83,8 +100,10 @@ public abstract class ElectricMachineTileEntity extends cyano.poweradvantage.api
 	}
 
 	public boolean isActive(){
-		return !this.hasRedstoneSignal() && (this.getEnergy() > 0 || (Boolean)getWorld().getBlockState(getPos()).getValue(ElectricMachineBlock.ACTIVE));
+		return isPowered() && (!this.hasRedstoneSignal() && (this.getEnergy() > 0 || (Boolean)getWorld().getBlockState(getPos()).getValue(ElectricMachineBlock.ACTIVE)));
 	}
+	
+	public abstract boolean isPowered();
 
 	public ItemStack getInputSlot(int i){
 		if(i < inputSlots.length){

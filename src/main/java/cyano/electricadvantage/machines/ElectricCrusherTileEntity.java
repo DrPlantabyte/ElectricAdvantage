@@ -53,7 +53,7 @@ public class ElectricCrusherTileEntity extends ElectricMachineTileEntity{
 					if(smashTime[i] > 0) smashTime[i]--;
 				}
 			}
-			this.setActive(active && getEnergy() >= ENERGY_PER_TICK);
+			this.setActiveState(active && getEnergy() >= ENERGY_PER_TICK);
 		}
 	}
 
@@ -157,6 +157,12 @@ public class ElectricCrusherTileEntity extends ElectricMachineTileEntity{
 		for(int i = 0; i < numberOfInputSlots(); i++){
 			arr[i] = smashTime[i];
 		}
+	}
+
+
+	@Override
+	public boolean isPowered() {
+		return getEnergy() >= ENERGY_PER_TICK;
 	}
 
 }

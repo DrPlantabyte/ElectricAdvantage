@@ -20,6 +20,7 @@ public abstract class GUI {
 		Blocks.battery_array.setGuiID(MachineGUIRegistry.addGUI(new BatteryArrayGUI()), PowerAdvantage.getInstance());
 		Blocks.rock_crusher.setGuiID(MachineGUIRegistry.addGUI(new RockCrusherGUI()), PowerAdvantage.getInstance());
 		Blocks.laser_turret.setGuiID(MachineGUIRegistry.addGUI(new GenericMachineGUI()), PowerAdvantage.getInstance());
+		Blocks.laser_drill.setGuiID(MachineGUIRegistry.addGUI(new ElectricDrillGUI()), PowerAdvantage.getInstance());
 		
 		initDone = true;
 	}

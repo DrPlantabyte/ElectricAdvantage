@@ -89,6 +89,7 @@ public abstract class Recipes {
 		GameRegistry.addRecipe(electricMachineRecipe(Blocks.rock_crusher, net.minecraft.init.Blocks.piston, "sprocket"));
 		GameRegistry.addRecipe(electricMachineRecipe(Blocks.laser_turret, "gemDiamond", "gemEmerald"));
 		GameRegistry.addRecipe(electricMachineRecipe(Blocks.laser_turret, "gemEmerald", "gemDiamond"));
+		GameRegistry.addRecipe(electricMachineRecipe(Blocks.laser_drill, "blockDiamond"));
 		
 		
 		initDone = true;

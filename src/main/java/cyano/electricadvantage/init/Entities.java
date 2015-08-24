@@ -22,6 +22,7 @@ public abstract class Entities {
 
 		registerTileEntity(ElectricFurnaceTileEntity.class);
 		registerTileEntity(ElectricCrusherTileEntity.class);
+		registerTileEntity(ElectricDrillTileEntity.class);
 		
 		registerTileEntity(PhotovoltaicGeneratorTileEntity.class);
 		registerTileEntity(SteamPoweredElectricGeneratorTileEntity.class);
@@ -74,5 +75,6 @@ public abstract class Entities {
 		
 		//RenderingRegistry.registerEntityRenderingHandler(LaserTurretEntity.class,new LaserTurretRenderer(rm));
 		ClientRegistry.bindTileEntitySpecialRenderer(LaserTurretTileEntity.class, new cyano.electricadvantage.graphics.LaserTurretRenderer());
+		ClientRegistry.bindTileEntitySpecialRenderer(ElectricDrillTileEntity.class, new cyano.electricadvantage.graphics.LaserDrillRenderer());
 	}
 }

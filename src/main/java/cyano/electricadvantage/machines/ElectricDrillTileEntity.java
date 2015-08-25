@@ -7,6 +7,7 @@ import cyano.electricadvantage.init.Blocks;
 import cyano.electricadvantage.init.Power;
 import cyano.poweradvantage.util.InventoryWrapper;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.inventory.IInventory;
@@ -416,5 +417,44 @@ public class ElectricDrillTileEntity extends ElectricMachineTileEntity{
 	protected boolean isValidInputItem(ItemStack item) {
 		return true;
 	}
+	
+	@Override
+	protected void setActiveState(boolean active){
+		IBlockState oldState = getWorld().getBlockState(getPos());
+		if(oldState.getBlock() instanceof ElectricDrillBlock 
+				&& (Boolean)oldState.getValue(ElectricDrillBlock.ACTIVE) != active ){
+			final TileEntity save = this;
+			final World w = getWorld();
+			final BlockPos pos = this.getPos();
+			IBlockState newState = oldState.withProperty(ElectricDrillBlock.ACTIVE, active);
+			w.setBlockState(pos, newState,3);
+			if(save != null){
+				w.removeTileEntity(pos);
+				save.validate();
+				w.setTileEntity(pos, save);
+			}
+		}
+	}
+	@Override
+	protected void setPowerState(boolean powered){
+		IBlockState oldState = getWorld().getBlockState(getPos());
+		if(oldState.getBlock() instanceof ElectricDrillBlock 
+				&& (Boolean)oldState.getValue(ElectricDrillBlock.POWERED) != powered ){
+			final TileEntity save = this;
+			final World w = getWorld();
+			final BlockPos pos = this.getPos();
+			IBlockState newState = oldState.withProperty(ElectricDrillBlock.POWERED, powered);
+			w.setBlockState(pos, newState,3);
+			if(save != null){
+				w.removeTileEntity(pos);
+				save.validate();
+				w.setTileEntity(pos, save);
+			}
+		}
+	}
 
+	@Override
+	public boolean isActive(){
+		return isPowered() && (!this.hasRedstoneSignal() && (this.getEnergy() > 0 || (Boolean)getWorld().getBlockState(getPos()).getValue(ElectricDrillBlock.ACTIVE)));
+	}
 }

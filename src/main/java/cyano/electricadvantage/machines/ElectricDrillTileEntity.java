@@ -30,14 +30,13 @@ public class ElectricDrillTileEntity extends ElectricMachineTileEntity{
 	public static final float MINING_TIME_FACTOR = 12.0f;
 
 	
-	private final ItemStack[] inventory = new ItemStack[5];
-	private final int[] dataSyncArray = new int[3];
+	private final int[] dataSyncArray = new int[4];
 	private int progress = 0;
 	private int progressGoal = 0;
 	private BlockPos targetBlockCoord = null;
 	private Block targetBlock = null;
 	private List<ItemStack> targetBlockItems = null;
-	
+	private int laserLength = 0;
 
 	
 	private boolean deferred = false;
@@ -84,7 +83,7 @@ public class ElectricDrillTileEntity extends ElectricMachineTileEntity{
 						if(progress >= progressGoal){
 							// Mined it!
 							getWorld().playSoundEffect(targetBlockCoord.getX()+0.5, targetBlockCoord.getY()+0.5, targetBlockCoord.getZ()+0.5, targetBlock.stepSound.getBreakSound(), 0.5f, 1f);
-							getWorld().playSoundEffect(getPos().getX()+0.5, getPos().getY()+0.5, getPos().getZ()+0.5, "random.fizz", 0.5f, 1f);
+							getWorld().playSoundEffect(getPos().getX()+0.5, getPos().getY()+0.5, getPos().getZ()+0.5, "gravel.dig", 0.5f, 1f);
 							getWorld().setBlockToAir(targetBlockCoord);
 							for(ItemStack item : targetBlockItems){
 								addItem(item);
@@ -153,10 +152,6 @@ public class ElectricDrillTileEntity extends ElectricMachineTileEntity{
 		return true;
 	}
 	
-	@Override
-	protected ItemStack[] getInventory() {
-		return inventory;
-	}
 
 	@Override
 	public int[] getDataFieldArray() {
@@ -168,6 +163,7 @@ public class ElectricDrillTileEntity extends ElectricMachineTileEntity{
 		dataSyncArray[0] = Float.floatToRawIntBits(this.getEnergy());
 		dataSyncArray[1] = progress;
 		dataSyncArray[2] = progressGoal;
+		dataSyncArray[3] = laserLength;
 	}
 
 	@Override
@@ -175,9 +171,11 @@ public class ElectricDrillTileEntity extends ElectricMachineTileEntity{
 		this.setEnergy(Float.intBitsToFloat(dataSyncArray[0]), this.getType());
 		this.progress = dataSyncArray[1];
 		progressGoal = dataSyncArray[2];
+		laserLength = dataSyncArray[3];
 	}
 	private float oldEnergy = 0;
 	private int oldProgress = 0;
+	private int oldLength = 0;
 	@Override public void powerUpdate(){
 		if(deferred){
 			targetBlock(targetBlockCoord);
@@ -247,6 +245,11 @@ public class ElectricDrillTileEntity extends ElectricMachineTileEntity{
 			}
 		}
 		
+		if(oldLength != laserLength){
+			oldLength = laserLength;
+			flagSync = true;
+		}
+		
 		if(flagSync){
 			this.sync();
 		}
@@ -273,12 +276,16 @@ public class ElectricDrillTileEntity extends ElectricMachineTileEntity{
 
 	
 	public int getDrillLength(){
+		return laserLength;
+	}
+	
+	public void calculateDrillLength(){
 		if(this.isPowered() && this.targetBlock != null && this.targetBlockCoord != null){
 			BlockPos pos = getPos();
 			// distance calculation is taking a short-cut by assuming that 2 out of the 3 XYZ coordinates are identical
-			return MathHelper.abs_int((pos.getX() - targetBlockCoord.getX()) + (pos.getY() - targetBlockCoord.getY()) + (pos.getZ() - targetBlockCoord.getZ()));
+			laserLength = MathHelper.abs_int((pos.getX() - targetBlockCoord.getX()) + (pos.getY() - targetBlockCoord.getY()) + (pos.getZ() - targetBlockCoord.getZ()));
 		} else {
-			return 0;
+			laserLength = 0;
 		}
 	}
 
@@ -330,13 +337,14 @@ public class ElectricDrillTileEntity extends ElectricMachineTileEntity{
 	
 
 	private void inventoryTransfer(BlockPos adj, EnumFacing otherFace) {
+		ItemStack[] inventory = this.getInventory();
 		TileEntity te = getWorld().getTileEntity(adj);
 		if(te instanceof IInventory ){
 			ISidedInventory inv = InventoryWrapper.wrap((IInventory)te);
 			int[] accessibleSlots = inv.getSlotsForFace(otherFace);
 			if(accessibleSlots.length == 0) return;
-			for(int mySlot = 0; mySlot < this.inventory.length; mySlot++){
-				if(this.inventory[mySlot] == null) continue;
+			for(int mySlot = 0; mySlot < inventory.length; mySlot++){
+				if(inventory[mySlot] == null) continue;
 				for(int i = 0; i < accessibleSlots.length; i++){
 					int theirSlot = accessibleSlots[i];
 					ItemStack theirItem = inv.getStackInSlot(theirSlot);
@@ -373,16 +381,6 @@ public class ElectricDrillTileEntity extends ElectricMachineTileEntity{
 	}
 	
 	
-	public int getComparatorOutput() {
-		int sum = 0;
-		for(int n = 0; n < inventory.length; n++){
-			if(inventory[n] != null){
-				sum += inventory[n].stackSize * 64 / inventory[n].getMaxStackSize();
-			}
-		}
-		if(sum == 0) return 0;
-		return Math.min(Math.max(15 * sum / (64 * (inventory.length - 1)),1),15);
-	}
 	
 	
 	@Override

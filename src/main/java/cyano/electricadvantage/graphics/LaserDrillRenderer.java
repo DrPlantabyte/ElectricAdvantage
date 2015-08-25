@@ -22,6 +22,10 @@ public class LaserDrillRenderer extends TileEntitySpecialRenderer{
 
 	private static final float RADIANS_TO_DEGREES = (float)(180 / Math.PI);
 	
+	// TODO: undo progress when you stop drilling
+	// TODO: slow down drill speed a little
+	// TODO: set to inactive when not drilling
+	
 	public LaserDrillRenderer() {
 		super();
 	}

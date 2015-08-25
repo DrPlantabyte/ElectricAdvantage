@@ -83,6 +83,7 @@ public abstract class ElectricMachineTileEntity extends cyano.poweradvantage.api
 			final World w = getWorld();
 			final BlockPos pos = this.getPos();
 			IBlockState newState = oldState.withProperty(ElectricMachineBlock.POWERED, powered);
+			FMLLog.info("%s -> %s",oldState,newState);// TODO: remove
 			w.setBlockState(pos, newState,3);
 			if(save != null){
 				w.removeTileEntity(pos);
@@ -93,10 +94,10 @@ public abstract class ElectricMachineTileEntity extends cyano.poweradvantage.api
 	}
 	
 	@Override
-	public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newSate)
+	public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState)
 	{
 		// used to allow change in blockstate without interrupting the TileEntity or the GUI
-		return (oldState.getBlock() != newSate.getBlock());
+		return (oldState.getBlock() != newState.getBlock());
 	}
 
 	public boolean isActive(){

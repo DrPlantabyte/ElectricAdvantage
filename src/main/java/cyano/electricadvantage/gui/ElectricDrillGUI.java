@@ -37,7 +37,7 @@ guiContainer.drawTexturedModalRect(x+79, y+35, 0, 0, arrowLength, 17); // x, y, 
 	public void drawGUIDecorations(Object srcEntity, GUIContainer guiContainer, int x, int y, float  z){
 		if(srcEntity instanceof ElectricMachineTileEntity){
 			ElectricMachineTileEntity te = (ElectricMachineTileEntity)srcEntity;
-			boolean on = te.isActive();
+			boolean on = te.isPowered();
 			GUIHelper.drawIndicatorLight(on, guiContainer,x,y);
 			float[] progressBars = te.getProgress();
 			GUIHelper.drawProgressBar(x+24, y+39, progressBars[0], guiContainer);

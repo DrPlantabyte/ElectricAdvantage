@@ -1,10 +1,7 @@
 {
-    "parent": "electricadvantage:block/electric_machine_base",
+    "parent": "electricadvantage:block/electric_drill_base",
     "textures": {
-        "front": "electricadvantage:blocks/electric_drill_powered",
-        "top":   "electricadvantage:blocks/machine_top",
-        "bottom":"electricadvantage:blocks/machine_top",
-        "back":  "electricadvantage:blocks/machine_back",
-        "side":  "electricadvantage:blocks/machine_side"
+        "top":    "electricadvantage:blocks/electric_drill_powered",
+        "bottom": "electricadvantage:blocks/laser_drill_optic"
     }
 }

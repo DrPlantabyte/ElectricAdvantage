@@ -46,10 +46,6 @@ public class ElectricDrillBlock extends GUIBlock implements ITypedConduit {
 	 * Blockstate property
 	 */
 	public static final PropertyBool ACTIVE = PropertyBool.create("active");
-	/**
-	 * Blockstate property
-	 */
-	public static final PropertyBool POWERED = PropertyBool.create("powered");
 
 
 	public ElectricDrillBlock(){
@@ -64,7 +60,7 @@ public class ElectricDrillBlock extends GUIBlock implements ITypedConduit {
 	 */
 	@Override
 	protected BlockState createBlockState() {
-		return new BlockState(this, new IProperty[] { ACTIVE,FACING,POWERED });
+		return new BlockState(this, new IProperty[] { ACTIVE,FACING });
 	}
 
 	@Override
@@ -213,8 +209,7 @@ public class ElectricDrillBlock extends GUIBlock implements ITypedConduit {
 			enumFacing = EnumFacing.NORTH;
 		}
 		return this.getDefaultState().withProperty( FACING, enumFacing)
-				.withProperty(ACTIVE, (metaValue & 0x4) != 0)
-				.withProperty(POWERED, (metaValue & 0x8) != 0);
+				.withProperty(ACTIVE, (metaValue & 0x8) != 0);
 	}
 	
 	/**
@@ -224,34 +219,19 @@ public class ElectricDrillBlock extends GUIBlock implements ITypedConduit {
 	public int getMetaFromState(final IBlockState bs) {
 		int extraBit;
 		if((Boolean)(bs.getValue(ACTIVE))){
-			extraBit = 0x4;
+			extraBit = 0x8;
 		} else {
 			extraBit = 0;
-		}
-		if((Boolean)(bs.getValue(POWERED))){
-			extraBit = extraBit | 0x8;
 		}
 		return facingToMeta((EnumFacing)bs.getValue( FACING)) | extraBit;
 	}
 	
 	private int facingToMeta(EnumFacing f){
-		switch(f){
-			case NORTH: return 0;
-			case WEST: return 1;
-			case SOUTH: return 2;
-			case EAST: return 3;
-			default: return 0;
-		}
+		return f.getIndex();
 	}
 	private EnumFacing metaToFacing(int i){
-		int f = i & 0x03;
-		switch(f){
-			case 0: return EnumFacing.NORTH;
-			case 1: return EnumFacing.WEST;
-			case 2: return EnumFacing.SOUTH;
-			case 3: return EnumFacing.EAST;
-			default: return EnumFacing.NORTH;
-		}
+		int f = i & 0x07;
+		return EnumFacing.values()[f];
 	}
 
 

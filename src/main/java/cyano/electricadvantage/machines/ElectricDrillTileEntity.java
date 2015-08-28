@@ -439,20 +439,7 @@ public class ElectricDrillTileEntity extends ElectricMachineTileEntity{
 	}
 	@Override
 	protected void setPowerState(boolean powered){
-		IBlockState oldState = getWorld().getBlockState(getPos());
-		if(oldState.getBlock() instanceof ElectricDrillBlock 
-				&& (Boolean)oldState.getValue(ElectricDrillBlock.POWERED) != powered ){
-			final TileEntity save = this;
-			final World w = getWorld();
-			final BlockPos pos = this.getPos();
-			IBlockState newState = oldState.withProperty(ElectricDrillBlock.POWERED, powered);
-			w.setBlockState(pos, newState,3);
-			if(save != null){
-				w.removeTileEntity(pos);
-				save.validate();
-				w.setTileEntity(pos, save);
-			}
-		}
+		// do nothing, this block does not have a powered state
 	}
 
 	@Override

@@ -13,6 +13,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.FMLLog;
 import cyano.electricadvantage.init.Power;
 import cyano.poweradvantage.api.PoweredEntity;
 
@@ -49,11 +50,13 @@ public abstract class ElectricMachineBlock extends cyano.poweradvantage.api.simp
 	 */
 	@Override
 	public IBlockState getStateFromMeta(final int metaValue) {
-		EnumFacing enumFacing = EnumFacing.getFront(metaValue & 0x7);
+		EnumFacing enumFacing = metaToFacing(metaValue);
 		if (enumFacing.getAxis() == EnumFacing.Axis.Y) {
 			enumFacing = EnumFacing.NORTH;
 		}
-		return this.getDefaultState().withProperty( FACING, enumFacing).withProperty(ACTIVE, (metaValue & 0x8) != 0);
+		return this.getDefaultState().withProperty( FACING, enumFacing)
+				.withProperty(ACTIVE, (metaValue & 0x4) != 0)
+				.withProperty(POWERED, (metaValue & 0x8) != 0);
 	}
 	
 	/**
@@ -63,14 +66,34 @@ public abstract class ElectricMachineBlock extends cyano.poweradvantage.api.simp
 	public int getMetaFromState(final IBlockState bs) {
 		int extraBit;
 		if((Boolean)(bs.getValue(ACTIVE))){
-			extraBit = 0x8;
+			extraBit = 0x4;
 		} else {
 			extraBit = 0;
 		}
 		if((Boolean)(bs.getValue(POWERED))){
-			extraBit = extraBit | 0x10;
+			extraBit = extraBit | 0x8;
 		}
-		return ((EnumFacing)bs.getValue( FACING)).getIndex() | extraBit;
+		return facingToMeta((EnumFacing)bs.getValue( FACING)) | extraBit;
+	}
+	
+	private int facingToMeta(EnumFacing f){
+		switch(f){
+			case NORTH: return 0;
+			case WEST: return 1;
+			case SOUTH: return 2;
+			case EAST: return 3;
+			default: return 0;
+		}
+	}
+	private EnumFacing metaToFacing(int i){
+		int f = i & 0x03;
+		switch(f){
+			case 0: return EnumFacing.NORTH;
+			case 1: return EnumFacing.WEST;
+			case 2: return EnumFacing.SOUTH;
+			case 3: return EnumFacing.EAST;
+			default: return EnumFacing.NORTH;
+		}
 	}
 	
 	@Override

@@ -51,7 +51,7 @@ public abstract class ElectricMachineTileEntity extends cyano.poweradvantage.api
 		if(oldEnergy != this.getEnergy()){
 			this.sync();
 		}
-		
+		FMLLog.info("Post sync: "+getWorld().getBlockState(getPos()));
 	}
 
 	
@@ -83,8 +83,7 @@ public abstract class ElectricMachineTileEntity extends cyano.poweradvantage.api
 			final World w = getWorld();
 			final BlockPos pos = this.getPos();
 			IBlockState newState = oldState.withProperty(ElectricMachineBlock.POWERED, powered);
-			FMLLog.info("%s -> %s",oldState,newState);// TODO: remove
-			w.setBlockState(pos, newState,3);
+			w.setBlockState(pos, newState, 3);
 			if(save != null){
 				w.removeTileEntity(pos);
 				save.validate();

@@ -23,6 +23,10 @@ import net.minecraft.world.World;
 
 public class ElectricDrillTileEntity extends ElectricMachineTileEntity{
 
+	// TODO: undo progress when you stop drilling
+	// TODO: slow down drill speed a little
+	// TODO: set to inactive when not drilling
+	// TODO: make it only set player in beam on fire while drilling
 
 	public static final int MAX_RANGE = 64;
 	public static final float ENERGY_COST_MOVE = 250f;

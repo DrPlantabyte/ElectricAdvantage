@@ -2,7 +2,7 @@
      "textures": {
         "particle": "electricadvantage:materials/machine_case",
         "feet":"poweradvantage:materials/steel",
-        "side":  "electricadvantage:blocks/machine_side"
+        "side":  "electricadvantage:materials/machine_case"
     },
     "elements": [
        
@@ -11,8 +11,8 @@
             "faces": {
                 "north": { "uv": [ 0, 0,16,16 ], "texture": "#bottom" },
                 "south": { "uv": [ 0, 0,16,16 ], "texture": "#top" },
-                "down":  { "uv": [ 4, 0,16,16 ], "texture": "#side" },
-                "up":    { "uv": [ 4, 0,16,16 ], "texture": "#side" },
+                "down":  { "uv": [ 0, 4,16,16 ], "texture": "#side" },
+                "up":    { "uv": [ 0, 4,16,16 ], "texture": "#side" },
                 "west":  { "uv": [16, 0, 4,16 ], "texture": "#side" },
                 "east":  { "uv": [16, 0, 4,16 ], "texture": "#side" }
             }

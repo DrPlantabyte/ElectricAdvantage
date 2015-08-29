@@ -51,7 +51,6 @@ public abstract class ElectricMachineTileEntity extends cyano.poweradvantage.api
 		if(oldEnergy != this.getEnergy()){
 			this.sync();
 		}
-		FMLLog.info("Post sync: "+getWorld().getBlockState(getPos()));
 	}
 
 	

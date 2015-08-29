@@ -74,7 +74,7 @@ public class LaserDrillRenderer extends TileEntitySpecialRenderer{
 				break;
 			}
 			case EAST:{
-				rotY = 90;
+				rotY = -90;
 				break;
 			}
 			case SOUTH:{
@@ -82,15 +82,15 @@ public class LaserDrillRenderer extends TileEntitySpecialRenderer{
 				break;
 			}
 			case WEST:{
-				rotY = -90;
+				rotY = 90;
 				break;
 			}
 			case UP:{
-				rotX = -90;
+				rotX = 90;
 				break;
 			}
 			case DOWN:{
-				rotX = 90;
+				rotX = -90;
 				break;
 			}
 			default:{
@@ -99,7 +99,7 @@ public class LaserDrillRenderer extends TileEntitySpecialRenderer{
 			}
 			}
 
-			GlStateManager.translate(0.5f, 0.75f, 0.5f);
+			GlStateManager.translate(0.5f, 0.5f, 0.5f);
 			GlStateManager.rotate(rotY, 0.0f, 1.0f, 0.0f);
 			GlStateManager.rotate(rotX, 1.0f, 0.0f, 0.0f);
 

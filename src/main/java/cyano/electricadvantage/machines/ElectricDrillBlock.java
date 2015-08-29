@@ -52,6 +52,7 @@ public class ElectricDrillBlock extends GUIBlock implements ITypedConduit {
 		super(Material.piston);
 		this.type = Power.ELECTRIC_POWER;
 		super.setHardness(0.75f);
+		this.setDefaultState(getDefaultState().withProperty(ACTIVE, false).withProperty(FACING, EnumFacing.DOWN));
 	}
 
 
@@ -68,22 +69,13 @@ public class ElectricDrillBlock extends GUIBlock implements ITypedConduit {
 		return new ElectricDrillTileEntity();
 	}
 
-	/**
-	 * Creates the blockstate of this block when it is placed in the world
-	 */
-	@Override
-	public IBlockState onBlockPlaced(final World world, final BlockPos coord, final EnumFacing facing, 
-			final float f1, final float f2, final float f3, 
-			final int meta, final EntityLivingBase player) {
-		return this.getDefaultState().withProperty( FACING, facing.getOpposite());
-	}
+	
 
 	/**
 	 * Override of default block behavior
 	 */
 	@Override
 	public void onBlockAdded(final World world, final BlockPos coord, final IBlockState state) {
-		this.setDefaultFacing(world, coord, state);
 		ConduitRegistry.getInstance().conduitBlockPlacedEvent(world, world.provider.getDimensionId(), coord, getType());
 	}
 	/**
@@ -162,9 +154,18 @@ public class ElectricDrillBlock extends GUIBlock implements ITypedConduit {
 	 * Creates the blockstate of this block when it is placed in the world
 	 */
 	@Override
+	public IBlockState onBlockPlaced(final World world, final BlockPos coord, final EnumFacing facing, 
+			final float f1, final float f2, final float f3, 
+			final int meta, final EntityLivingBase player) {
+		return this.getDefaultState().withProperty( FACING, facing.getOpposite());
+	}
+
+	/**
+	 * Creates the blockstate of this block when it is placed in the world
+	 */
+	@Override
 	public void onBlockPlacedBy(final World world, final BlockPos coord, final IBlockState bs, 
 			final EntityLivingBase placer, final ItemStack srcItemStack) {
-		world.setBlockState(coord, bs.withProperty((IProperty) FACING, (Comparable)placer.getHorizontalFacing().getOpposite()), 2);
 		if (srcItemStack.hasDisplayName()) {
 			final TileEntity tileEntity = world.getTileEntity(coord);
 			if (tileEntity instanceof PoweredEntity){
@@ -172,7 +173,6 @@ public class ElectricDrillBlock extends GUIBlock implements ITypedConduit {
 			}
 		}
 	}
-
 
 
 

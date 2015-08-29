@@ -23,15 +23,11 @@ import net.minecraft.world.World;
 
 public class ElectricDrillTileEntity extends ElectricMachineTileEntity{
 
-	// TODO: undo progress when you stop drilling
-	// TODO: slow down drill speed a little
-	// TODO: set to inactive when not drilling
-	// TODO: make it only set player in beam on fire while drilling
 
 	public static final int MAX_RANGE = 64;
 	public static final float ENERGY_COST_MOVE = 250f;
-	public static final float ENERGY_COST_PROGRESS_TICK = 32f;
-	public static final float MINING_TIME_FACTOR = 12.0f;
+	public static final float ENERGY_COST_PROGRESS_TICK = 24f;
+	public static final float MINING_TIME_FACTOR = 16.0f;
 
 	
 	private final int[] dataSyncArray = new int[4];
@@ -94,10 +90,15 @@ public class ElectricDrillTileEntity extends ElectricMachineTileEntity{
 							}
 							untargetBlock();
 						}
+					} else {
+						// lose progress
+						if(progress > 0)progress--;
 					}
 				}
 				
 			}
+
+			this.setActiveState(isActive());
 		}
 		
 	}
@@ -249,6 +250,7 @@ public class ElectricDrillTileEntity extends ElectricMachineTileEntity{
 			}
 		}
 		
+		calculateDrillLength();
 		if(oldLength != laserLength){
 			oldLength = laserLength;
 			flagSync = true;
@@ -266,7 +268,7 @@ public class ElectricDrillTileEntity extends ElectricMachineTileEntity{
 		}
 		
 		// fry any idiots who stand in the laser's path
-		if(targetBlock != null && targetBlockCoord != null){
+		if(isActive() && targetBlock != null && targetBlockCoord != null){
 			BlockPos pos = getPos();
 			AxisAlignedBB beamArea = new AxisAlignedBB(targetBlockCoord.getX(),targetBlockCoord.getY(),targetBlockCoord.getZ(),
 					pos.getX()+1,pos.getY()+1,pos.getZ()+1);
@@ -284,7 +286,7 @@ public class ElectricDrillTileEntity extends ElectricMachineTileEntity{
 	}
 	
 	public void calculateDrillLength(){
-		if(this.isPowered() && this.targetBlock != null && this.targetBlockCoord != null){
+		if(this.isActive() && this.targetBlock != null && this.targetBlockCoord != null){
 			BlockPos pos = getPos();
 			// distance calculation is taking a short-cut by assuming that 2 out of the 3 XYZ coordinates are identical
 			laserLength = MathHelper.abs_int((pos.getX() - targetBlockCoord.getX()) + (pos.getY() - targetBlockCoord.getY()) + (pos.getZ() - targetBlockCoord.getZ()));

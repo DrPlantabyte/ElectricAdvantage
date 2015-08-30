@@ -29,6 +29,12 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 /* TODO list
+ * Add oven
+ * Add growth chamber
+ * Add hydroelectric generator
+ * 
+ * Move Geothermal generator over to steam advantage
+ * Add electric-powered boiler to steam advantage
  * 
  */
 @Mod(modid = ElectricAdvantage.MODID, version = ElectricAdvantage.VERSION, name=ElectricAdvantage.NAME, 
@@ -39,7 +45,7 @@ public class ElectricAdvantage
 	/** The display name for this mod */
 	public static final String NAME = "Electric Advantage";
 	/** The version of this mod, in the format major.minor.update */
-	public static final String VERSION = "0.0.6";
+	public static final String VERSION = "0.0.7";
 
 	public static ElectricAdvantage INSTANCE = null;
 

@@ -90,10 +90,29 @@ public class ItemMatcher{
 			ItemStack[] items = new ItemStack[1];
 			items [0] = new ItemStack(block,1,OreDictionary.WILDCARD_VALUE);
 			return Arrays.asList(items);
+		} else if(array != null){
+			List<ItemStack> items = new ArrayList<>(array.size());
+			for(ItemMatcher m : array){
+				items.addAll(m.getValidItems());
+			}
+			return items;
 		} else {
 			ItemStack[] items = new ItemStack[1];
 			items [0] = item;
 			return Arrays.asList(items);
+		}
+	}
+	
+	@Override
+	public String toString(){
+		if(name != null){
+			return "\""+name+"\"";
+		} else if(block != null){
+			return block.toString();
+		} else if(array != null){
+			return Arrays.toString(array.toArray());
+		} else {
+			return item.toString();
 		}
 	}
 }

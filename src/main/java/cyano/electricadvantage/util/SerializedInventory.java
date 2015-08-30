@@ -75,7 +75,7 @@ public class SerializedInventory extends HashMap<ItemRecord,Integer>{
 			if(item == null) continue;
 			ItemRecord r = new ItemRecord(item);
 			if(!this.containsKey(r)){
-				this.put(r, 1);
+				this.put(r, item.stackSize);
 			} else {
 				this.put(r, this.get(r)+item.stackSize);
 			}

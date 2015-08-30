@@ -36,6 +36,7 @@ public abstract class Blocks {
 	public static GUIBlock rock_crusher;
 	public static GUIBlock laser_drill;
 	public static GUIBlock laser_turret;
+	public static GUIBlock fabricator;
 	
 	
 
@@ -59,6 +60,7 @@ public abstract class Blocks {
 		battery_array = (GUIBlock)addBlock(new ElectricBatteryArrayBlock(),"electric_battery_array");
 		rock_crusher = (GUIBlock)addBlock(new ElectricCrusherBlock(),"electric_crusher");
 		laser_drill = (GUIBlock)addBlock(new ElectricDrillBlock(),"electric_drill");
+		fabricator = (GUIBlock)addBlock(new ElectricFabricatorBlock(),"electric_fabricator");
 		
 		initDone = true;
 	}

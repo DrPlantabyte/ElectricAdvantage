@@ -158,4 +158,9 @@ public class SerializedInventory extends HashMap<ItemRecord,Integer>{
 	public List<ItemStack> deserialize(){
 		return deserialize(this);
 	}
+	
+	@Override
+	public String toString(){
+		return Arrays.toString(this.deserialize().toArray());
+	}
 }

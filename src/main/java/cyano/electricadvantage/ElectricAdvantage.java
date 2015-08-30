@@ -54,6 +54,12 @@ public class ElectricAdvantage
 		INSTANCE = this;
 		Configuration config = new Configuration(event.getSuggestedConfigurationFile());
 		config.load();
+		
+		RecipeDeconstructor.RECURSION_LIMIT = config.getInt("recursion_limit", "fabricator", RecipeDeconstructor.RECURSION_LIMIT, 
+				1, 255, 
+  "Prevents circular recipes from crashing the fabricator machine. You may need to increase this \n"
++ "number to fabricate especially complex recipes. If fabricators are causing too much server lag, "
++ "try reducing this number.");
 
 		Path orespawnFolder = Paths.get(event.getSuggestedConfigurationFile().toPath().getParent().toString(),"orespawn");
 		Path orespawnFile = Paths.get(orespawnFolder.toString(),MODID+".json");

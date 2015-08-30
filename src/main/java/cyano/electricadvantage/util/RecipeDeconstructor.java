@@ -112,46 +112,48 @@ public class RecipeDeconstructor {
 		
 		for(IRecipe recipe : recipes){
 			// make local copy of inventory and marshal the recipe into a list of item matchers
-			SerializedInventory tempInv = serializedInventory.copy();
-			List<ItemMatcher> ingredients = marshalCraftingRecipe(recipe);
-			if(ingredients == null || ingredients.isEmpty()) continue;
-			
-			// for each ingredient, either find it in the inventory (and remove it) or craft it from the inventory
-			for(ItemMatcher ingredient : ingredients){
-				if(tempInv.decrement(ingredient)){
-					// inventory contained requested ingredient, move on to the next
-					continue;
-				} else {
-					// ingredient not found, try to craft it
-					Collection<ItemStack> validItems = ingredient.getValidItems();
-					if(validItems == null || validItems.isEmpty()){
-						// no valid items (unused ore dictionary name?)
-						// cannot craft
-						return null;
-					}
-					boolean failure = true;
-					for(ItemStack vi : validItems){
-						AtomicReference<ItemStack> ret = new AtomicReference<>();
-						SerializedInventory r = attemptToCraft(vi,tempInv,ret,recursionDepth+1);
-						if(r != null) {
-							ItemStack y = ret.get();
-							if(y.stackSize > 1){
-								y.stackSize--;
-								r.add(y);
-							}
-							tempInv = r;
-							failure = false;
-							break;
+			recipeAttempt:{
+				SerializedInventory tempInv = serializedInventory.copy();
+				List<ItemMatcher> ingredients = marshalCraftingRecipe(recipe);
+				if(ingredients == null || ingredients.isEmpty()) continue;
+	
+				// for each ingredient, either find it in the inventory (and remove it) or craft it from the inventory
+				for(ItemMatcher ingredient : ingredients){
+					if(tempInv.decrement(ingredient)){
+						// inventory contained requested ingredient, move on to the next
+						continue;
+					} else {
+						// ingredient not found, try to craft it
+						Collection<ItemStack> validItems = ingredient.getValidItems();
+						if(validItems == null || validItems.isEmpty()){
+							// no valid items (unused ore dictionary name?)
+							// cannot craft
+							break recipeAttempt;
 						}
+						boolean failure = true;
+						for(ItemStack vi : validItems){
+							AtomicReference<ItemStack> ret = new AtomicReference<>();
+							SerializedInventory r = attemptToCraft(vi,tempInv,ret,recursionDepth+1);
+							if(r != null) {
+								ItemStack y = ret.get();
+								if(y.stackSize > 1){
+									y.stackSize--;
+									r.add(y);
+								}
+								tempInv = r;
+								failure = false;
+								break;
+							}
+						}
+						if(failure) break recipeAttempt;
 					}
-					if(failure) return null;
 				}
+				// if we made it this far, then we successfully crafted the item
+				// set the output callback
+				output.set(recipe.getRecipeOutput().copy());
+				// return the new state of the inventory
+				return tempInv;
 			}
-			// if we made it this far, then we successfully crafted the item
-			// set the output callback
-			output.set(recipe.getRecipeOutput().copy());
-			// return the new state of the inventory
-			return tempInv;
 		}
 		// no valid recipes found
 		return null;

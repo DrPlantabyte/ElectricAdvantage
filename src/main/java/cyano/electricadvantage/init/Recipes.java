@@ -90,6 +90,7 @@ public abstract class Recipes {
 		GameRegistry.addRecipe(electricMachineRecipe(Blocks.laser_turret, "gemDiamond", "gemEmerald"));
 		GameRegistry.addRecipe(electricMachineRecipe(Blocks.laser_turret, "gemEmerald", "gemDiamond"));
 		GameRegistry.addRecipe(electricMachineRecipe(Blocks.laser_drill, "blockDiamond"));
+		GameRegistry.addRecipe(electricMachineRecipe(Blocks.fabricator, net.minecraft.init.Blocks.crafting_table));
 		
 		
 		initDone = true;

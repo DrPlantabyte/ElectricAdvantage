@@ -132,8 +132,6 @@ public class ElectricAdvantage
 	public void postInit(FMLPostInitializationEvent event)
 	{
 
-		// TODO: remove debug code
-				fabTest();
 		if(event.getSide() == Side.CLIENT){
 			clientPostInit(event);
 		}
@@ -151,71 +149,6 @@ public class ElectricAdvantage
 		// server-only code
 	}
 	
-	// TODO: remove debug code
-	private void fabTest(){
-		ItemStack[] baseInventory = {
-				new ItemStack(net.minecraft.init.Blocks.log,64,0),
-				new ItemStack(net.minecraft.init.Blocks.cobblestone,64,0),
-				new ItemStack(net.minecraft.init.Blocks.stone,64,0),
-				new ItemStack(net.minecraft.init.Items.redstone,64,0),
-				new ItemStack(net.minecraft.init.Items.iron_ingot,64,0),
-				new ItemStack(cyano.poweradvantage.init.Items.bioplastic_ingot,64,0),
-				new ItemStack(cyano.basemetals.init.Items.copper_ingot,64,0),
-				null,
-				null,
-				null
-		};
-
-		FMLLog.info("%s","Starting inventory:");
-		printInventory(Arrays.asList(baseInventory));
-
-		test(new ItemStack(net.minecraft.init.Blocks.oak_fence,1,0), baseInventory);
-		test(new ItemStack(net.minecraft.init.Blocks.piston,1,0), baseInventory);
-		test(new ItemStack(net.minecraft.init.Blocks.stonebrick,1,0), baseInventory);
-		test(new ItemStack(net.minecraft.init.Blocks.stonebrick,1,3), baseInventory);
-		test(new ItemStack(net.minecraft.init.Blocks.furnace,1,0), baseInventory);
-		test(new ItemStack(net.minecraft.init.Items.repeater,1,0), baseInventory);
-		test(new ItemStack(net.minecraft.init.Items.armor_stand,1,0), baseInventory);
-		test(new ItemStack(net.minecraft.init.Items.stick,1,0), baseInventory);
-		test(new ItemStack(net.minecraft.init.Items.iron_pickaxe,1,0), baseInventory);
-		test(new ItemStack(net.minecraft.init.Items.bucket,1,0), baseInventory);
-		test(new ItemStack(cyano.electricadvantage.init.Blocks.electric_conduit,1,0), baseInventory);
-		
-
-		test(new ItemStack(net.minecraft.init.Blocks.diamond_block,1,0), baseInventory);
-		test(new ItemStack(net.minecraft.init.Items.map,1,0), baseInventory);
-		test(new ItemStack(net.minecraft.init.Items.sugar,1,0), baseInventory);
-		test(new ItemStack(net.minecraft.init.Items.brewing_stand,1,0), baseInventory);
-		
-	}
 	
-	// TODO: remove debug code
-	private void test(ItemStack itemStack,ItemStack[] baseInventory) {
-
-		FMLLog.info("Attempting to craft %s",itemStack);
-		AtomicReference<ItemStack> callback = new AtomicReference<>();
-		long t0 = System.nanoTime();
-		SerializedInventory result = RecipeDeconstructor.getInstance().attemptToCraft(itemStack, SerializedInventory.serialize(baseInventory), callback);
-		long t1 = System.nanoTime();
-		if(result == null){
-			FMLLog.info("%s","Failed to craft!");
-		} else {
-			FMLLog.info("Successfully crafted %s. Remaining inventory is:",callback.get());
-			printInventory(result.deserialize());
-		}
-		FMLLog.info("Test completed in %s us\n\n",(t1-t0)*0.001);
-	}
-
-	// TODO: remove debug code
-	private void printInventory(Iterable<ItemStack> e){
-		StringBuilder sb = new StringBuilder();
-		boolean first = true;
-		for(ItemStack i : e){
-			if(!first)sb.append("; ");
-			sb.append(String.valueOf(i));
-			first = false;
-		}
-		FMLLog.info("%s",sb.toString());
-	}
 
 }

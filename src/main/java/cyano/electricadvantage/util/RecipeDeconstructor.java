@@ -23,10 +23,6 @@ import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 public class RecipeDeconstructor {
 
-	// TODO: remove debug code
-	private static void p(Object o){
-		FMLLog.info("%s: %s", RecipeDeconstructor.class.getName(), String.valueOf(o));
-	}
 	
 	private static RecipeDeconstructor instance = null;
 	private static final Lock initLock = new ReentrantLock();
@@ -90,7 +86,6 @@ public class RecipeDeconstructor {
 	 * the provided inventory
 	 */
 	public SerializedInventory attemptToCraft(ItemStack craftingTarget, SerializedInventory serializedInventory, AtomicReference<ItemStack> output){
-		p("Staring to craft "+craftingTarget);
 		return attemptToCraft( craftingTarget, serializedInventory, output, 0);
 	}
 	/**
@@ -108,7 +103,6 @@ public class RecipeDeconstructor {
 	 */
 	private SerializedInventory attemptToCraft(ItemStack craftingTarget, SerializedInventory serializedInventory, AtomicReference<ItemStack> output, int recursionDepth){
 		// check recusion limit
-		p("craftingTarget="+craftingTarget+"; recursionDepth="+recursionDepth);
 		if(recursionDepth > RECURSION_LIMIT) return null;
 		if(craftingTarget == null) return null;
 		
@@ -117,7 +111,6 @@ public class RecipeDeconstructor {
 		if(recipes == null || recipes.isEmpty()) return null;
 		
 		for(IRecipe recipe : recipes){
-			p("Recipe type "+recipe.getClass().getName());
 			// make local copy of inventory and marshal the recipe into a list of item matchers
 			SerializedInventory tempInv = serializedInventory.copy();
 			List<ItemMatcher> ingredients = marshalCraftingRecipe(recipe);
@@ -127,11 +120,8 @@ public class RecipeDeconstructor {
 			for(ItemMatcher ingredient : ingredients){
 				if(tempInv.decrement(ingredient)){
 					// inventory contained requested ingredient, move on to the next
-					p("found ingredient "+ingredient+" in inventory ("+Arrays.toString(tempInv.deserialize().toArray())+")");
 					continue;
 				} else {
-					p("did not find ingredient "+ingredient+" in inventory, attempting to craft it "
-							+ "(inventory = "+Arrays.toString(tempInv.deserialize().toArray())+")");
 					// ingredient not found, try to craft it
 					Collection<ItemStack> validItems = ingredient.getValidItems();
 					if(validItems == null || validItems.isEmpty()){
@@ -139,20 +129,17 @@ public class RecipeDeconstructor {
 						// cannot craft
 						return null;
 					}
-					p("Ingredient items: "+Arrays.toString(validItems.toArray()));
 					boolean failure = true;
 					for(ItemStack vi : validItems){
 						AtomicReference<ItemStack> ret = new AtomicReference<>();
 						SerializedInventory r = attemptToCraft(vi,tempInv,ret,recursionDepth+1);
 						if(r != null) {
-							p("successfully crafted ingredient "+ret.get());
 							ItemStack y = ret.get();
 							if(y.stackSize > 1){
 								y.stackSize--;
 								r.add(y);
 							}
 							tempInv = r;
-							p("new inventory ("+Arrays.toString(tempInv.deserialize().toArray())+")");
 							failure = false;
 							break;
 						}

@@ -15,7 +15,6 @@ public class Ore extends Block {
 	private final int dropRange;
 	
 	
-	
 	public Ore(ItemStack oreDrop, int pickLevel, int variation){
 		super(Material.rock);
 		this.setCreativeTab(CreativeTabs.tabBlock);
@@ -47,9 +46,15 @@ public class Ore extends Block {
 	}
 	@Override public int quantityDropped(Random prng)
 	{
-		if(dropRange > 1){
-			return dropItem.stackSize + prng.nextInt(dropRange);
+		final int baseCount;
+		if(dropItem == null){
+			baseCount = 1;
+		} else {
+			baseCount = dropItem.stackSize;
 		}
-		return dropItem.stackSize;
+		if(dropRange > 1){
+			return baseCount + prng.nextInt(dropRange);
+		}
+		return baseCount;
 	}
 }

@@ -76,7 +76,7 @@ public class ElectricFabricatorTileEntity extends ElectricMachineTileEntity {
 				default:
 					throw new IllegalStateException("FSM state "+state.name()+" not recognized");
 			}
-			this.setActiveState(state != FSM.INACTIVE);
+			this.setActiveState(state == FSM.READY || state == FSM.CRAFTING || state == FSM.CRAFT_COMPLETE );
 			
 		}
 		
@@ -95,19 +95,24 @@ public class ElectricFabricatorTileEntity extends ElectricMachineTileEntity {
 	private ItemStack[] oldInventory = null;
 	private boolean inventoryChanged(){
 		if(oldInventory == null){
-			oldInventory = new ItemStack[getInventory().length];
-			System.arraycopy(getInventory(), 0, oldInventory, 0, getInventory().length);
+			ItemStack[] newInventory = getInventory();
+			oldInventory = new ItemStack[newInventory.length];
+			for(int i = 0; i < oldInventory.length; i++){
+				oldInventory[i] = (newInventory[i] == null ? null : newInventory[i].copy());
+			}
 			return true;
 		}
 		ItemStack[] newInventory = getInventory();
 		boolean changed = false;
 		for(int i = 0; i < oldInventory.length; i++){
-			if(!ItemStack.areItemsEqual(oldInventory[i], newInventory[i])){
+			if(!ItemStack.areItemStacksEqual(oldInventory[i], newInventory[i])){
 				changed = true;
 				break;
 			}
 		}
-		System.arraycopy(newInventory, 0, oldInventory, 0, newInventory.length);
+		for(int i = 0; i < oldInventory.length; i++){
+			oldInventory[i] = (newInventory[i] == null ? null : newInventory[i].copy());
+		}
 		return changed;
 	}
 	

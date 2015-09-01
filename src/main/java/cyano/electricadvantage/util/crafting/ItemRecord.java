@@ -1,4 +1,4 @@
-package cyano.electricadvantage.util;
+package cyano.electricadvantage.util.crafting;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;

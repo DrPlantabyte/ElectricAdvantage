@@ -1,4 +1,4 @@
-package cyano.electricadvantage.util;
+package cyano.electricadvantage.util.crafting;
 
 import java.util.ArrayList;
 import java.util.Arrays;

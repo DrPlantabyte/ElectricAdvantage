@@ -4,8 +4,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
-import cyano.electricadvantage.util.RecipeDeconstructor;
-import cyano.electricadvantage.util.SerializedInventory;
+import cyano.electricadvantage.util.crafting.RecipeDeconstructor;
+import cyano.electricadvantage.util.crafting.SerializedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.common.FMLLog;

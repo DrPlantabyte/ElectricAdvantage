@@ -88,7 +88,7 @@ public class VirtualCrop {
 				}
 			}
 		}
-		return 8;
+		return startingState;
 	}
 	
 	private static Block getBlockFieldByReflection(Object target) {

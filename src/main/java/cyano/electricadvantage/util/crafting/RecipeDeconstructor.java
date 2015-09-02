@@ -61,7 +61,16 @@ public class RecipeDeconstructor {
 				IRecipe recipe = (IRecipe)o;
 				ItemStack output = recipe.getRecipeOutput();
 				if(output == null) continue;
-				ItemRecord key = new ItemRecord(output);
+				// Fix for mal-formed items from other mods
+				ItemRecord key;
+				try{
+					key = new ItemRecord(output);
+				}catch(NullPointerException ex){
+					FMLLog.warning("%s: Corrupted item encountered in output from a recipe list: %s\n"
+							+ "Offending recipe instance of %s",
+							RecipeDeconstructor.class.getName(), output, o.getClass().getName());
+					continue;
+				}
 				if(recipeCache.containsKey(key) == false){
 					recipeCache.put(key, new ArrayList<IRecipe>());
 				}

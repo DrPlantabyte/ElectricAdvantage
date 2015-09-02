@@ -2,6 +2,7 @@ package cyano.electricadvantage.util.farming;
 
 import java.util.List;
 
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 public class CropGrowthCalculator {

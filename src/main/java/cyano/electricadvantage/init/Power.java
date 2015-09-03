@@ -6,6 +6,9 @@ import cyano.poweradvantage.api.ConduitType;
 public abstract class Power {
 
 	public static final ConduitType ELECTRIC_POWER = new ConduitType("electricity");
+	
+	public static final ConduitType GROWTHCHAMBER_POWER = new ConduitType("greenhouse");
+	
 	// 1 unit of electricity is 1 kJ of energy, 1 piece of coal has 50 MJ in it
 	public static final float STEAM_TO_ELECTRICITY = 31.25f;
 	public static final float ELECTRICITY_TO_STEAM = 1.0f / STEAM_TO_ELECTRICITY;

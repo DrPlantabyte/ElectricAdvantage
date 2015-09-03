@@ -18,6 +18,9 @@ import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.ShapedRecipes;
 import net.minecraft.item.crafting.ShapelessRecipes;
 import net.minecraftforge.fml.common.FMLLog;
+import net.minecraftforge.fml.common.registry.FMLControlledNamespacedRegistry;
+import net.minecraftforge.fml.common.registry.GameData;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
@@ -65,10 +68,11 @@ public class RecipeDeconstructor {
 				ItemRecord key;
 				try{
 					key = new ItemRecord(output);
-				}catch(NullPointerException ex){
+				}catch(Exception ex){
 					FMLLog.warning("%s: Corrupted item encountered in output from a recipe list: %s\n"
-							+ "Offending recipe instance of %s",
-							RecipeDeconstructor.class.getName(), output, o.getClass().getName());
+							+ "Offending recipe instance of %s\n"
+							+ "Exception message: %s",
+							RecipeDeconstructor.class.getName(), saferToString(output), o.getClass().getName(),ex);
 					continue;
 				}
 				if(recipeCache.containsKey(key) == false){
@@ -214,4 +218,50 @@ public class RecipeDeconstructor {
 		return output;
 	}
 	
+	
+	public String saferToString(ItemStack stack)
+    {
+		if(stack == null){
+			return "null";
+		}
+		String size, item, meta, mod;
+		size = String.valueOf(stack.stackSize);
+		FMLControlledNamespacedRegistry<Item> reg = GameData.getItemRegistry();
+		try{
+			meta = String.valueOf(stack.getItemDamage());
+		} catch(Exception ex){
+			FMLLog.severe("%s: Encountered a corrupted item unable to report its own damage value!", this.getClass().getName());
+			meta = "???";
+		}
+		Item i = stack.getItem();
+		if(i == null){
+			item = "null";
+			mod = "(unknown mod)";
+		} else {
+			try{
+				item = i.getUnlocalizedName();
+				String regName = String.valueOf(reg.getNameForObject(i));
+				if(regName.contains(":")){
+					mod = regName.substring(0, regName.indexOf(":"));
+				} else {
+					mod = "(could not get mod name for "+regName+")";
+				}
+			} catch(Exception ex){
+				FMLLog.severe("%s: Encountered a corrupted item with no unlocalized name!", this.getClass().getName());
+				if(reg.getId(i) != -1){
+					item = "(Unnamed item with ID "+reg.getId(i)+")";
+					String regName = String.valueOf(reg.getNameForObject(i));
+					if(regName.contains(":")){
+						mod = regName.substring(0, regName.indexOf(":"));
+					} else {
+						mod = "(could not get mod name for "+regName+")";
+					}
+				} else {
+					item = "(item not found in game registry)";
+					mod = "(unknown mod)";
+				}
+			}
+		}
+		return String.valueOf(mod) +":"+ String.valueOf(size) + "x" + String.valueOf(item) + "@" + String.valueOf(meta);
+    }
 }

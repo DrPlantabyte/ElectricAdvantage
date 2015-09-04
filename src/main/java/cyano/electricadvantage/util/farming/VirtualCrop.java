@@ -182,6 +182,4 @@ public class VirtualCrop {
 		return this.numberOfStages;
 	}
 	
-	
-	
 }

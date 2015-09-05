@@ -1,12 +1,8 @@
 {
     "variants": {
-        "active=true,facing=east":   { "model": "electricadvantage:growth_chamber_controller",  "y": 90  },
-        "active=true,facing=north":  { "model": "electricadvantage:growth_chamber_controller"   },
-        "active=true,facing=south":  { "model": "electricadvantage:growth_chamber_controller",  "y": 180 },
-        "active=true,facing=west":   { "model": "electricadvantage:growth_chamber_controller",  "y": 270 },
-        "active=false,facing=east":  { "model": "electricadvantage:growth_chamber_controller", "y": 90  },
-        "active=false,facing=north": { "model": "electricadvantage:growth_chamber_controller"  },
-        "active=false,facing=south": { "model": "electricadvantage:growth_chamber_controller", "y": 180 },
-        "active=false,facing=west":  { "model": "electricadvantage:growth_chamber_controller", "y": 270 }
+        "facing=east":   { "model": "electricadvantage:growth_chamber_controller",  "y": 90  },
+        "facing=north":  { "model": "electricadvantage:growth_chamber_controller"   },
+        "facing=south":  { "model": "electricadvantage:growth_chamber_controller",  "y": 180 },
+        "facing=west":   { "model": "electricadvantage:growth_chamber_controller",  "y": 270 }
     }
 }

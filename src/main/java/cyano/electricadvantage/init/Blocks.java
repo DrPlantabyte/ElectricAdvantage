@@ -37,6 +37,9 @@ public abstract class Blocks {
 	public static GUIBlock laser_drill;
 	public static GUIBlock laser_turret;
 	public static GUIBlock fabricator;
+	public static GUIBlock growth_chamber;
+	public static GUIBlock growth_chamber_controller;
+	public static GUIBlock oven;
 	
 	
 
@@ -61,6 +64,9 @@ public abstract class Blocks {
 		rock_crusher = (GUIBlock)addBlock(new ElectricCrusherBlock(),"electric_crusher");
 		laser_drill = (GUIBlock)addBlock(new ElectricDrillBlock(),"electric_drill");
 		fabricator = (GUIBlock)addBlock(new ElectricFabricatorBlock(),"electric_fabricator");
+		growth_chamber = (GUIBlock)addBlock(new GrowthChamberBlock(),"growth_chamber");
+		growth_chamber_controller = (GUIBlock)addBlock(new GrowthChamberControllerBlock(),"growth_chamber_controller");
+		oven = (GUIBlock)addBlock(new ElectricOvenBlock(),"electric_oven");
 		
 		// required OreDictionary entries
 		OreDictionary.registerOre("blockDirt", net.minecraft.init.Blocks.dirt);

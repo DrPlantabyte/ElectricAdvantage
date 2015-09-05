@@ -26,9 +26,9 @@ public class GrowthChamberTileEntity extends ElectricMachineTileEntity {
 	public void tickUpdate(boolean isServer) {
 		if(isServer){
 			boolean[] recalculate = inventoryChanged();
-			boolean active = !hasRedstoneSignal();
+			boolean active = false;
 			boolean flagSync = false;
-			if(hasRedstoneSignal()){
+			if(hasRedstoneSignal() || getEnergy() < ENERGY_PER_TICK){
 				for(int slot = 0; slot < GROWTH_AREA; slot++){
 					if(progression[slot] > 0){
 						progression[slot] = 0;
@@ -43,6 +43,7 @@ public class GrowthChamberTileEntity extends ElectricMachineTileEntity {
 						flagSync = true;
 					}
 					if(crops[slot] != null){
+						active = true;
 						progression[slot]++;
 						subtractEnergy(ENERGY_PER_TICK, getType());
 						if(progression[slot] >= TICKS_PER_GROWTH){
@@ -83,6 +84,7 @@ public class GrowthChamberTileEntity extends ElectricMachineTileEntity {
 			if(flagSync){
 				this.sync();
 			}
+			this.setActiveState(active);
 		}
 	}
 	

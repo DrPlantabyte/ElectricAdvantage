@@ -29,7 +29,7 @@ public class GrowthChamberControllerTileEntity extends cyano.poweradvantage.api.
 	static final float WATER_PER_UNIT = 1f;
 	static final float SOIL_PER_UNIT = 0.001f;
 	static final float SOIL_PER_BLOCK = 1f;
-	static final float MAX_SOIL = 1.5f;
+	static final float MAX_SOIL = SOIL_PER_BLOCK * 1.5f;
 
 	private final FluidTank tank;
 
@@ -48,7 +48,7 @@ public class GrowthChamberControllerTileEntity extends cyano.poweradvantage.api.
 
 	private boolean redstone = true;
 
-	private int timeSinceSound = 0;
+	private long timeSinceLastPowerRequest = 100;
 
 	@Override
 	public void tickUpdate(boolean isServerWorld) {
@@ -61,6 +61,7 @@ public class GrowthChamberControllerTileEntity extends cyano.poweradvantage.api.
 					inventory[0] = null;
 				}
 			}
+			timeSinceLastPowerRequest++;
 		}
 	}
 	
@@ -211,6 +212,10 @@ public class GrowthChamberControllerTileEntity extends cyano.poweradvantage.api.
 		if(inventory[0] == null) return 0;
 		return Math.min(Math.max(15 * inventory[0].stackSize * inventory[0].getMaxStackSize() / inventory[0].getMaxStackSize(),1),15);
 	}
+	
+	public boolean isPowered(){
+		return timeSinceLastPowerRequest < 30;
+	}
 
 	///// Overrides to make this a multi-type block /////
 	@Override
@@ -290,6 +295,7 @@ public class GrowthChamberControllerTileEntity extends cyano.poweradvantage.api.
 					this);
 			return request;
 		} else if(ConduitType.areSameType(offer, Power.ELECTRIC_POWER)){
+			timeSinceLastPowerRequest = 0;
 			return new PowerRequest(PowerRequest.MEDIUM_PRIORITY,ELECTRICITY_PER_UNIT * (this.getEnergyCapacity() - this.getEnergy()),this);
 		} else {
 			return PowerRequest.REQUEST_NOTHING;

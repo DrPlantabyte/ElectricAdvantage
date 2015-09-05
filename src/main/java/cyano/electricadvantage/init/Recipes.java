@@ -83,7 +83,9 @@ public abstract class Recipes {
 		}
 
 		// Machine recipes
-		GameRegistry.addRecipe(electricMachineRecipe(Blocks.steam_powered_generator, "conduitSteam","governor"));
+		if(OreDictionary.getOres("governor") != null && OreDictionary.getOres("governor").isEmpty() == false){
+			GameRegistry.addRecipe(electricMachineRecipe(Blocks.steam_powered_generator, "conduitSteam","governor"));
+		}
 		GameRegistry.addRecipe(new ShapedOreRecipe(Blocks.arc_furnace, "bbb","bub","bbb",'b',"blockBrick",'u',"PSU"));
 		GameRegistry.addRecipe(electricMachineRecipe(Blocks.battery_array, "chest"));
 		GameRegistry.addRecipe(electricMachineRecipe(Blocks.rock_crusher, net.minecraft.init.Blocks.piston, "sprocket"));
@@ -91,7 +93,9 @@ public abstract class Recipes {
 		GameRegistry.addRecipe(electricMachineRecipe(Blocks.laser_turret, "gemEmerald", "gemDiamond"));
 		GameRegistry.addRecipe(electricMachineRecipe(Blocks.laser_drill, "blockDiamond"));
 		GameRegistry.addRecipe(electricMachineRecipe(Blocks.fabricator, net.minecraft.init.Blocks.crafting_table));
-		
+		GameRegistry.addRecipe(electricMachineRecipe(Blocks.growth_chamber, net.minecraft.init.Items.flower_pot, "microchip"));
+		GameRegistry.addRecipe(electricMachineRecipe(Blocks.growth_chamber_controller, net.minecraft.init.Items.flower_pot, "circuitBoard"));
+		GameRegistry.addRecipe(electricMachineRecipe(Blocks.oven, "paneGlass", "PSU"));
 		
 		initDone = true;
 	}

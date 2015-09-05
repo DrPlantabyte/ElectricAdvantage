@@ -24,6 +24,9 @@ public abstract class Entities {
 		registerTileEntity(ElectricCrusherTileEntity.class);
 		registerTileEntity(ElectricDrillTileEntity.class);
 		registerTileEntity(ElectricFabricatorTileEntity.class);
+		registerTileEntity(GrowthChamberTileEntity.class);
+		registerTileEntity(GrowthChamberControllerTileEntity.class);
+		registerTileEntity(ElectricOvenTileEntity.class);
 		
 		registerTileEntity(PhotovoltaicGeneratorTileEntity.class);
 		registerTileEntity(SteamPoweredElectricGeneratorTileEntity.class);

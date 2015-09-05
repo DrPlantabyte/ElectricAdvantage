@@ -3,6 +3,7 @@ package cyano.electricadvantage.machines;
 import java.util.Arrays;
 
 import cyano.electricadvantage.init.Power;
+import cyano.poweradvantage.api.ConduitType;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -21,8 +22,13 @@ public abstract class ElectricMachineTileEntity extends cyano.poweradvantage.api
 	private final int[] otherSlots;
 	
 	
-	public ElectricMachineTileEntity(String name, float bufferSize,int numInputSlots, int numOutputSlots, int numOtherSlots) {
-		super(Power.ELECTRIC_POWER, bufferSize, name);
+	
+	public ElectricMachineTileEntity(String name,float bufferSize,int numInputSlots, int numOutputSlots, int numOtherSlots) {
+		this(name,Power.ELECTRIC_POWER,bufferSize,numInputSlots,numOutputSlots,numOtherSlots);
+	}
+	
+	public ElectricMachineTileEntity(String name, ConduitType powerType, float bufferSize,int numInputSlots, int numOutputSlots, int numOtherSlots) {
+		super(powerType, bufferSize, name);
 		inventory = new ItemStack[numInputSlots+numOutputSlots+numOtherSlots];
 		inputSlots = new int[numInputSlots];
 		outputSlots = new int[numOutputSlots];

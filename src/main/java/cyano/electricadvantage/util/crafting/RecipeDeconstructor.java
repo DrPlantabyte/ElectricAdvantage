@@ -63,11 +63,18 @@ public class RecipeDeconstructor {
 			if(o instanceof IRecipe){
 				IRecipe recipe = (IRecipe)o;
 				ItemStack output = recipe.getRecipeOutput();
-				if(output == null || output.getItem() == null) {
-					// invalid recipe
+				ItemRecord key;
+				try{
+					if(output == null || output.getItem() == null || output.stackSize <= 0) {
+						// invalid recipe
+						continue;
+					}
+					key = new ItemRecord(output);
+				} catch(Exception ex){
+					// extra insurance
+					FMLLog.severe("%s: ERROR! Encountered corrupted item! One of the installed mods added an invalid crafting recipe to teh game registry.");;
 					continue;
 				}
-				ItemRecord key = new ItemRecord(output);
 				if(recipeCache.containsKey(key) == false){
 					recipeCache.put(key, new ArrayList<IRecipe>());
 				}

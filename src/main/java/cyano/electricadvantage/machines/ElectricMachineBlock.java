@@ -1,7 +1,7 @@
 package cyano.electricadvantage.machines;
 
-import com.google.common.base.Predicate;
-
+import cyano.electricadvantage.init.Power;
+import cyano.poweradvantage.api.ConduitType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
@@ -13,9 +13,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.FMLLog;
-import cyano.electricadvantage.init.Power;
-import cyano.poweradvantage.api.PoweredEntity;
 
 public abstract class ElectricMachineBlock extends cyano.poweradvantage.api.simple.BlockSimplePowerConsumer{
 
@@ -31,10 +28,14 @@ public abstract class ElectricMachineBlock extends cyano.poweradvantage.api.simp
 	public ElectricMachineBlock() {
 		this(Material.piston);
 	}
-	
-	public ElectricMachineBlock(Material m) {
-		super(m, 0.75f, Power.ELECTRIC_POWER);
+
+	public ElectricMachineBlock(Material m, ConduitType type) {
+		super(m, 0.75f, type);
 		this.setDefaultState(getDefaultState().withProperty(ACTIVE, false).withProperty(POWERED, false).withProperty(FACING, EnumFacing.NORTH));
+	}
+
+	public ElectricMachineBlock(Material m) {
+		this(m,Power.ELECTRIC_POWER);
 	}
 	
 	/**

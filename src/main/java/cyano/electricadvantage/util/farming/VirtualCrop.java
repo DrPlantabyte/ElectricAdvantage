@@ -173,9 +173,12 @@ public class VirtualCrop {
 		stage++;
 		return stage >= numberOfStages;
 	}
-	
+
 	public byte getCurrentGrowth(){
 		return this.stage;
+	}
+	public void setCurrentGrowth(byte newValue){
+		this.stage = (newValue > getMaxGrowth() ? getMaxGrowth() : newValue);
 	}
 	
 	public byte getMaxGrowth(){

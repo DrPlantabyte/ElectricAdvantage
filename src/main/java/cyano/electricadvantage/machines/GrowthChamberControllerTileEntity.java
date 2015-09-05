@@ -1,0 +1,403 @@
+package cyano.electricadvantage.machines;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import cyano.electricadvantage.init.Power;
+import cyano.poweradvantage.api.ConduitType;
+import cyano.poweradvantage.api.PowerRequest;
+import cyano.poweradvantage.api.fluid.FluidRequest;
+import cyano.poweradvantage.init.Fluids;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntityFurnace;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidContainerRegistry;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTank;
+import net.minecraftforge.fluids.FluidTankInfo;
+import net.minecraftforge.fluids.IFluidHandler;
+import net.minecraftforge.oredict.OreDictionary;
+
+public class GrowthChamberControllerTileEntity extends cyano.poweradvantage.api.simple.TileEntitySimplePowerSource implements IFluidHandler{
+
+
+	static final float ELECTRICITY_PER_UNIT = 2f;
+	static final float WATER_PER_UNIT = 1f;
+	static final float SOIL_PER_UNIT = 0.001f;
+	static final float SOIL_PER_BLOCK = 1f;
+	static final float MAX_SOIL = 1.5f;
+
+	private final FluidTank tank;
+
+	private final ItemStack[] inventory;
+
+	private float soil = 0f;
+
+
+	private final int[] dataSyncArray = new int[3];
+
+	public GrowthChamberControllerTileEntity() {
+		super(Power.GROWTHCHAMBER_POWER, 100, GrowthChamberControllerTileEntity.class.getSimpleName());
+		tank = new FluidTank(FluidContainerRegistry.BUCKET_VOLUME * 2);
+		inventory = new ItemStack[1];
+	}
+
+	private boolean redstone = true;
+
+	private int timeSinceSound = 0;
+
+	@Override
+	public void tickUpdate(boolean isServerWorld) {
+		if(isServerWorld){
+			// server-side logic
+			if(MAX_SOIL - soil > SOIL_PER_BLOCK && isDirt(inventory[0])){
+				soil += SOIL_PER_BLOCK;
+				inventory[0].stackSize--;
+				if(inventory[0].stackSize <= 0){
+					inventory[0] = null;
+				}
+			}
+		}
+	}
+	
+	private static boolean isDirt(ItemStack i){
+		if(i == null) return false;
+		for(ItemStack d : OreDictionary.getOres("blockDirt")){
+			if(OreDictionary.itemMatches(d, i, false)) return true;
+		}
+		return false;
+	}
+
+
+
+	private boolean hasRedstoneSignal() {
+		return getWorld().isBlockPowered(getPos());
+	}
+
+
+	private float oldEnergy = 0;
+	private float oldSoil = 0;
+	private int oldWater = 0;
+	@Override
+	public void powerUpdate(){
+		super.powerUpdate();
+		// powerUpdate occurs once every 8 world ticks and is scheduled such that neighboring 
+		// machines don't powerUpdate in the same world tick. To reduce network congestion, 
+		// I'm doing the synchonization logic here instead of in the tickUpdate method
+		boolean updateFlag = false;
+
+		if(oldEnergy != getEnergy()){
+			oldEnergy = getEnergy();
+			updateFlag = true;
+		}
+		if(oldSoil != soil){
+			oldSoil = soil;
+			updateFlag = true;
+		}
+		if(oldWater != getTank().getFluidAmount()){
+			oldWater = getTank().getFluidAmount();
+			updateFlag = true;
+		}
+
+		redstone = hasRedstoneSignal();
+
+		if(updateFlag){
+			super.sync();
+		}
+	}
+
+	public float getWaterLevel(){
+		return ((float)getTank().getFluidAmount()) / ((float)getTank().getCapacity());
+	}
+
+	public float getEnergyLevel(){
+		return this.getEnergy() / this.getEnergyCapacity();
+	}
+
+	public float getSoil(){
+		return soil;
+	}
+
+	public void setSoil(float soil){
+		this.soil = soil;
+	}
+	public void addSoil(float soil){
+		this.soil = Math.min(MAX_SOIL, this.soil + soil);
+	}
+
+
+	public FluidTank getTank(){
+		return tank;
+	}
+
+	@Override
+	protected ItemStack[] getInventory() {
+		return inventory;
+	}
+
+	@Override
+	public int[] getDataFieldArray() {
+		return dataSyncArray;
+	}
+
+	@Override
+	public void prepareDataFieldsForSync() {
+		dataSyncArray[0] = Float.floatToRawIntBits(this.getEnergy());
+		dataSyncArray[1] = getTank().getFluidAmount();
+		dataSyncArray[2] = Float.floatToRawIntBits(this.getSoil());
+	}
+
+	@Override
+	public void onDataFieldUpdate() {
+		this.setEnergy(Float.intBitsToFloat(dataSyncArray[0]), this.getType());
+		this.getTank().setFluid(new FluidStack(FluidRegistry.WATER,dataSyncArray[1]));
+		this.setSoil(Float.intBitsToFloat(dataSyncArray[2]));
+	}
+
+
+	/**
+	 * Handles data saving and loading
+	 * @param tagRoot An NBT tag
+	 */
+	@Override
+	public void writeToNBT(final NBTTagCompound tagRoot) {
+		super.writeToNBT(tagRoot);
+		NBTTagCompound tankTag = new NBTTagCompound();
+		this.getTank().writeToNBT(tankTag);
+		tagRoot.setTag("Tank", tankTag);
+		tagRoot.setFloat("soil", soil);
+	}
+	/**
+	 * Handles data saving and loading
+	 * @param tagRoot An NBT tag
+	 */
+	@Override
+	public void readFromNBT(final NBTTagCompound tagRoot) {
+		super.readFromNBT(tagRoot);
+		if (tagRoot.hasKey("Tank")) {
+			NBTTagCompound tankTag = tagRoot.getCompoundTag("Tank");
+			getTank().readFromNBT(tankTag);
+			if(tankTag.hasKey("Empty")){
+				// empty the tank if NBT says its empty (not default behavior of Tank.readFromNBT(...) )
+				getTank().setFluid(null);
+			}
+		}
+		if(tagRoot.hasKey("soil")){
+			this.soil = tagRoot.getFloat("soil");
+		}
+	}
+
+	@Override
+	public boolean canInsertItem(final int slot, final ItemStack srcItem, final EnumFacing side) {
+		return isDirt(srcItem) && slot == 0;
+	}
+
+	@Override
+	public boolean isItemValidForSlot(final int slot, final ItemStack srcItem) {
+		return isDirt(srcItem) && slot == 0;
+	}
+	
+	@Override
+	public boolean canExtractItem(final int slot, final ItemStack targetItem, final EnumFacing side) {
+		return false;
+	}
+	
+	
+	public int getComparatorOutput() {
+		if(inventory[0] == null) return 0;
+		return Math.min(Math.max(15 * inventory[0].stackSize * inventory[0].getMaxStackSize() / inventory[0].getMaxStackSize(),1),15);
+	}
+
+	///// Overrides to make this a multi-type block /////
+	@Override
+	public boolean isPowerSink(){
+		return true;
+	}
+
+	/**
+	 * Adds "energy" as a fluid to the FluidTank returned by getTank(). This implementation ignores 
+	 * all non-fluid energy types.
+	 * @param amount amount of energy/fluid to add
+	 * @param type the type of energy/fluid being added.
+	 * @return The amount that was actually added
+	 */
+	@Override
+	public float addEnergy(float amount, ConduitType type){
+		if(Fluids.isFluidType(type)){
+			// water
+			if(this.canFill(null, Fluids.conduitTypeToFluid(type))){
+				return this.fill(null, new FluidStack(Fluids.conduitTypeToFluid(type),(int)amount), true);
+			} else {
+				return 0;
+			}
+		} else if(ConduitType.areSameType(type, Power.ELECTRIC_POWER)){
+			// electricity
+			float delta = Math.min(ELECTRICITY_PER_UNIT * (this.getEnergyCapacity() - this.getEnergy()),amount);
+			this.addEnergy(delta / ELECTRICITY_PER_UNIT, getType());
+			return delta;
+		} else if(ConduitType.areSameType(type, getType())){
+			// greenhouse energy
+			return super.addEnergy(amount, type);
+		}
+		// unsupported energy type
+		return 0;
+	}
+	/**
+	 * Sets the tank contents using the energy API method
+	 * @param amount amount of energy/fluid to add
+	 * @param type the type of energy/fluid being added.
+	 */
+	@Override
+	public void setEnergy(float amount,ConduitType type) {
+		if(Fluids.isFluidType(type)){
+			getTank().setFluid(new FluidStack(Fluids.conduitTypeToFluid(type),(int)amount));
+		} else if(ConduitType.areSameType(type, Power.ELECTRIC_POWER)){
+			this.addEnergy(amount / ELECTRICITY_PER_UNIT, getType());
+		} else if(ConduitType.areSameType(type, getType())){
+			super.setEnergy(amount, type);
+		}
+	}
+	/**
+	 * Subtracts "energy" as a fluid to the FluidTank returned by getTank(). This implementation 
+	 * ignores all non-fluid energy types.
+	 * @param amount amount of energy/fluid to add
+	 * @param type the type of energy/fluid being added.
+	 * @return The amount that was actually added
+	 */
+	@Override
+	public float subtractEnergy(float amount, ConduitType type){
+		if(Fluids.isFluidType(type)){
+			if(this.canDrain(null, Fluids.conduitTypeToFluid(type))){
+				return -1*this.drain(null, new FluidStack(Fluids.conduitTypeToFluid(type),(int)amount), true).amount;
+			} else {
+				return 0;
+			}
+		}else{
+			return this.addEnergy(-1*amount, type);
+		}
+	}
+
+	@Override
+	public PowerRequest getPowerRequest(ConduitType offer) {
+		if(redstone) return PowerRequest.REQUEST_NOTHING;
+		if(Fluids.conduitTypeToFluid(offer) == FluidRegistry.WATER){
+			PowerRequest request = new FluidRequest(FluidRequest.MEDIUM_PRIORITY+1,
+					(getTank().getCapacity() - getTank().getFluidAmount()),
+					this);
+			return request;
+		} else if(ConduitType.areSameType(offer, Power.ELECTRIC_POWER)){
+			return new PowerRequest(PowerRequest.MEDIUM_PRIORITY,ELECTRICITY_PER_UNIT * (this.getEnergyCapacity() - this.getEnergy()),this);
+		} else {
+			return PowerRequest.REQUEST_NOTHING;
+		}
+	}
+
+	/**
+	 * Determines whether this conduit is compatible with an adjacent one
+	 * @param type The type of energy in the conduit
+	 * @param blockFace The side through-which the energy is flowing
+	 * @return true if this conduit can flow the given energy type through the given face, false 
+	 * otherwise
+	 */
+	public boolean canAcceptType(ConduitType type, EnumFacing blockFace){
+		return ConduitType.areSameType(getType(), type) || ConduitType.areSameType(Power.ELECTRIC_POWER, type)
+				 || ConduitType.areSameType(Fluids.fluidConduit_general, type);
+	}
+	/**
+	 * Determines whether this conduit is compatible with a type of energy through any side
+	 * @param type The type of energy in the conduit
+	 * @return true if this conduit can flow the given energy type through one or more of its block 
+	 * faces, false otherwise
+	 */
+	public boolean canAcceptType(ConduitType type){
+		return ConduitType.areSameType(getType(), type) || ConduitType.areSameType(Power.ELECTRIC_POWER, type)
+				 || ConduitType.areSameType(Fluids.fluidConduit_general, type);
+	}
+	///// end multi-type overrides /////
+
+
+
+	///// IFluidHandler /////
+
+	/**
+	 * Implementation of IFluidHandler
+	 * @param face Face of the block being polled
+	 * @param fluid The fluid being added/removed
+	 * @param forReal if true, then the fluid in the tank will change
+	 */
+	@Override
+	public int fill(EnumFacing face, FluidStack fluid, boolean forReal) {
+		if(getTank().getFluidAmount() <= 0 || getTank().getFluid().getFluid().equals(fluid.getFluid())){
+			return getTank().fill(fluid, forReal);
+		} else {
+			return 0;
+		}
+	}
+	/**
+	 * Implementation of IFluidHandler
+	 * @param face Face of the block being polled
+	 * @param fluid The fluid being added/removed
+	 * @param forReal if true, then the fluid in the tank will change
+	 */
+	@Override
+	public FluidStack drain(EnumFacing face, FluidStack fluid, boolean forReal) {
+		if(getTank().getFluidAmount() > 0 && getTank().getFluid().getFluid().equals(fluid.getFluid())){
+			return getTank().drain(fluid.amount,forReal);
+		} else {
+			return new FluidStack(getTank().getFluid().getFluid(),0);
+		}
+	}
+	/**
+	 * Implementation of IFluidHandler
+	 * @param face Face of the block being polled
+	 * @param amount The amount of fluid being added/removed
+	 * @param forReal if true, then the fluid in the tank will change
+	 */
+	@Override
+	public FluidStack drain(EnumFacing face, int amount, boolean forReal) {
+		if(getTank().getFluidAmount() > 0 ){
+			return getTank().drain(amount,forReal);
+		} else {
+			return null;
+		}
+	}
+	/**
+	 * Implementation of IFluidHandler
+	 * @param face Face of the block being polled
+	 * @param fluid The fluid being added/removed
+	 */
+	@Override
+	public boolean canFill(EnumFacing face, Fluid fluid) {
+		if(fluid != FluidRegistry.WATER) return false;
+		if(getTank().getFluid() == null) return true;
+		return getTank().getFluidAmount() <= getTank().getCapacity() && fluid.equals(getTank().getFluid().getFluid());
+	}
+	/**
+	 * Implementation of IFluidHandler
+	 * @param face Face of the block being polled
+	 * @param fluid The fluid being added/removed
+	 */
+	@Override
+	public boolean canDrain(EnumFacing face, Fluid fluid) {
+		if(getTank().getFluid() == null) return false;
+		return getTank().getFluidAmount() > 0 && fluid.equals(getTank().getFluid().getFluid());
+	}
+
+	/**
+	 * Implementation of IFluidHandler
+	 * @param face Face of the block being polled
+	 * @return array of FluidTankInfo describing all of the FluidTanks
+	 */
+	@Override
+	public FluidTankInfo[] getTankInfo(EnumFacing face) {
+		FluidTankInfo[] arr = new FluidTankInfo[1];
+		arr[0] = getTank().getInfo();
+		return arr;
+	}
+
+	///// end of IFluidHandler methods /////
+}

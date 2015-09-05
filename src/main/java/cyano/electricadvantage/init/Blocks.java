@@ -62,6 +62,10 @@ public abstract class Blocks {
 		laser_drill = (GUIBlock)addBlock(new ElectricDrillBlock(),"electric_drill");
 		fabricator = (GUIBlock)addBlock(new ElectricFabricatorBlock(),"electric_fabricator");
 		
+		// required OreDictionary entries
+		OreDictionary.registerOre("blockDirt", net.minecraft.init.Blocks.dirt);
+		OreDictionary.registerOre("blockDirt", net.minecraft.init.Blocks.grass);
+		
 		initDone = true;
 	}
 	

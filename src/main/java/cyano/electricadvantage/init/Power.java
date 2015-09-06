@@ -23,4 +23,5 @@ public abstract class Power {
 	public static final float LEAD_ACID_BATTERY_CAPACITY = 1000f;
 	
 	public static final DamageSource laser_damage = new DamageSource("laser");
+	public static final DamageSource propeller_damage = new DamageSource("propeller");
 }

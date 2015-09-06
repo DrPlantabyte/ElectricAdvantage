@@ -41,3 +41,5 @@ tooltip.battery.capacity=Capacity
 
 death.attack.laser=%1$s vaporized
 death.attack.laser.player=%2$s vaporized %1$s 
+death.attack.propeller=%1$s was pulverized by a propeller.
+death.attack.propeller.player=%2$s pushed %1$s into a propeller.

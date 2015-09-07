@@ -5,11 +5,12 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.fml.common.FMLLog;
 
 public class ElectricOvenTileEntity extends ElectricMachineTileEntity{
 
 
-	public static final float ENERGY_PER_TICK = 8f;
+	public static final float ENERGY_PER_TICK = 4f;
 	private final short totalCookTime = 100;
 	private short progress = 0;
 	
@@ -19,26 +20,28 @@ public class ElectricOvenTileEntity extends ElectricMachineTileEntity{
 
 	@Override
 	public void tickUpdate(boolean isServerWorld) {
+		//FMLLog.info("Energy is %s", getEnergy()); // TODO: remove
 		if(isServerWorld){
 			boolean active = false;
-				if(getInputSlot(0) == null){
-					progress = 0;
-				} else if(getEnergy() >= ENERGY_PER_TICK && getInputSlot(0) != null){
-					ItemStack output = FurnaceRecipes.instance().getSmeltingResult(getInputSlot(0));
-					if(isFoodItem(output) && this.hasSpaceForItemInOutputSlots(output)){
-						subtractEnergy(ENERGY_PER_TICK,Power.ELECTRIC_POWER);
-						progress++;
-						if(progress >= totalCookTime){
-							this.insertItemToOutputSlots(output.copy());
-						}
-						active = true;
-					} else {
+			if(getInputSlot(0) == null || hasRedstoneSignal()){
+				progress = 0;
+			} else if(getEnergy() >= ENERGY_PER_TICK){
+				ItemStack output = FurnaceRecipes.instance().getSmeltingResult(getInputSlot(0));
+				if(isFoodItem(output) && hasSpaceForItemInOutputSlots(output)){
+					subtractEnergy(ENERGY_PER_TICK,Power.ELECTRIC_POWER);
+					progress++;
+					if(progress >= totalCookTime){
+						this.insertItemToOutputSlots(output.copy());
 						progress = 0;
 					}
+					active = true;
 				} else {
-					if(progress > 0) progress--;
+					progress = 0;
 				}
-			this.setActiveState(active && getEnergy() >= ENERGY_PER_TICK);
+			} else {
+				if(progress > 0) progress--;
+			}
+			this.setActiveState(active);
 		}
 		
 	}
@@ -53,6 +56,16 @@ public class ElectricOvenTileEntity extends ElectricMachineTileEntity{
 		if(item == null) return false;
 		return isFoodItem(FurnaceRecipes.instance().getSmeltingResult(item));
 		
+	}
+	
+	short oldValue = 0;
+	@Override
+	public void powerUpdate(){
+		super.powerUpdate();
+		if(oldValue != progress){
+			oldValue = progress;
+			this.sync();
+		}
 	}
 	
 	@Override

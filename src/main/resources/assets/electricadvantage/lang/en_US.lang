@@ -32,7 +32,7 @@ tile.electricadvantage.hydroelectric_generator.name=Hydroelectric Generator
 tile.electricadvantage.photovoltaic_generator.name=Photovoltaic Generator
 tile.electricadvantage.steam_powered_generator.name=Steam-Powered Electric Generator
 tile.electricadvantage.growth_chamber.name=Growth Chamber
-tile.electricadvantage.growth_chamber.name=Growth Chamber Control Unit
+tile.electricadvantage.growth_chamber_controller.name=Growth Chamber Control Unit
 tile.electricadvantage.li_ore.name=Lithium Ore
 tile.electricadvantage.sulfur_ore.name=Sulfur Ore
 

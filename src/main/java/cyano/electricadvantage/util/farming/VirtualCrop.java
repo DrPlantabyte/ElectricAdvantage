@@ -37,6 +37,7 @@ public class VirtualCrop {
 	}
 	
 	public static VirtualCrop createVirtualCrop(ItemStack stack, World w, BlockPos pos){
+		if(stack == null || stack.getItem() == null) return null;
 		ItemRecord r = new ItemRecord(stack);
 		ItemStack seed = stack.copy();
 		seed.stackSize = 1;

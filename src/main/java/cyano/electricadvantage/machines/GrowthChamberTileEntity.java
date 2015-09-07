@@ -131,7 +131,8 @@ public class GrowthChamberTileEntity extends ElectricMachineTileEntity {
 	protected void saveTo(NBTTagCompound tagRoot) {
 		byte[] growthStages = new byte[GROWTH_AREA];
 		for(int i = 0; i < growthStages.length; i++){
-			growthStages[i] = crops[i].getCurrentGrowth();
+			if(crops[i] != null)
+				growthStages[i] = crops[i].getCurrentGrowth();
 		}
 		tagRoot.setByteArray("growth", growthStages);
 		tagRoot.setIntArray("prog", progression);

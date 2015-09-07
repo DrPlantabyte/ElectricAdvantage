@@ -22,6 +22,9 @@ public abstract class GUI {
 		Blocks.laser_turret.setGuiID(MachineGUIRegistry.addGUI(new GenericMachineGUI()), PowerAdvantage.getInstance());
 		Blocks.laser_drill.setGuiID(MachineGUIRegistry.addGUI(new ElectricDrillGUI()), PowerAdvantage.getInstance());
 		Blocks.fabricator.setGuiID(MachineGUIRegistry.addGUI(new FabricatorGUI()), PowerAdvantage.getInstance());
+		Blocks.growth_chamber.setGuiID(MachineGUIRegistry.addGUI(new GrowthChamberGUI()), PowerAdvantage.getInstance());
+		Blocks.growth_chamber_controller.setGuiID(MachineGUIRegistry.addGUI(new GrowthChamberControllerGUI()), PowerAdvantage.getInstance());
+		Blocks.oven.setGuiID(MachineGUIRegistry.addGUI(new OvenGUI()), PowerAdvantage.getInstance());
 		
 		initDone = true;
 	}

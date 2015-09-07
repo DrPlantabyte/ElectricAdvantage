@@ -9,7 +9,7 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 
-public class HydroTurbineEntity extends net.minecraft.entity.Entity{
+public class HydroturbineEntity extends net.minecraft.entity.Entity{
 
 	public static final double DEGREES_PER_TICK = 18;
 	private static final float RADIANS_TO_DEGREES = (float)(180 / Math.PI);
@@ -18,17 +18,17 @@ public class HydroTurbineEntity extends net.minecraft.entity.Entity{
 	public boolean isSpinning = false;
 	public TileEntity parent = null;
 	
-	public HydroTurbineEntity(World w) {
+	public HydroturbineEntity(World w) {
 		super(w);
 		this.width = 0.9375F;
 		this.height = 0.9375F;
 	}
-	public HydroTurbineEntity(World w, BlockPos parentTileEntity) {
+	public HydroturbineEntity(World w, BlockPos parentTileEntity) {
 		this(w);
 		this.parent = w.getTileEntity(parentTileEntity);
 	}
 
-	public HydroTurbineEntity(World w, TileEntity parentTileEntity) {
+	public HydroturbineEntity(World w, TileEntity parentTileEntity) {
 		this(w);
 		this.parent = parentTileEntity;
 	}
@@ -61,9 +61,12 @@ public class HydroTurbineEntity extends net.minecraft.entity.Entity{
 			}
 		} else {
 			// server-side only
+			// TODO: uncomment
+			/*
 			if(parent == null || parent.isInvalid()){
 				this.kill();
 			}
+			*/
 		}
 	}
 	

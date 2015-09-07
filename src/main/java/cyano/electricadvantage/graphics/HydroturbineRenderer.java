@@ -36,10 +36,10 @@ public class HydroturbineRenderer extends Render{
 			final float topHeight = 1f;
 			final float bottomHeight = 0.375f;
 			final float radius = 0.0625f;
-			final float shaftMinU =- 0.5f;
-			final float shaftMinV =- 0.5f;
-			final float shaftMaxU =- 1.0f;
-			final float shaftMaxV =- 1.0f;
+			final float shaftMinU = 0.5f;
+			final float shaftMinV = 0.5f;
+			final float shaftMaxU = 1.0f;
+			final float shaftMaxV = 1.0f;
 			GlStateManager.rotate(e.rotationYaw, 0.0f, 1.0f, 0.0f);
 			this.bindTexture(this.getEntityTexture(e));
 			worldRenderer.startDrawingQuads();
@@ -55,6 +55,21 @@ public class HydroturbineRenderer extends Render{
 			worldRenderer.addVertexWithUV(0.5f+radius, bottomHeight, 0.5f+radius, shaftMaxU,shaftMinV);
 			worldRenderer.addVertexWithUV(0.5f+radius, topHeight   , 0.5f+radius, shaftMaxU,shaftMaxV);
 			worldRenderer.addVertexWithUV(0.5f-radius, topHeight   , 0.5f+radius, shaftMinU,shaftMaxV);
+
+			worldRenderer.addVertexWithUV(0.5f-radius, bottomHeight, 0.5f+radius, shaftMinU,shaftMinV);
+			worldRenderer.addVertexWithUV(0.5f-radius, bottomHeight, 0.5f-radius, shaftMaxU,shaftMinV);
+			worldRenderer.addVertexWithUV(0.5f-radius, topHeight   , 0.5f-radius, shaftMaxU,shaftMaxV);
+			worldRenderer.addVertexWithUV(0.5f-radius, topHeight   , 0.5f+radius, shaftMinU,shaftMaxV);
+
+			worldRenderer.addVertexWithUV(0.5f+radius, bottomHeight, 0.5f-radius, shaftMinU,shaftMinV);
+			worldRenderer.addVertexWithUV(0.5f+radius, bottomHeight, 0.5f+radius, shaftMaxU,shaftMinV);
+			worldRenderer.addVertexWithUV(0.5f+radius, topHeight   , 0.5f+radius, shaftMaxU,shaftMaxV);
+			worldRenderer.addVertexWithUV(0.5f+radius, topHeight   , 0.5f-radius, shaftMinU,shaftMaxV);
+
+			worldRenderer.addVertexWithUV(0.5f-radius, bottomHeight, 0.5f+radius, shaftMinU,shaftMinV);
+			worldRenderer.addVertexWithUV(0.5f-radius, bottomHeight, 0.5f-radius, shaftMaxU,shaftMinV);
+			worldRenderer.addVertexWithUV(0.5f+radius, bottomHeight, 0.5f-radius, shaftMaxU,shaftMaxV);
+			worldRenderer.addVertexWithUV(0.5f+radius, bottomHeight, 0.5f+radius, shaftMinU,shaftMaxV);
 			// render axel
 			// TODO: implement
 			// render spinning (or not) blades

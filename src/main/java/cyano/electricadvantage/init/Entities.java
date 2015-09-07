@@ -1,7 +1,8 @@
 package cyano.electricadvantage.init;
 
 import cyano.electricadvantage.ElectricAdvantage;
-import cyano.electricadvantage.graphics.LaserTurretRenderer;
+import cyano.electricadvantage.entities.*;
+import cyano.electricadvantage.graphics.*;
 import cyano.electricadvantage.machines.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.RenderManager;
@@ -27,12 +28,14 @@ public abstract class Entities {
 		registerTileEntity(GrowthChamberTileEntity.class);
 		registerTileEntity(GrowthChamberControllerTileEntity.class);
 		registerTileEntity(ElectricOvenTileEntity.class);
+		registerTileEntity(LaserTurretTileEntity.class);
 		
 		registerTileEntity(PhotovoltaicGeneratorTileEntity.class);
 		registerTileEntity(SteamPoweredElectricGeneratorTileEntity.class);
 		registerTileEntity(ElectricBatteryArrayTileEntity.class);
 		
-		registerTileEntity(LaserTurretTileEntity.class);
+		
+		registerEntity(HydroturbineEntity.class);
 		
 		initDone = true;
 	}
@@ -77,8 +80,9 @@ public abstract class Entities {
 	public static void registerRenderers(){
 		RenderManager rm = Minecraft.getMinecraft().getRenderManager();
 		
-		//RenderingRegistry.registerEntityRenderingHandler(LaserTurretEntity.class,new LaserTurretRenderer(rm));
 		ClientRegistry.bindTileEntitySpecialRenderer(LaserTurretTileEntity.class, new cyano.electricadvantage.graphics.LaserTurretRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(ElectricDrillTileEntity.class, new cyano.electricadvantage.graphics.LaserDrillRenderer());
+		
+		RenderingRegistry.registerEntityRenderingHandler(HydroturbineEntity.class,new HydroturbineRenderer(rm));
 	}
 }

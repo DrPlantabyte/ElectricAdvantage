@@ -241,7 +241,10 @@ public class GrowthChamberControllerTileEntity extends cyano.poweradvantage.api.
 			}
 		} else if(ConduitType.areSameType(type, Power.ELECTRIC_POWER)){
 			// electricity
-			float delta = Math.min(ELECTRICITY_PER_UNIT * (this.getEnergyCapacity() - this.getEnergy()),amount);
+			float capacity = (this.getEnergyCapacity() - this.getEnergy());
+			capacity = Math.min(capacity, soil / SOIL_PER_UNIT);
+			capacity = Math.min(capacity, tank.getFluidAmount() / WATER_PER_UNIT);
+			float delta = Math.min(ELECTRICITY_PER_UNIT * capacity,amount);
 			this.addEnergy(delta / ELECTRICITY_PER_UNIT, getType());
 			return delta;
 		} else if(ConduitType.areSameType(type, getType())){
@@ -296,7 +299,10 @@ public class GrowthChamberControllerTileEntity extends cyano.poweradvantage.api.
 			return request;
 		} else if(ConduitType.areSameType(offer, Power.ELECTRIC_POWER)){
 			timeSinceLastPowerRequest = 0;
-			return new PowerRequest(PowerRequest.MEDIUM_PRIORITY,ELECTRICITY_PER_UNIT * (this.getEnergyCapacity() - this.getEnergy()),this);
+			float powerWanted = (this.getEnergyCapacity() - this.getEnergy());
+			powerWanted = Math.min(powerWanted, soil / SOIL_PER_UNIT);
+			powerWanted = Math.min(powerWanted, tank.getFluidAmount() / WATER_PER_UNIT);
+			return new PowerRequest(PowerRequest.MEDIUM_PRIORITY,ELECTRICITY_PER_UNIT * powerWanted,this);
 		} else {
 			return PowerRequest.REQUEST_NOTHING;
 		}

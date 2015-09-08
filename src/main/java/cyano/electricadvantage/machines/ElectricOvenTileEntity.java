@@ -32,7 +32,12 @@ public class ElectricOvenTileEntity extends ElectricMachineTileEntity{
 					progress++;
 					if(progress >= totalCookTime){
 						this.insertItemToOutputSlots(output.copy());
+						getInputSlot(0).stackSize--;
+						if(getInputSlot(0).stackSize <= 0){
+							setInputSlot(0,null);
+						}
 						progress = 0;
+						getWorld().playSoundEffect(getPos().getX()+0.5, getPos().getY()+0.5, getPos().getZ()+0.5, "random.orb", 0.5f, 1.0f);
 					}
 					active = true;
 				} else {
@@ -105,14 +110,14 @@ public class ElectricOvenTileEntity extends ElectricMachineTileEntity{
 
 	@Override
 	public void onDataFieldUpdate() {
-		dataArray[0] = Float.floatToIntBits(getEnergy());
-		dataArray[1] = progress;
+		setEnergy(Float.intBitsToFloat(dataArray[0]),getType());
+		progress = (short)dataArray[1];
 	}
 
 	@Override
 	public void prepareDataFieldsForSync() {
-		setEnergy(Float.intBitsToFloat(dataArray[0]),getType());
-		progress = (short)dataArray[1];
+		dataArray[0] = Float.floatToIntBits(getEnergy());
+		dataArray[1] = progress;
 	}
 
 

@@ -15,6 +15,7 @@ public class GrowthChamberTileEntity extends ElectricMachineTileEntity {
 	private static final float ENERGY_PER_TICK = 1;
 	private static final int GROWTH_AREA = 3;
 	private final int[] progression = new int[GROWTH_AREA];
+	private final int[] progressionMax = new int[GROWTH_AREA];
 	private final VirtualCrop[] crops = new VirtualCrop[GROWTH_AREA];
 	
 	public GrowthChamberTileEntity() {
@@ -40,6 +41,11 @@ public class GrowthChamberTileEntity extends ElectricMachineTileEntity {
 					if(recalculate[slot]){
 						crops[slot] = getVirtualCrop(getInputSlot(slot));
 						progression[slot] = 0;
+						if(crops[slot] != null){
+							progressionMax[slot] = crops[slot].getMaxGrowth() * TICKS_PER_GROWTH;
+						} else {
+							progressionMax[slot] = 0;
+						}
 						flagSync = true;
 					}
 					if(crops[slot] != null){
@@ -75,9 +81,15 @@ public class GrowthChamberTileEntity extends ElectricMachineTileEntity {
 								}
 							}
 							progression[slot] = 0;
+							if(crops[slot] != null){
+								progressionMax[slot] = crops[slot].getMaxGrowth() * TICKS_PER_GROWTH;
+							} else {
+								progressionMax[slot] = 0;
+							}
 						}
 					} else {
 						progression[slot] = 0;
+						progressionMax[slot] = 0;
 					}
 				}
 			}
@@ -88,7 +100,30 @@ public class GrowthChamberTileEntity extends ElectricMachineTileEntity {
 		}
 	}
 	
-	private final int[] dataArray = new int[1+GROWTH_AREA];
+
+	int[] oldDataArray = null;
+	@Override
+	public void powerUpdate(){
+		if(notEqual(oldDataArray,dataArray)){
+			this.sync();
+		}
+		if(oldDataArray == null){
+			oldDataArray = new int[getDataFieldArray().length];
+		}
+		prepareDataFieldsForSync();
+		System.arraycopy(getDataFieldArray(), 0, oldDataArray, 0, oldDataArray.length);
+	}
+	
+	private static boolean notEqual(int[] a, int[] b){
+		if(a == null || b == null) return true;
+		if(a.length != b.length) return true;
+		for(int i = 0; i < a.length; i++){
+			if(a[i] != b[i]) return true;
+		}
+		return false;
+	}
+	
+	private final int[] dataArray = new int[1+GROWTH_AREA*2];
 	@Override
 	public int[] getDataFieldArray() {
 		return dataArray;
@@ -98,12 +133,14 @@ public class GrowthChamberTileEntity extends ElectricMachineTileEntity {
 	public void onDataFieldUpdate() {
 		this.setEnergy(Float.intBitsToFloat(dataArray[0]), this.getType());
 		System.arraycopy(dataArray, 1, progression, 0, progression.length);
+		System.arraycopy(dataArray, 1+GROWTH_AREA, progressionMax, 0, progressionMax.length);
 	}
 
 	@Override
 	public void prepareDataFieldsForSync() {
 		dataArray[0] = Float.floatToIntBits(this.getEnergy());
 		System.arraycopy(progression, 0, dataArray, 1, progression.length);
+		System.arraycopy(progressionMax, 0, dataArray, 1+GROWTH_AREA, progressionMax.length);
 	}
 
 
@@ -117,11 +154,7 @@ public class GrowthChamberTileEntity extends ElectricMachineTileEntity {
 	@Override
 	public float[] getProgress() {
 		for(int i = 0; i < progression.length; i++){
-			if(crops[i] == null){
-				progressBars[i] = 0;
-			} else {
-				progressBars[i] = Math.max(0.125976563F,(float)crops[i].getCurrentGrowth() / (float)crops[i].getMaxGrowth());
-			}
+			progressBars[i] = Math.max(0.125976563F,(float)progression[i] / (float)progressionMax[i]);
 		}
 		return progressBars;
 	}

@@ -104,6 +104,7 @@ public class GrowthChamberTileEntity extends ElectricMachineTileEntity {
 	int[] oldDataArray = null;
 	@Override
 	public void powerUpdate(){
+		super.powerUpdate();
 		if(notEqual(oldDataArray,dataArray)){
 			this.sync();
 		}

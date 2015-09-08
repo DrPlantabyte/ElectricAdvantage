@@ -52,7 +52,7 @@ public class GrowthChamberTileEntity extends ElectricMachineTileEntity {
 						active = true;
 						progression[slot]++;
 						subtractEnergy(ENERGY_PER_TICK, getType());
-						if(progression[slot] >= TICKS_PER_GROWTH){
+						if(progression[slot] % TICKS_PER_GROWTH == 0){
 							if(crops[slot].grow()){
 								// Growth done!
 								List<ItemStack> harvest = crops[slot].getHarvest();
@@ -79,8 +79,8 @@ public class GrowthChamberTileEntity extends ElectricMachineTileEntity {
 										setInputSlot(slot,null);
 									}
 								}
+								progression[slot] = 0;
 							}
-							progression[slot] = 0;
 							if(crops[slot] != null){
 								progressionMax[slot] = crops[slot].getMaxGrowth() * TICKS_PER_GROWTH;
 							} else {
@@ -155,7 +155,11 @@ public class GrowthChamberTileEntity extends ElectricMachineTileEntity {
 	@Override
 	public float[] getProgress() {
 		for(int i = 0; i < progression.length; i++){
-			progressBars[i] = Math.max(0.125976563F,(float)progression[i] / (float)progressionMax[i]);
+			if(progressionMax[i] <= 0){
+				progressBars[i] = 0;
+			} else {
+				progressBars[i] = Math.max(0.125976563F,(float)progression[i] / (float)progressionMax[i]);
+			}
 		}
 		return progressBars;
 	}

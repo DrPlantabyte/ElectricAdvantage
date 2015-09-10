@@ -24,6 +24,7 @@ public class HydroturbineRenderer extends Render{
 	@Override
 	public void doRender(final Entity entity, final double x, final double y, final double z, final float scale, final float partialTick) {
 		if(entity instanceof HydroturbineEntity){
+			final float pixel = 1.0f / 16;
 			HydroturbineEntity e = (HydroturbineEntity)entity;
 			GlStateManager.pushMatrix();
 			this.bindEntityTexture(e);
@@ -35,10 +36,10 @@ public class HydroturbineRenderer extends Render{
 			final WorldRenderer worldRenderer = instance.getWorldRenderer();
 			final float topHeight = 1f;
 			final float bottomHeight = 0.375f;
-			final float radius = 0.0625f;
+			final float radius = pixel;
 			final float shaftMinU = 0.5f;
 			final float shaftMinV = 0.5f;
-			final float shaftMaxU = 1.0f;
+			final float shaftMaxU = 0.5f+2*pixel;
 			final float shaftMaxV = 1.0f;
 			GlStateManager.rotate(e.rotationYaw, 0.0f, 1.0f, 0.0f);
 			this.bindTexture(this.getEntityTexture(e));
@@ -56,23 +57,27 @@ public class HydroturbineRenderer extends Render{
 			worldRenderer.addVertexWithUV(0.5f+radius, topHeight   , 0.5f+radius, shaftMaxU,shaftMaxV);
 			worldRenderer.addVertexWithUV(0.5f-radius, topHeight   , 0.5f+radius, shaftMinU,shaftMaxV);
 
-			worldRenderer.addVertexWithUV(0.5f-radius, bottomHeight, 0.5f+radius, shaftMinU,shaftMinV);
-			worldRenderer.addVertexWithUV(0.5f-radius, bottomHeight, 0.5f-radius, shaftMaxU,shaftMinV);
-			worldRenderer.addVertexWithUV(0.5f-radius, topHeight   , 0.5f-radius, shaftMaxU,shaftMaxV);
-			worldRenderer.addVertexWithUV(0.5f-radius, topHeight   , 0.5f+radius, shaftMinU,shaftMaxV);
+			worldRenderer.addVertexWithUV(0.5f-radius, bottomHeight, 0.5f-radius, shaftMinU,shaftMinV);
+			worldRenderer.addVertexWithUV(0.5f-radius, bottomHeight, 0.5f+radius, shaftMaxU,shaftMinV);
+			worldRenderer.addVertexWithUV(0.5f-radius, topHeight   , 0.5f+radius, shaftMaxU,shaftMaxV);
+			worldRenderer.addVertexWithUV(0.5f-radius, topHeight   , 0.5f-radius, shaftMinU,shaftMaxV);
 
-			worldRenderer.addVertexWithUV(0.5f+radius, bottomHeight, 0.5f-radius, shaftMinU,shaftMinV);
-			worldRenderer.addVertexWithUV(0.5f+radius, bottomHeight, 0.5f+radius, shaftMaxU,shaftMinV);
-			worldRenderer.addVertexWithUV(0.5f+radius, topHeight   , 0.5f+radius, shaftMaxU,shaftMaxV);
-			worldRenderer.addVertexWithUV(0.5f+radius, topHeight   , 0.5f-radius, shaftMinU,shaftMaxV);
+			worldRenderer.addVertexWithUV(0.5f+radius, bottomHeight, 0.5f+radius, shaftMinU,shaftMinV);
+			worldRenderer.addVertexWithUV(0.5f+radius, bottomHeight, 0.5f-radius, shaftMaxU,shaftMinV);
+			worldRenderer.addVertexWithUV(0.5f+radius, topHeight   , 0.5f-radius, shaftMaxU,shaftMaxV);
+			worldRenderer.addVertexWithUV(0.5f+radius, topHeight   , 0.5f+radius, shaftMinU,shaftMaxV);
 
 			worldRenderer.addVertexWithUV(0.5f-radius, bottomHeight, 0.5f+radius, shaftMinU,shaftMinV);
-			worldRenderer.addVertexWithUV(0.5f-radius, bottomHeight, 0.5f-radius, shaftMaxU,shaftMinV);
-			worldRenderer.addVertexWithUV(0.5f+radius, bottomHeight, 0.5f-radius, shaftMaxU,shaftMaxV);
+			worldRenderer.addVertexWithUV(0.5f-radius, bottomHeight, 0.5f-radius, shaftMinU+2*pixel,shaftMinV);
+			worldRenderer.addVertexWithUV(0.5f+radius, bottomHeight, 0.5f-radius, shaftMinU+2*pixel,shaftMaxV);
 			worldRenderer.addVertexWithUV(0.5f+radius, bottomHeight, 0.5f+radius, shaftMinU,shaftMaxV);
 			// render axel
+			final float axelLength = 4 * pixel;
+			final float axelRadius = 1 * pixel;
+			final
 			// TODO: implement
 			// render spinning (or not) blades
+			double spin = e.rotation + HydroturbineEntity.DEGREES_PER_TICK * partialTick;
 			// TODO: implement
 			
 			instance.draw();

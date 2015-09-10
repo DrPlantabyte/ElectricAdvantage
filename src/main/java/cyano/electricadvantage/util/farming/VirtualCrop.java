@@ -121,9 +121,13 @@ public class VirtualCrop {
 	
 	private static Block getBlockFieldByReflection(Object target) {
 		Class type = Block.class;
-		Field[] fields = target.getClass().getFields();
+		Field[] fields = target.getClass().getDeclaredFields();
 		try {
 			for (Field f : fields){
+				FMLLog.info("%s: Field %s has type %s", VirtualCrop.class.getName(), 
+						target.getClass().getName()+"."+f.getName(), 
+						f.getType().getName()
+						);// TODO: remove
 				if(type.isAssignableFrom(f.getType())){
 					// found a block member variable, I hope it is the right one!
 					f.setAccessible(true);

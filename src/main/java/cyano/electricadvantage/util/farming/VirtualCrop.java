@@ -16,6 +16,7 @@ import net.minecraft.block.BlockStem;
 import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
@@ -41,12 +42,24 @@ public class VirtualCrop {
 		ItemRecord r = new ItemRecord(stack);
 		ItemStack seed = stack.copy();
 		seed.stackSize = 1;
-		FMLLog.info("%s: Making virual crop for %s", VirtualCrop.class.getName(), stack);// TODO: remove
 		Item i = stack.getItem();
+		Block b;
+		if(i instanceof ItemBlock){
+			b = ((ItemBlock)i).getBlock();
+		} else {
+			b = null;
+		}
 		if(customRecipes.containsKey(r)){
 			return customRecipes.get(r).copy();
+		} else if(i instanceof net.minecraft.item.ItemReed
+				|| b instanceof net.minecraft.block.BlockMushroom
+				|| b instanceof net.minecraft.block.BlockCactus
+				|| b instanceof net.minecraft.block.BlockBush){
+			// duplicate
+			ItemStack product = seed.copy();
+			product.stackSize = 2;
+			return new VirtualCrop(seed,8,Arrays.asList(product));
 		} else if(i instanceof IPlantable){
-			FMLLog.info("%s: %s", VirtualCrop.class.getName(), "is plantable");// TODO: remove
 			IPlantable plantable = (IPlantable)i;
 			IBlockState startingState = plantable.getPlant(w, pos);
 			Block block = startingState.getBlock();
@@ -57,28 +70,15 @@ public class VirtualCrop {
 					 || block instanceof net.minecraft.block.BlockLilyPad){
 				// duplicate
 				return new VirtualCrop(seed,10,Arrays.asList(new ItemStack(block,2,0)));
-			} else if(i instanceof net.minecraft.item.ItemReed){
-				// duplicate
-				ItemStack product = seed.copy();
-				product.stackSize = 2;
-				return new VirtualCrop(seed,8,Arrays.asList(product));
 			} else if(block instanceof BlockStem){
-				FMLLog.info("%s: %s", VirtualCrop.class.getName(), "is stem plant");// TODO: remove
 				Block product = getBlockFieldByReflection(block);
 				if(product == null) {
-					FMLLog.info("%s: %s", VirtualCrop.class.getName(), "Reflection failed");// TODO: remove
 					return null;
 				}
 				return new VirtualCrop(seed,numStages,Arrays.asList(new ItemStack(product,1,0)));
-			} else if(block instanceof BlockBush){
-				FMLLog.info("%s: %s", VirtualCrop.class.getName(), "is bush/crop plant");// TODO: remove
-				IBlockState maxAge = ageToMax(startingState);
-				List<ItemStack> harvest = block.getDrops(w, pos, maxAge, 0);
-				return new VirtualCrop(seed,numStages,harvest);
 			} 
 			// TODO: plant megapack
 		}
-		FMLLog.info("%s: %s", VirtualCrop.class.getName(), "Failed to make virtual crop");// TODO: remove
 		return null;
 	}
 	
@@ -124,10 +124,6 @@ public class VirtualCrop {
 		Field[] fields = target.getClass().getDeclaredFields();
 		try {
 			for (Field f : fields){
-				FMLLog.info("%s: Field %s has type %s", VirtualCrop.class.getName(), 
-						target.getClass().getName()+"."+f.getName(), 
-						f.getType().getName()
-						);// TODO: remove
 				if(type.isAssignableFrom(f.getType())){
 					// found a block member variable, I hope it is the right one!
 					f.setAccessible(true);
@@ -137,7 +133,6 @@ public class VirtualCrop {
 				}
 			}
 		} catch (IllegalArgumentException | IllegalAccessException e) {
-			FMLLog.info("%s: %s", VirtualCrop.class.getName(), "Reflection failed");// TODO: remove
 			return null;
 		}
 		// no block member variables found
@@ -150,14 +145,12 @@ public class VirtualCrop {
 	private final List<ItemStack> prematureHarvest;
 
 	public VirtualCrop(ItemStack item, int numGrowthStages, Collection<ItemStack> harvest){
-		FMLLog.info("%s: Made VirtualCrop instance with %s states from item %s that produces %s", VirtualCrop.class.getName(), numGrowthStages,item,Arrays.toString(harvest.toArray()));// TODO: remove
 		this.numberOfStages = (byte)(numGrowthStages & 0x7F);
 		this.prematureHarvest = Arrays.asList(item);
 		this.harvest = new ArrayList<>(harvest);
 	}
 	
 	public VirtualCrop(Collection<ItemStack> earlyHarvest, int numGrowthStages, Collection<ItemStack> harvest){
-		FMLLog.info("%s: Made VirtualCrop instance with %s states from item %s that produces %s", VirtualCrop.class.getName(), numGrowthStages,earlyHarvest,Arrays.toString(harvest.toArray()));// TODO: remove
 		this.numberOfStages = (byte)(numGrowthStages & 0x7F);
 		this.prematureHarvest = new ArrayList<>(earlyHarvest);
 		this.harvest = new ArrayList<>(harvest);

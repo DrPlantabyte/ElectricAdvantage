@@ -55,7 +55,7 @@ public class HydroturbineEntity extends net.minecraft.entity.Entity{
 			// client-side only
 			if(isSpinning){
 				rotation += DEGREES_PER_TICK;
-				this.rotationYaw = RADIANS_TO_DEGREES * (float)Math.atan2(-directionVector.zCoord, directionVector.xCoord);
+				this.rotationYaw = RADIANS_TO_DEGREES * (float)Math.atan2(-directionVector.zCoord, directionVector.xCoord) -90;
 			} else {
 				// do nothing
 			}

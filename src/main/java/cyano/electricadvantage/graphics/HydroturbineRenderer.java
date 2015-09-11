@@ -34,48 +34,81 @@ public class HydroturbineRenderer extends Render{
 			//   GlStateManager.scale(scale / 1.0f, scale / 1.0f, scale / 1.0f);
 			final Tessellator instance = Tessellator.getInstance();
 			final WorldRenderer worldRenderer = instance.getWorldRenderer();
-			final float topHeight = 1f;
-			final float bottomHeight = 0.375f;
+			final float topHeight = 0.5f;
+			final float bottomHeight = 0.375f-0.5f;
 			final float radius = pixel;
 			final float shaftMinU = 0.5f;
 			final float shaftMinV = 0.5f;
 			final float shaftMaxU = 0.5f+2*pixel;
 			final float shaftMaxV = 1.0f;
+			
+			GlStateManager.translate(0.5f, 0.5f, 0.5f);
 			GlStateManager.rotate(e.rotationYaw, 0.0f, 1.0f, 0.0f);
 			this.bindTexture(this.getEntityTexture(e));
 			worldRenderer.startDrawingQuads();
 			worldRenderer.setNormal(0.0f, 1.0f, 0.0f);
 
 			// render shaft
-			worldRenderer.addVertexWithUV(0.5f+radius, bottomHeight, 0.5f-radius, shaftMinU,shaftMinV);
-			worldRenderer.addVertexWithUV(0.5f-radius, bottomHeight, 0.5f-radius, shaftMaxU,shaftMinV);
-			worldRenderer.addVertexWithUV(0.5f-radius, topHeight   , 0.5f-radius, shaftMaxU,shaftMaxV);
-			worldRenderer.addVertexWithUV(0.5f+radius, topHeight   , 0.5f-radius, shaftMinU,shaftMaxV);
+			worldRenderer.addVertexWithUV(+radius, bottomHeight, -radius, shaftMinU,shaftMinV);
+			worldRenderer.addVertexWithUV(-radius, bottomHeight, -radius, shaftMaxU,shaftMinV);
+			worldRenderer.addVertexWithUV(-radius, topHeight   , -radius, shaftMaxU,shaftMaxV);
+			worldRenderer.addVertexWithUV(+radius, topHeight   , -radius, shaftMinU,shaftMaxV);
 
-			worldRenderer.addVertexWithUV(0.5f-radius, bottomHeight, 0.5f+radius, shaftMinU,shaftMinV);
-			worldRenderer.addVertexWithUV(0.5f+radius, bottomHeight, 0.5f+radius, shaftMaxU,shaftMinV);
-			worldRenderer.addVertexWithUV(0.5f+radius, topHeight   , 0.5f+radius, shaftMaxU,shaftMaxV);
-			worldRenderer.addVertexWithUV(0.5f-radius, topHeight   , 0.5f+radius, shaftMinU,shaftMaxV);
+			worldRenderer.addVertexWithUV(-radius, bottomHeight, +radius, shaftMinU,shaftMinV);
+			worldRenderer.addVertexWithUV(+radius, bottomHeight, +radius, shaftMaxU,shaftMinV);
+			worldRenderer.addVertexWithUV(+radius, topHeight   , +radius, shaftMaxU,shaftMaxV);
+			worldRenderer.addVertexWithUV(-radius, topHeight   , +radius, shaftMinU,shaftMaxV);
 
-			worldRenderer.addVertexWithUV(0.5f-radius, bottomHeight, 0.5f-radius, shaftMinU,shaftMinV);
-			worldRenderer.addVertexWithUV(0.5f-radius, bottomHeight, 0.5f+radius, shaftMaxU,shaftMinV);
-			worldRenderer.addVertexWithUV(0.5f-radius, topHeight   , 0.5f+radius, shaftMaxU,shaftMaxV);
-			worldRenderer.addVertexWithUV(0.5f-radius, topHeight   , 0.5f-radius, shaftMinU,shaftMaxV);
+			worldRenderer.addVertexWithUV(-radius, bottomHeight, -radius, shaftMinU,shaftMinV);
+			worldRenderer.addVertexWithUV(-radius, bottomHeight, +radius, shaftMaxU,shaftMinV);
+			worldRenderer.addVertexWithUV(-radius, topHeight   , +radius, shaftMaxU,shaftMaxV);
+			worldRenderer.addVertexWithUV(-radius, topHeight   , -radius, shaftMinU,shaftMaxV);
 
-			worldRenderer.addVertexWithUV(0.5f+radius, bottomHeight, 0.5f+radius, shaftMinU,shaftMinV);
-			worldRenderer.addVertexWithUV(0.5f+radius, bottomHeight, 0.5f-radius, shaftMaxU,shaftMinV);
-			worldRenderer.addVertexWithUV(0.5f+radius, topHeight   , 0.5f-radius, shaftMaxU,shaftMaxV);
-			worldRenderer.addVertexWithUV(0.5f+radius, topHeight   , 0.5f+radius, shaftMinU,shaftMaxV);
+			worldRenderer.addVertexWithUV(+radius, bottomHeight, +radius, shaftMinU,shaftMinV);
+			worldRenderer.addVertexWithUV(+radius, bottomHeight, -radius, shaftMaxU,shaftMinV);
+			worldRenderer.addVertexWithUV(+radius, topHeight   , -radius, shaftMaxU,shaftMaxV);
+			worldRenderer.addVertexWithUV(+radius, topHeight   , +radius, shaftMinU,shaftMaxV);
 
-			worldRenderer.addVertexWithUV(0.5f-radius, bottomHeight, 0.5f+radius, shaftMinU,shaftMinV);
-			worldRenderer.addVertexWithUV(0.5f-radius, bottomHeight, 0.5f-radius, shaftMinU+2*pixel,shaftMinV);
-			worldRenderer.addVertexWithUV(0.5f+radius, bottomHeight, 0.5f-radius, shaftMinU+2*pixel,shaftMaxV);
-			worldRenderer.addVertexWithUV(0.5f+radius, bottomHeight, 0.5f+radius, shaftMinU,shaftMaxV);
+			worldRenderer.addVertexWithUV(-radius, bottomHeight, +radius, shaftMinU,shaftMinV);
+			worldRenderer.addVertexWithUV(-radius, bottomHeight, -radius, shaftMinU+2*pixel,shaftMinV);
+			worldRenderer.addVertexWithUV(+radius, bottomHeight, -radius, shaftMinU+2*pixel,shaftMaxV);
+			worldRenderer.addVertexWithUV(+radius, bottomHeight, +radius, shaftMinU,shaftMaxV);
+			
 			// render axel
 			final float axelLength = 4 * pixel;
 			final float axelRadius = 1 * pixel;
-			final
-			// TODO: implement
+			final float axelMinU = 0;
+			final float axelMaxU = 4 * pixel;
+			final float axelMaxU2 = 2 * pixel;
+			final float axelMinV = 0.5f;
+			final float axelMaxV = 0.5f + 2 * pixel;
+			final float axelMaxV2 = 0.5f + 4 * pixel;
+			
+			worldRenderer.addVertexWithUV(+axelRadius, -axelRadius, -pixel           , axelMinU,axelMinV);
+			worldRenderer.addVertexWithUV(+axelRadius, -axelRadius, -pixel-axelLength, axelMaxU,axelMinV);
+			worldRenderer.addVertexWithUV(+axelRadius, +axelRadius, -pixel-axelLength, axelMaxU,axelMaxV);
+			worldRenderer.addVertexWithUV(+axelRadius, +axelRadius, -pixel           , axelMinU,axelMaxV);
+			
+			worldRenderer.addVertexWithUV(-axelRadius, +axelRadius, -pixel           , axelMinU,axelMinV);
+			worldRenderer.addVertexWithUV(-axelRadius, +axelRadius, -pixel-axelLength, axelMaxU,axelMinV);
+			worldRenderer.addVertexWithUV(-axelRadius, -axelRadius, -pixel-axelLength, axelMaxU,axelMaxV);
+			worldRenderer.addVertexWithUV(-axelRadius, -axelRadius, -pixel           , axelMinU,axelMaxV);
+			
+			worldRenderer.addVertexWithUV(+axelRadius, +axelRadius, -pixel           , axelMinU,axelMaxV2);
+			worldRenderer.addVertexWithUV(+axelRadius, +axelRadius, -pixel-axelLength, axelMinU,axelMinV);
+			worldRenderer.addVertexWithUV(-axelRadius, +axelRadius, -pixel-axelLength,axelMaxU2,axelMinV);
+			worldRenderer.addVertexWithUV(-axelRadius, +axelRadius, -pixel           ,axelMaxU2,axelMaxV2);
+			
+			worldRenderer.addVertexWithUV(-axelRadius, -axelRadius, -pixel           , axelMinU,axelMaxV2);
+			worldRenderer.addVertexWithUV(-axelRadius, -axelRadius, -pixel-axelLength, axelMinU,axelMinV);
+			worldRenderer.addVertexWithUV(+axelRadius, -axelRadius, -pixel-axelLength,axelMaxU2,axelMinV);
+			worldRenderer.addVertexWithUV(+axelRadius, -axelRadius, -pixel           ,axelMaxU2,axelMaxV2);
+			
+			worldRenderer.addVertexWithUV(-axelRadius, -axelRadius, -pixel-axelLength, axelMinU,axelMaxV2);
+			worldRenderer.addVertexWithUV(-axelRadius, +axelRadius, -pixel-axelLength, axelMinU,axelMinV);
+			worldRenderer.addVertexWithUV(+axelRadius, +axelRadius, -pixel-axelLength,axelMaxU2,axelMinV);
+			worldRenderer.addVertexWithUV(+axelRadius, -axelRadius, -pixel-axelLength,axelMaxU2,axelMaxV2);
+			
 			// render spinning (or not) blades
 			double spin = e.rotation + HydroturbineEntity.DEGREES_PER_TICK * partialTick;
 			// TODO: implement

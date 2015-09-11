@@ -1,0 +1,45 @@
+language_support_goals = inglês (en_US en_EN, en_CA, en_GB, en_AU, en_PT), espanhol (es_MX, es_ES), chinês (zh_CN), japonês (ja_JA), Português (pt_BR), alemão (de_DE), italiano (it_IT), coreano (ko_KR)
+
+item.electricadvantage.blank_circuit_board.Name=Circuit Board (em branco)
+item.electricadvantage.control_circuit.Name=Control circuito
+item.electricadvantage.integrated_circuit.Name=microchip
+item.electricadvantage.PSU.Name=Power unidade de abastecimento
+item.electricadvantage.silicon_ingot.Name=Silicon lingote
+item.electricadvantage.silicon_mix.Name=Silicon mistura
+item.electricadvantage.solder_mix.Name=Solder mistura
+item.electricadvantage.Solder.Name=Solder
+item.electricadvantage.li_powder.Name=powdered de lítio
+item.electricadvantage.li_ingot.Name=Lithium lingote
+item.electricadvantage.li_nugget.Name=Lithium Nugget
+item.electricadvantage.sulfur_powder.Name=powdered de enxofre
+item.electricadvantage.lead_acid_battery.Name=Lead-ácido de bateria
+Bateria de hidreto de Metal-item.electricadvantage.nickel_hydride_battery.Name=Nickel
+item.electricadvantage.alkaline_battery.Name=Alkaline bateria
+Bateria de íon-item.electricadvantage.lithium_battery.Name=Lithium
+
+Tile.electricadvantage.electric_conduit.Name=Electric cabo de alimentação
+Tile.electricadvantage.electric_track.Name=Electric andaimes
+Tile.electricadvantage.electric_battery_array.Name=Battery matriz
+Tile.electricadvantage.electric_crusher.Name=Electric Rock Crusher
+Tile.electricadvantage.laser_turret.Name=laser torre de defesa
+Tile.electricadvantage.electric_drill.Name=Electric broca de mineração
+Tile.electricadvantage.electric_fabricator.Name=Automated Assembler
+Tile.electricadvantage.electric_furnace.Name=Electric forno de arco
+Tile.electricadvantage.electric_oven.Name=Electric forno
+Tile.electricadvantage.electric_pcb_printer.Name=PCB impressora
+Tile.electricadvantage.geothermal_generator.Name=geothermal gerador
+Tile.electricadvantage.hydroelectric_generator.Name=hydroelectric gerador
+Tile.electricadvantage.photovoltaic_generator.Name=photovoltaic gerador
+Tile.electricadvantage.steam_powered_generator.Name=Steam-Powered gerador elétrico
+Tile.electricadvantage.growth_chamber.Name=Growth câmara
+Tile.electricadvantage.growth_chamber_controller.Name=Growth unidade de controlo de câmara
+Tile.electricadvantage.li_ore.Name=Lithium de minério
+Tile.electricadvantage.sulfur_ore.Name=Sulfur de minério
+
+ToolTip.Battery.Charge=Charge
+ToolTip.Battery.Capacity=Capacity
+
+Death.Attack.laser=%1$s vaporizado
+Death.Attack.laser.Player=%2$s vaporizado %1$ s
+Death.Attack.Propeller=%1$s foi pulverizado por uma hélice.
+%1$ s Death.Attack.Propeller.Player=%2$s empurrou uma hélice.

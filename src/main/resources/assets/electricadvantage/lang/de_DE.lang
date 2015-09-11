@@ -1,0 +1,45 @@
+language_support_goals = Englisch (en_US, de_DE, en_CA, de_DE, en_AU, en_PT), Spanisch (es_MX, es_ES), Chinesisch (zh_CN), Japanisch (ja_JA), Portugiesisch (pt_BR), Deutsch (de_DE), Italienisch (it_IT), Koreanisch (ko_KR)
+
+item.electricadvantage.blank_circuit_board.name = Circuit Board (Blank)
+item.electricadvantage.control_circuit.name = Steuerstromkreis
+item.electricadvantage.integrated_circuit.name = Microchip
+item.electricadvantage.psu.name = Netzteil
+item.electricadvantage.silicon_ingot.name = Silizium-Ingots
+item.electricadvantage.silicon_mix.name = Silicon-Mischung
+item.electricadvantage.solder_mix.name = Solder Mischung
+item.electricadvantage.solder.name = Solder
+item.electricadvantage.li_powder.name = Pulverisierte Lithium
+item.electricadvantage.li_ingot.name = Lithium-Barren
+item.electricadvantage.li_nugget.name = Lithium Nugget
+item.electricadvantage.sulfur_powder.name = Schwefelpulver
+item.electricadvantage.lead_acid_battery.name = Blei-Säure-Batterie
+item.electricadvantage.nickel_hydride_battery.name = Nickel-Metallhydrid-Batterie
+item.electricadvantage.alkaline_battery.name = Alkali-Batterie
+item.electricadvantage.lithium_battery.name = Lithium-Ionen-Akku
+
+tile.electricadvantage.electric_conduit.name = Electric Power Cable
+tile.electricadvantage.electric_track.name = Elektro-Gerüst
+tile.electricadvantage.electric_battery_array.name = Batterie Array
+tile.electricadvantage.electric_crusher.name = elektrische Felsen-Zerkleinerungsmaschine
+tile.electricadvantage.laser_turret.name = Laser Defense Turret
+tile.electricadvantage.electric_drill.name = Elektro Bergbau Drill
+tile.electricadvantage.electric_fabricator.name = Automated Assembler
+tile.electricadvantage.electric_furnace.name = Lichtbogenofen
+tile.electricadvantage.electric_oven.name = Elektro-Ofen
+tile.electricadvantage.electric_pcb_printer.name = PCB Drucker
+tile.electricadvantage.geothermal_generator.name = Geothermal Generator
+tile.electricadvantage.hydroelectric_generator.name = Hydroelectric Generator
+tile.electricadvantage.photovoltaic_generator.name = Photovoltaik-Generator
+tile.electricadvantage.steam_powered_generator.name = Pumpenlose Stromerzeuger
+tile.electricadvantage.growth_chamber.name = Wachstumskammer
+tile.electricadvantage.growth_chamber_controller.name = Wachstumskammer Control Unit
+tile.electricadvantage.li_ore.name = Lithium Ore
+tile.electricadvantage.sulfur_ore.name = Sulfur Ore
+
+tooltip.battery.charge = Lade
+tooltip.battery.capacity = Kapazität
+
+death.attack.laser =% 1 $ s verdampft
+death.attack.laser.player =% 2 $ s verdampft% 1 $ s
+death.attack.propeller =% 1 $ s wurde von einem Propeller pulverisiert.
+death.attack.propeller.player =% 2 $ s geschoben% 1 $ s in einen Propeller.

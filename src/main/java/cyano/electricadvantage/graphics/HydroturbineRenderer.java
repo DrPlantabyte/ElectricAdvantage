@@ -110,7 +110,17 @@ public class HydroturbineRenderer extends Render{
 			worldRenderer.addVertexWithUV(+axelRadius, -axelRadius, -pixel-axelLength,axelMaxU2,axelMaxV2);
 			
 			// render spinning (or not) blades
-			double spin = e.rotation + HydroturbineEntity.DEGREES_PER_TICK * partialTick;
+			float spin1 = e.rotation + HydroturbineEntity.DEGREES_PER_TICK * partialTick;
+			float spin2 = spin1 + 120;
+			float spin3 = spin1 - 120;
+			final float bladeWidth = 3*pixel;
+			final float bladeLength = 6*pixel;
+			final float bladeOffset = 1*pixel;
+			final float bladeMinU = 0.0f;
+			final float bladeMinV = 0.0f;
+			final float bladeMaxU = bladeWidth;
+			final float bladeMaxV = bladeLength;
+			
 			// TODO: implement
 			
 			instance.draw();

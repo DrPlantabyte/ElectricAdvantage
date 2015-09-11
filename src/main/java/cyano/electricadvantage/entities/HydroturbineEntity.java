@@ -11,10 +11,10 @@ import net.minecraft.world.World;
 
 public class HydroturbineEntity extends net.minecraft.entity.Entity{
 
-	public static final double DEGREES_PER_TICK = 18;
+	public static final float DEGREES_PER_TICK = 18;
 	private static final float RADIANS_TO_DEGREES = (float)(180 / Math.PI);
 	private static final float DEGREES_TO_RADIANS = (float)(Math.PI / 180);
-	public double rotation = 0;
+	public float rotation = 0;
 	public boolean isSpinning = false;
 	public TileEntity parent = null;
 	

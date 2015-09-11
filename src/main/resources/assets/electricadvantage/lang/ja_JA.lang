@@ -1,0 +1,45 @@
+language_support_goals = 英語 (en_US en_EN en_CA、en_GB, en_AU, en_PT), スペイン語 (es_MX、es_ES)、中国 (zh_CN)、日本語 (ja_JA)、ポルトガル (pt_BR)、ドイツ語 (de_DE)、イタリア語 (it_IT), 韓国語 (ko_KR)
+
+item.electricadvantage.blank_circuit_board.name=Circuit ボード (空白)
+item.electricadvantage.control_circuit.name=Control 回路
+item.electricadvantage.integrated_circuit.name=Microchip
+item.electricadvantage.psu.name=Power ユニット
+item.electricadvantage.silicon_ingot.name=Silicon インゴット
+item.electricadvantage.silicon_mix.name=Silicon ブレンド
+item.electricadvantage.solder_mix.name=Solder ブレンド
+item.electricadvantage.solder.name=Solder
+item.electricadvantage.li_powder.name=Powdered リチウム
+item.electricadvantage.li_ingot.name=Lithium インゴット
+item.electricadvantage.li_nugget.name=Lithium ナゲット
+item.electricadvantage.sulfur_powder.name=Powdered 硫黄
+item.electricadvantage.lead_acid_battery.name=Lead 酸バッテリー
+item.electricadvantage.nickel_hydride_battery.name=Nickel 金属水素電池
+item.electricadvantage.alkaline_battery.name=Alkaline バッテリー
+item.electricadvantage.lithium_battery.name=Lithium イオン バッテリ
+
+tile.electricadvantage.electric_conduit.name=Electric 電源ケーブル
+tile.electricadvantage.electric_track.name=Electric 足場
+tile.electricadvantage.electric_battery_array.name=Battery 配列
+tile.electricadvantage.electric_crusher.name=Electric 岩クラッシャー
+tile.electricadvantage.laser_turret.name=Laser の防衛櫓
+tile.electricadvantage.electric_drill.name=Electric マイニング ドリル
+tile.electricadvantage.electric_fabricator.name=Automated アセンブラー
+tile.electricadvantage.electric_furnace.name=Electric アーク炉
+tile.electricadvantage.electric_oven.name=Electric オーブン
+tile.electricadvantage.electric_pcb_printer.name=PCB プリンター
+tile.electricadvantage.geothermal_generator.name=Geothermal 発電機
+tile.electricadvantage.hydroelectric_generator.name=Hydroelectric 発電機
+tile.electricadvantage.photovoltaic_generator.name=Photovoltaic 発電機
+tile.electricadvantage.steam_powered_generator.name=Steam 電源用発電機
+tile.electricadvantage.growth_chamber.name=Growth 商工会議所
+tile.electricadvantage.growth_chamber_controller.name=Growth 制御装置
+tile.electricadvantage.li_ore.name=Lithium 鉱石
+tile.electricadvantage.sulfur_ore.name=Sulfur 鉱石
+
+tooltip.battery.charge=Charge
+tooltip.battery.capacity=Capacity
+
+death.attack.laser=%1$s 蒸発
+蒸発 death.attack.laser.player=%2$s %1$ s
+death.attack.propeller=%1$s は、プロペラによって粉砕されました。
+death.attack.propeller.player=%2$s は、プロペラに %1$ s をプッシュしました。

@@ -40,6 +40,6 @@ tooltip.battery.charge=Charge
 tooltip.battery.capacity=Capacity
 
 death.attack.laser=%1$s 蒸発
-蒸発 death.attack.laser.player=%2$s %1$ s
+蒸発 death.attack.laser.player=%2$s %1$s
 death.attack.propeller=%1$s は、プロペラによって粉砕されました。
 death.attack.propeller.player=%2$s は、プロペラに %1$ s をプッシュしました。

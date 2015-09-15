@@ -1,0 +1,43 @@
+item.electricadvantage.blank_circuit_board.name=회로 기판 (빈)
+item.electricadvantage.control_circuit.name=제어 회로
+item.electricadvantage.integrated_circuit.name=마이크로 칩
+item.electricadvantage.psu.name=전원 공급 장치
+item.electricadvantage.silicon_ingot.name=실리콘 잉곳
+item.electricadvantage.silicon_mix.name=실리콘 혼합
+item.electricadvantage.solder_mix.name=솔더 혼합
+item.electricadvantage.solder.name=솔더
+item.electricadvantage.li_powder.name=분말 리튬
+item.electricadvantage.li_ingot.name=리튬 잉곳
+item.electricadvantage.li_nugget.name=리튬 너겟
+item.electricadvantage.sulfur_powder.name=분말 유황
+item.electricadvantage.lead_acid_battery.name=납 축전지
+item.electricadvantage.nickel_hydride_battery.name=니켈 수소 배터리
+item.electricadvantage.alkaline_battery.name=알카라인 배터리
+item.electricadvantage.lithium_battery.name=리튬 이온 배터리
+
+tile.electricadvantage.electric_conduit.name=전력 케이블
+tile.electricadvantage.electric_track.name=전기 비계
+tile.electricadvantage.electric_battery_array.name=전지 어레이
+tile.electricadvantage.electric_crusher.name=전기 락 크러셔
+tile.electricadvantage.laser_turret.name=레이저 방어 터렛
+tile.electricadvantage.electric_drill.name=전기 마이닝 드릴
+tile.electricadvantage.electric_fabricator.name=자동 어셈블러
+tile.electricadvantage.electric_furnace.name=전기로
+tile.electricadvantage.electric_oven.name=전기 오븐
+tile.electricadvantage.electric_pcb_printer.name=회로 기판 프린터
+tile.electricadvantage.geothermal_generator.name=지열 발전기
+tile.electricadvantage.hydroelectric_generator.name=수력 발전기
+tile.electricadvantage.photovoltaic_generator.name=태양 광 발전기
+tile.electricadvantage.steam_powered_generator.name=증기 발전기
+tile.electricadvantage.growth_chamber.name=성장 상공 회의소
+tile.electricadvantage.growth_chamber_controller.name=성장 챔버 제어 장치
+tile.electricadvantage.li_ore.name=리튬 광석
+tile.electricadvantage.sulfur_ore.name=유황 광석
+
+tooltip.battery.charge=요금
+tooltip.battery.capacity=생산 능력
+
+death.attack.laser=%1$s이 (가) 증발
+death.attack.laser.player=%2$s의 증발 %1$s
+death.attack.propeller=%1$s는 프로펠러에 의해 분쇄 하였다.
+death.attack.propeller.player=%2$s는 프로펠러에 %1$s을 (를) 밀었다.

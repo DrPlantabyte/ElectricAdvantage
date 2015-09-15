@@ -2,7 +2,7 @@ language_support_goals=英语（EN_US，的en_EN，en_CA，EN_GB，en_AU，en_PT
 
 item.electricadvantage.blank_circuit_board.name=电路板（空白）
 item.electricadvantage.control_circuit.name=控制电路
-item.electricadvantage.integrated_circuit.name= Microchip的
+item.electricadvantage.integrated_circuit.name=微芯片
 item.electricadvantage.psu.name=电源单元
 item.electricadvantage.silicon_ingot.name=硅锭
 item.electricadvantage.silicon_mix.name=硅混合
@@ -26,7 +26,7 @@ tile.electricadvantage.electric_drill.name=电矿钻
 tile.electricadvantage.electric_fabricator.name=自动汇编
 tile.electricadvantage.electric_furnace.name=电弧炉
 tile.electricadvantage.electric_oven.name=电烤箱
-tile.electricadvantage.electric_pcb_printer.name= PCB打印机
+tile.electricadvantage.electric_pcb_printer.name= 电路板打印机
 tile.electricadvantage.geothermal_generator.name=热发电机
 tile.electricadvantage.hydroelectric_generator.name=水轮发电机
 tile.electricadvantage.photovoltaic_generator.name=光电发生器

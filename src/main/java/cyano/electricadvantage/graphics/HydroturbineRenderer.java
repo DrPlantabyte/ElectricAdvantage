@@ -8,6 +8,7 @@ import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
+import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -16,6 +17,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class HydroturbineRenderer extends Render{
 	private static final ResourceLocation texture = new ResourceLocation(ElectricAdvantage.MODID+":textures/entity/hydroturbine.png");
 
+	private static final float DEGREES_TO_RADIANS = (float)(Math.PI / 180);
 
 	public HydroturbineRenderer(final RenderManager rm) {
 		super(rm);
@@ -110,9 +112,16 @@ public class HydroturbineRenderer extends Render{
 			worldRenderer.addVertexWithUV(+axelRadius, -axelRadius, -pixel-axelLength,axelMaxU2,axelMaxV2);
 			
 			// render spinning (or not) blades
-			float spin1 = e.rotation + HydroturbineEntity.DEGREES_PER_TICK * partialTick;
-			float spin2 = spin1 + 120;
-			float spin3 = spin1 - 120;
+			float spin1, spin2, spin3;
+			if(e.isSpinning){
+				spin1 = e.rotation + HydroturbineEntity.DEGREES_PER_TICK * partialTick;
+				spin2 = spin1 + 120;
+				spin3 = spin1 - 120;
+			} else {
+				spin1 = e.rotation;
+				spin2 = spin1 + 120;
+				spin3 = spin1 - 120;
+			}
 			final float bladeWidth = 3*pixel;
 			final float bladeLength = 6*pixel;
 			final float bladeOffset = 1*pixel;
@@ -120,8 +129,55 @@ public class HydroturbineRenderer extends Render{
 			final float bladeMinV = 0.0f;
 			final float bladeMaxU = bladeWidth;
 			final float bladeMaxV = bladeLength;
+			final float depthDelta = pixel;
+
+			final float rotaryWidth = DEGREES_TO_RADIANS*45;
+			final float t1 = DEGREES_TO_RADIANS*spin1, t2 = DEGREES_TO_RADIANS*spin2, t3 = DEGREES_TO_RADIANS*spin3;
+			final float sin1a = MathHelper.sin(t1);
+			final float sin1b = MathHelper.sin(t1+rotaryWidth);
+			final float cos1a = MathHelper.cos(t1);
+			final float cos1b = MathHelper.cos(t1+rotaryWidth);
+			final float sin2a = MathHelper.sin(t2);
+			final float sin2b = MathHelper.sin(t2+rotaryWidth);
+			final float cos2a = MathHelper.cos(t2);
+			final float cos2b = MathHelper.cos(t2+rotaryWidth);
+			final float sin3a = MathHelper.sin(t3);
+			final float sin3b = MathHelper.sin(t3+rotaryWidth);
+			final float cos3a = MathHelper.cos(t3);
+			final float cos3b = MathHelper.cos(t3+rotaryWidth);
+
+			worldRenderer.addVertexWithUV(cos1b*bladeOffset, sin1b*bladeOffset, depthDelta-axelLength, bladeMinU,bladeMinV); // inner, leading
+			worldRenderer.addVertexWithUV(cos1b*bladeLength, sin1b*bladeLength, depthDelta-axelLength, bladeMinU,bladeMaxV); // outer, leading
+			worldRenderer.addVertexWithUV(cos1a*bladeLength, sin1a*bladeLength,           -axelLength, bladeMaxU,bladeMaxV); // outer, trailing
+			worldRenderer.addVertexWithUV(cos1a*bladeOffset, sin1a*bladeOffset,           -axelLength, bladeMaxU,bladeMinV); // inner, trailing
+
+			worldRenderer.addVertexWithUV(cos1a*bladeOffset, sin1a*bladeOffset,           -axelLength, bladeMaxU,bladeMinV); // inner, trailing
+			worldRenderer.addVertexWithUV(cos1a*bladeLength, sin1a*bladeLength,           -axelLength, bladeMaxU,bladeMaxV); // outer, trailing
+			worldRenderer.addVertexWithUV(cos1b*bladeLength, sin1b*bladeLength, depthDelta-axelLength, bladeMinU,bladeMaxV); // outer, leading
+			worldRenderer.addVertexWithUV(cos1b*bladeOffset, sin1b*bladeOffset, depthDelta-axelLength, bladeMinU,bladeMinV); // inner, leading
+
+
+			worldRenderer.addVertexWithUV(cos2b*bladeOffset, sin2b*bladeOffset, depthDelta-axelLength, bladeMinU,bladeMinV); // inner, leading
+			worldRenderer.addVertexWithUV(cos2b*bladeLength, sin2b*bladeLength, depthDelta-axelLength, bladeMinU,bladeMaxV); // outer, leading
+			worldRenderer.addVertexWithUV(cos2a*bladeLength, sin2a*bladeLength,           -axelLength, bladeMaxU,bladeMaxV); // outer, trailing
+			worldRenderer.addVertexWithUV(cos2a*bladeOffset, sin2a*bladeOffset,           -axelLength, bladeMaxU,bladeMinV); // inner, trailing
+
+			worldRenderer.addVertexWithUV(cos2a*bladeOffset, sin2a*bladeOffset,           -axelLength, bladeMaxU,bladeMinV); // inner, trailing
+			worldRenderer.addVertexWithUV(cos2a*bladeLength, sin2a*bladeLength,           -axelLength, bladeMaxU,bladeMaxV); // outer, trailing
+			worldRenderer.addVertexWithUV(cos2b*bladeLength, sin2b*bladeLength, depthDelta-axelLength, bladeMinU,bladeMaxV); // outer, leading
+			worldRenderer.addVertexWithUV(cos2b*bladeOffset, sin2b*bladeOffset, depthDelta-axelLength, bladeMinU,bladeMinV); // inner, leading
+
+
+			worldRenderer.addVertexWithUV(cos3b*bladeOffset, sin3b*bladeOffset, depthDelta-axelLength, bladeMinU,bladeMinV); // inner, leading
+			worldRenderer.addVertexWithUV(cos3b*bladeLength, sin3b*bladeLength, depthDelta-axelLength, bladeMinU,bladeMaxV); // outer, leading
+			worldRenderer.addVertexWithUV(cos3a*bladeLength, sin3a*bladeLength,           -axelLength, bladeMaxU,bladeMaxV); // outer, trailing
+			worldRenderer.addVertexWithUV(cos3a*bladeOffset, sin3a*bladeOffset,           -axelLength, bladeMaxU,bladeMinV); // inner, trailing
+
+			worldRenderer.addVertexWithUV(cos3a*bladeOffset, sin3a*bladeOffset,           -axelLength, bladeMaxU,bladeMinV); // inner, trailing
+			worldRenderer.addVertexWithUV(cos3a*bladeLength, sin3a*bladeLength,           -axelLength, bladeMaxU,bladeMaxV); // outer, trailing
+			worldRenderer.addVertexWithUV(cos3b*bladeLength, sin3b*bladeLength, depthDelta-axelLength, bladeMinU,bladeMaxV); // outer, leading
+			worldRenderer.addVertexWithUV(cos3b*bladeOffset, sin3b*bladeOffset, depthDelta-axelLength, bladeMinU,bladeMinV); // inner, leading
 			
-			// TODO: implement
 			
 			instance.draw();
 			GlStateManager.disableRescaleNormal();

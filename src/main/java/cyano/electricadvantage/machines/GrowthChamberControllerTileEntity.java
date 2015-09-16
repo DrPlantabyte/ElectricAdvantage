@@ -20,6 +20,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
+import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.oredict.OreDictionary;
 
 public class GrowthChamberControllerTileEntity extends cyano.poweradvantage.api.simple.TileEntitySimplePowerSource implements IFluidHandler{
@@ -214,12 +215,16 @@ public class GrowthChamberControllerTileEntity extends cyano.poweradvantage.api.
 	}
 	
 	public boolean isPowered(){
-		return timeSinceLastPowerRequest < 30;
+		return this.getEnergy() > 0 || timeSinceLastPowerRequest < 30;
 	}
 
 	///// Overrides to make this a multi-type block /////
 	@Override
 	public boolean isPowerSink(){
+		return true;
+	}
+	@Override
+	public boolean isPowerSource(){
 		return true;
 	}
 
@@ -246,6 +251,7 @@ public class GrowthChamberControllerTileEntity extends cyano.poweradvantage.api.
 			capacity = Math.min(capacity, tank.getFluidAmount() / WATER_PER_UNIT);
 			float delta = Math.min(ELECTRICITY_PER_UNIT * capacity,amount);
 			this.addEnergy(delta / ELECTRICITY_PER_UNIT, getType());
+			timeSinceLastPowerRequest = 0;
 			return delta;
 		} else if(ConduitType.areSameType(type, getType())){
 			// greenhouse energy
@@ -298,7 +304,6 @@ public class GrowthChamberControllerTileEntity extends cyano.poweradvantage.api.
 					this);
 			return request;
 		} else if(ConduitType.areSameType(offer, Power.ELECTRIC_POWER)){
-			timeSinceLastPowerRequest = 0;
 			float powerWanted = (this.getEnergyCapacity() - this.getEnergy());
 			powerWanted = Math.min(powerWanted, soil / SOIL_PER_UNIT);
 			powerWanted = Math.min(powerWanted, tank.getFluidAmount() / WATER_PER_UNIT);

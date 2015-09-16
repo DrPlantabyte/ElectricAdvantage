@@ -5,9 +5,12 @@ import java.util.List;
 
 import cyano.electricadvantage.init.Power;
 import cyano.electricadvantage.util.farming.VirtualCrop;
+import cyano.poweradvantage.api.ConduitType;
+import cyano.poweradvantage.api.PowerRequest;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.fml.common.FMLLog;
 
 public class GrowthChamberTileEntity extends ElectricMachineTileEntity {
 
@@ -29,7 +32,20 @@ public class GrowthChamberTileEntity extends ElectricMachineTileEntity {
 			boolean[] recalculate = inventoryChanged();
 			boolean active = false;
 			boolean flagSync = false;
+			for(int slot = 0; slot < GROWTH_AREA; slot++){
+				if(recalculate[slot]){
+					crops[slot] = getVirtualCrop(getInputSlot(slot));
+					progression[slot] = 0;
+					if(crops[slot] != null){
+						progressionMax[slot] = crops[slot].getMaxGrowth() * TICKS_PER_GROWTH;
+					} else {
+						progressionMax[slot] = 0;
+					}
+					flagSync = true;
+				}
+			}
 			if(hasRedstoneSignal() || getEnergy() < ENERGY_PER_TICK){
+				active = false;
 				for(int slot = 0; slot < GROWTH_AREA; slot++){
 					if(progression[slot] > 0){
 						progression[slot] = 0;
@@ -38,20 +54,9 @@ public class GrowthChamberTileEntity extends ElectricMachineTileEntity {
 				}
 			}else{
 				for(int slot = 0; slot < GROWTH_AREA; slot++){
-					if(recalculate[slot]){
-						crops[slot] = getVirtualCrop(getInputSlot(slot));
-						progression[slot] = 0;
-						if(crops[slot] != null){
-							progressionMax[slot] = crops[slot].getMaxGrowth() * TICKS_PER_GROWTH;
-						} else {
-							progressionMax[slot] = 0;
-						}
-						flagSync = true;
-					}
 					if(crops[slot] != null){
 						active = true;
 						progression[slot]++;
-						subtractEnergy(ENERGY_PER_TICK, getType());
 						if(progression[slot] % TICKS_PER_GROWTH == 0){
 							if(crops[slot].grow()){
 								// Growth done!
@@ -92,6 +97,9 @@ public class GrowthChamberTileEntity extends ElectricMachineTileEntity {
 						progressionMax[slot] = 0;
 					}
 				}
+				if(active){
+					subtractEnergy(ENERGY_PER_TICK, getType());
+				}
 			}
 			if(flagSync){
 				this.sync();
@@ -114,6 +122,8 @@ public class GrowthChamberTileEntity extends ElectricMachineTileEntity {
 		prepareDataFieldsForSync();
 		System.arraycopy(getDataFieldArray(), 0, oldDataArray, 0, oldDataArray.length);
 	}
+	
+	
 	
 	private static boolean notEqual(int[] a, int[] b){
 		if(a == null || b == null) return true;

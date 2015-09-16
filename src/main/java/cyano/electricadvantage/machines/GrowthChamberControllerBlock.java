@@ -107,5 +107,14 @@ public class GrowthChamberControllerBlock extends cyano.poweradvantage.api.simpl
 				 || ConduitType.areSameType(Power.ELECTRIC_POWER, type);
 	}
 	
+	@Override
+	public boolean isPowerSink(){
+		return true;
+	}
+	@Override
+	public boolean isPowerSource(){
+		return true;
+	}
+
 	///// end multi-type overrides /////
 }

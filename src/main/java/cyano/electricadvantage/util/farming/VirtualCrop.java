@@ -49,12 +49,15 @@ public class VirtualCrop {
 		} else {
 			b = null;
 		}
-		if(customRecipes.containsKey(r)){
+		if(customRecipes.get(r) != null){
 			return customRecipes.get(r).copy();
 		} else if(i instanceof net.minecraft.item.ItemReed
 				|| b instanceof net.minecraft.block.BlockMushroom
 				|| b instanceof net.minecraft.block.BlockCactus
-				|| b instanceof net.minecraft.block.BlockBush){
+				|| b instanceof net.minecraft.block.BlockBush
+				|| b instanceof net.minecraft.block.BlockGrass
+				|| b instanceof net.minecraft.block.BlockVine
+				|| b instanceof net.minecraft.block.BlockLilyPad){
 			// duplicate
 			ItemStack product = seed.copy();
 			product.stackSize = 2;
@@ -64,19 +67,18 @@ public class VirtualCrop {
 			IBlockState startingState = plantable.getPlant(w, pos);
 			Block block = startingState.getBlock();
 			int numStages = getNumberOfGrowthStages(startingState);
-			if(block instanceof BlockSapling || block instanceof net.minecraft.block.BlockCactus
-					 || block instanceof net.minecraft.block.BlockGrass
-					 || block instanceof net.minecraft.block.BlockVine
-					 || block instanceof net.minecraft.block.BlockLilyPad){
-				// duplicate
-				return new VirtualCrop(seed,10,Arrays.asList(new ItemStack(block,2,0)));
-			} else if(block instanceof BlockStem){
+			if(block instanceof BlockStem){
 				Block product = getBlockFieldByReflection(block);
 				if(product == null) {
 					return null;
 				}
 				return new VirtualCrop(seed,numStages,Arrays.asList(new ItemStack(product,1,0)));
-			} 
+			} else {
+				IBlockState agedState = ageToMax(startingState);
+				return new VirtualCrop(startingState.getBlock().getDrops(w, pos, startingState, 0),
+						getNumberOfGrowthStages(startingState),
+						agedState.getBlock().getDrops(w, pos, startingState, 0));
+			}
 			// TODO: plant megapack
 		}
 		return null;

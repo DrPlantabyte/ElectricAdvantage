@@ -44,7 +44,7 @@ public class HydroturbineRenderer extends Render{
 			final float shaftMaxU = 0.5f+2*pixel;
 			final float shaftMaxV = 1.0f;
 			
-			GlStateManager.translate(0.5f, 0.5f, 0.5f);
+			GlStateManager.translate(0f, 0.5f, 0f);
 			GlStateManager.rotate(e.rotationYaw, 0.0f, 1.0f, 0.0f);
 			this.bindTexture(this.getEntityTexture(e));
 			worldRenderer.startDrawingQuads();

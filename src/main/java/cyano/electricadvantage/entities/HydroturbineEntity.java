@@ -22,6 +22,8 @@ public class HydroturbineEntity extends net.minecraft.entity.Entity{
 		super(w);
 		this.width = 0.9375F;
 		this.height = 0.9375F;
+		this.setSize(this.width, this.height);
+		this.preventEntitySpawning = true;
 	}
 	public HydroturbineEntity(World w, BlockPos parentTileEntity) {
 		this(w);
@@ -82,5 +84,5 @@ public class HydroturbineEntity extends net.minecraft.entity.Entity{
 		// Do nothing
 		//TODO: coordinate with TileEntity
 	}
-
+	
 }

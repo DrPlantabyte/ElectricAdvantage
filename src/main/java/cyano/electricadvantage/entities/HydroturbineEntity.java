@@ -1,5 +1,7 @@
 package cyano.electricadvantage.entities;
 
+import cyano.electricadvantage.init.Power;
+import cyano.electricadvantage.machines.HydroelectricGeneratorTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.state.IBlockState;
@@ -26,13 +28,14 @@ public class HydroturbineEntity extends net.minecraft.entity.Entity{
 		this.preventEntitySpawning = true;
 	}
 	public HydroturbineEntity(World w, BlockPos parentTileEntity) {
-		this(w);
-		this.parent = w.getTileEntity(parentTileEntity);
+		this(w,w.getTileEntity(parentTileEntity));
 	}
 
 	public HydroturbineEntity(World w, TileEntity parentTileEntity) {
 		this(w);
 		this.parent = parentTileEntity;
+		BlockPos p = parentTileEntity.getPos();
+		this.setPosition(p.getX()+0.5, p.getY()-1, p.getZ()+0.5);
 	}
 
 	@Override
@@ -47,13 +50,13 @@ public class HydroturbineEntity extends net.minecraft.entity.Entity{
 		Block b = bs.getBlock();
 		Vec3 directionVector;
 		if(b instanceof BlockLiquid){
-			directionVector = ((BlockLiquid)b).modifyAcceleration(worldObj, getPosition(), null, new Vec3(0,0,0));
+			directionVector = ((BlockLiquid)b).modifyAcceleration(getEntityWorld(), getPosition(), null, new Vec3(0,0,0));
 			isSpinning = !(directionVector.xCoord == 0 && directionVector.zCoord == 0);
 		} else {
 			isSpinning = false;
 			directionVector = new Vec3(0,0,0);
 		}
-		if(this.worldObj.isRemote){
+		if(this.getEntityWorld().isRemote){
 			// client-side only
 			if(isSpinning){
 				rotation += DEGREES_PER_TICK;
@@ -63,26 +66,41 @@ public class HydroturbineEntity extends net.minecraft.entity.Entity{
 			}
 		} else {
 			// server-side only
-			//TODO: coordinate with TileEntity
-			// TODO: uncomment
-			/*
+			
+			
 			if(parent == null || parent.isInvalid()){
 				this.kill();
+			} else if(parent instanceof HydroelectricGeneratorTileEntity){
+				HydroelectricGeneratorTileEntity generator = (HydroelectricGeneratorTileEntity)parent;
+				if(isSpinning){
+					generator.addEnergy(HydroelectricGeneratorTileEntity.ENERGY_PER_TICK, Power.ELECTRIC_POWER);
+				}
+				generator.setActive(isSpinning);
 			}
-			*/
+			
 		}
 	}
 	
 	@Override
-	protected void readEntityFromNBT(NBTTagCompound tagCompund) {
-		// Do nothing
-		//TODO: coordinate with TileEntity
+	protected void readEntityFromNBT(NBTTagCompound root) {
+		if(root.hasKey("parentPos")){
+			int[] coords = root.getIntArray("parentPos");
+			if(coords.length >= 3){
+				parent = this.getEntityWorld().getTileEntity(new BlockPos(coords[0],coords[1],coords[2]));
+			}
+		}
 	}
 
 	@Override
-	protected void writeEntityToNBT(NBTTagCompound tagCompound) {
-		// Do nothing
-		//TODO: coordinate with TileEntity
+	protected void writeEntityToNBT(NBTTagCompound root) {
+		if(parent != null){
+			int[] coords = new int[3];
+			BlockPos p = parent.getPos();
+			coords[0] = p.getX();
+			coords[1] = p.getY();
+			coords[2] = p.getZ();
+			root.setIntArray("parentPos", coords);
+		}
 	}
 	
 }

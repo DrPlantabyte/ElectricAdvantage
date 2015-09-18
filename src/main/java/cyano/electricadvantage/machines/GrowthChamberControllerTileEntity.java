@@ -39,7 +39,7 @@ public class GrowthChamberControllerTileEntity extends cyano.poweradvantage.api.
 	private float soil = 0f;
 
 
-	private final int[] dataSyncArray = new int[3];
+	private final int[] dataSyncArray = new int[4];
 
 	public GrowthChamberControllerTileEntity() {
 		super(Power.GROWTHCHAMBER_POWER, 100, GrowthChamberControllerTileEntity.class.getSimpleName());

@@ -14,7 +14,7 @@ import net.minecraftforge.fml.common.FMLLog;
 
 public class GrowthChamberTileEntity extends ElectricMachineTileEntity {
 
-	private static final int TICKS_PER_GROWTH = 50;
+	private static final int TICKS_PER_GROWTH = 61;
 	private static final float ENERGY_PER_TICK = 1;
 	private static final int GROWTH_AREA = 3;
 	private final int[] progression = new int[GROWTH_AREA];
@@ -22,7 +22,7 @@ public class GrowthChamberTileEntity extends ElectricMachineTileEntity {
 	private final VirtualCrop[] crops = new VirtualCrop[GROWTH_AREA];
 	
 	public GrowthChamberTileEntity() {
-		super(GrowthChamberTileEntity.class.getName(),Power.GROWTHCHAMBER_POWER, 32, GROWTH_AREA, 6, 0);
+		super(GrowthChamberTileEntity.class.getName(),Power.GROWTHCHAMBER_POWER, ENERGY_PER_TICK*16, GROWTH_AREA, 6, 0);
 	}
 
 

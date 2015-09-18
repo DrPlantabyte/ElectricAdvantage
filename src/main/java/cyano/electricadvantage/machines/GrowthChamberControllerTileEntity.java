@@ -26,9 +26,9 @@ import net.minecraftforge.oredict.OreDictionary;
 public class GrowthChamberControllerTileEntity extends cyano.poweradvantage.api.simple.TileEntitySimplePowerSource implements IFluidHandler{
 
 
-	static final float ELECTRICITY_PER_UNIT = 2f;
-	static final float WATER_PER_UNIT = 1f;
-	static final float SOIL_PER_UNIT = 0.001f;
+	static final float ELECTRICITY_PER_UNIT = 4f;
+	static final float WATER_PER_UNIT = 0.25f;
+	static final float SOIL_PER_UNIT = 1.25e-4f;
 	static final float SOIL_PER_BLOCK = 1f;
 	static final float MAX_SOIL = SOIL_PER_BLOCK * 1.5f;
 	static final int OUT_OF_DATE_LIMIT = 30;
@@ -261,6 +261,8 @@ public class GrowthChamberControllerTileEntity extends cyano.poweradvantage.api.
 			capacity = Math.min(capacity, tank.getFluidAmount() / WATER_PER_UNIT);
 			float delta = Math.min(ELECTRICITY_PER_UNIT * capacity,amount);
 			this.addEnergy(delta / ELECTRICITY_PER_UNIT, getType());
+			soil -= delta * SOIL_PER_UNIT;
+			tank.drain(Math.max(1, (int)(delta * WATER_PER_UNIT)), true);
 			return delta;
 		} else if(ConduitType.areSameType(type, getType())){
 			// greenhouse energy

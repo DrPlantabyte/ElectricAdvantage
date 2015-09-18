@@ -9,7 +9,7 @@ import net.minecraft.world.World;
 
 public class LEDTileEntity extends TileEntitySimplePowerConsumer{
 
-	private static final float ENERGY_COST = 0.5f;
+	private static final float ENERGY_COST = 0.125f;
 	
 	public LEDTileEntity() {
 		super(Power.ELECTRIC_POWER, ENERGY_COST * 4, LEDTileEntity.class.getName());

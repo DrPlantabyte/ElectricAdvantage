@@ -56,7 +56,7 @@ public class ElectricFabricatorTileEntity extends ElectricMachineTileEntity {
 					break;
 				}
 				case CRAFTING:{
-					if(changeDetected){
+					if(changeDetected && !canCraft()){
 						state = FSM.READY;
 					} else if(getEnergy() < ENERGY_PER_PROGRESS_TICK){
 						state = FSM.INACTIVE;

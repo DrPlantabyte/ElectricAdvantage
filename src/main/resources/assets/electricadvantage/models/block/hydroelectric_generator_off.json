@@ -1,10 +1,10 @@
 {
     "parent": "electricadvantage:block/electric_machine_base",
     "textures": {
-        "front": "electricadvantage:blocks/hydroelectric_generator_off",
-        "top":   "electricadvantage:blocks/machine_top",
+        "front": "electricadvantage:blocks/machine_side",
+        "top":   "electricadvantage:blocks/hydroelectric_generator_off",
         "bottom":"electricadvantage:blocks/machine_top",
-        "back":  "electricadvantage:blocks/machine_back",
+        "back":  "electricadvantage:blocks/machine_side",
         "side":  "electricadvantage:blocks/machine_side"
     }
 }

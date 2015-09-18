@@ -1,10 +1,14 @@
 package cyano.electricadvantage.entities;
 
+import java.util.List;
+
 import cyano.electricadvantage.init.Power;
 import cyano.electricadvantage.machines.HydroelectricGeneratorTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
@@ -16,9 +20,12 @@ public class HydroturbineEntity extends net.minecraft.entity.Entity{
 	public static final float DEGREES_PER_TICK = 30;
 	private static final float RADIANS_TO_DEGREES = (float)(180 / Math.PI);
 	private static final float DEGREES_TO_RADIANS = (float)(Math.PI / 180);
+	public static final float PROPELLER_DAMAGE = 5f;
 	public float rotation = 0;
 	public boolean isSpinning = false;
 	public TileEntity parent = null;
+	private BlockPos parentCoord = null;
+	private final long roffset;
 	
 	public HydroturbineEntity(World w) {
 		super(w);
@@ -26,6 +33,7 @@ public class HydroturbineEntity extends net.minecraft.entity.Entity{
 		this.height = 0.9375F;
 		this.setSize(this.width, this.height);
 		this.preventEntitySpawning = true;
+		roffset = w.rand.nextInt(8);
 	}
 	public HydroturbineEntity(World w, BlockPos parentTileEntity) {
 		this(w,w.getTileEntity(parentTileEntity));
@@ -66,8 +74,10 @@ public class HydroturbineEntity extends net.minecraft.entity.Entity{
 			}
 		} else {
 			// server-side only
-			
-			
+			if(parent == null && parentCoord != null){
+				parent = this.getEntityWorld().getTileEntity(parentCoord);
+				parentCoord = null;
+			}
 			if(parent == null || parent.isInvalid()){
 				this.kill();
 			} else if(parent instanceof HydroelectricGeneratorTileEntity){
@@ -77,7 +87,13 @@ public class HydroturbineEntity extends net.minecraft.entity.Entity{
 				}
 				generator.setActive(isSpinning);
 			}
-			
+			if(getEntityWorld().getTotalWorldTime() % 8 == roffset){
+				// slice-n-dice unfortunate souls caught in the blades
+				List<Entity> victims = getEntityWorld().getEntitiesWithinAABB(EntityLivingBase.class, this.getEntityBoundingBox());
+				for(Entity e : victims){
+					e.attackEntityFrom(Power.propeller_damage, PROPELLER_DAMAGE);
+				}
+			}
 		}
 	}
 	
@@ -86,7 +102,7 @@ public class HydroturbineEntity extends net.minecraft.entity.Entity{
 		if(root.hasKey("parentPos")){
 			int[] coords = root.getIntArray("parentPos");
 			if(coords.length >= 3){
-				parent = this.getEntityWorld().getTileEntity(new BlockPos(coords[0],coords[1],coords[2]));
+				parentCoord = new BlockPos(coords[0],coords[1],coords[2]);
 			}
 		}
 	}

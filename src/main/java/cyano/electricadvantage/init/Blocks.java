@@ -30,6 +30,7 @@ public abstract class Blocks {
 	
 	public static GUIBlock steam_powered_generator;
 	public static GUIBlock photovoltaic_generator;
+	public static GUIBlock hydroelectric_generator;
 
 	public static GUIBlock arc_furnace;
 	public static GUIBlock battery_array;
@@ -57,6 +58,7 @@ public abstract class Blocks {
 		laser_turret = (GUIBlock)addBlock(new LaserTurretBlock(),"laser_turret");
 
 		photovoltaic_generator = (GUIBlock)addBlock(new PhotovoltaicGeneratorBlock(),"photovoltaic_generator");
+		hydroelectric_generator = (GUIBlock)addBlock(new HydroelectricGeneratorBlock(),"hydroelectric_generator");
 		steam_powered_generator = (GUIBlock)addBlock(new SteamPoweredElectricGeneratorBlock(),"steam_powered_generator");
 
 		arc_furnace = (GUIBlock)addBlock(new ElectricFurnaceBlock(),"electric_furnace");

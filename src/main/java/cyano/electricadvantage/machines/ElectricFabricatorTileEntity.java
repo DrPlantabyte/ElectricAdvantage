@@ -70,14 +70,14 @@ public class ElectricFabricatorTileEntity extends ElectricMachineTileEntity {
 				}
 				case CRAFT_COMPLETE:{
 					doCraft();
-					getWorld().playSoundEffect(getPos().getX()+0.5, getPos().getY()+0.5, getPos().getZ()+0.5, "random.break", 0.5f, 1f);
+					getWorld().playSoundEffect(getPos().getX()+0.5, getPos().getY()+0.5, getPos().getZ()+0.5, "random.anvil_land", 0.15f, 1f);
 					state = FSM.READY;
 					break;
 				}
 				default:
 					throw new IllegalStateException("FSM state "+state.name()+" not recognized");
 			}
-			this.setActiveState(state == FSM.READY || state == FSM.CRAFTING || state == FSM.CRAFT_COMPLETE );
+			this.setActiveState(state == FSM.CRAFTING || state == FSM.CRAFT_COMPLETE );
 			
 		}
 		

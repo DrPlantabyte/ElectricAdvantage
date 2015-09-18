@@ -49,7 +49,7 @@ public class GrowthChamberControllerTileEntity extends cyano.poweradvantage.api.
 
 	private boolean redstone = true;
 
-	private long timeSinceLastPowerRequest = 100;
+	private int timeSinceLastPowerRequest = 100;
 
 	@Override
 	public void tickUpdate(boolean isServerWorld) {
@@ -62,7 +62,9 @@ public class GrowthChamberControllerTileEntity extends cyano.poweradvantage.api.
 					inventory[0] = null;
 				}
 			}
-			timeSinceLastPowerRequest++;
+			if(timeSinceLastPowerRequest < Integer.MAX_VALUE){
+				timeSinceLastPowerRequest++;
+			}
 		}
 	}
 	
@@ -151,6 +153,7 @@ public class GrowthChamberControllerTileEntity extends cyano.poweradvantage.api.
 		dataSyncArray[0] = Float.floatToRawIntBits(this.getEnergy());
 		dataSyncArray[1] = getTank().getFluidAmount();
 		dataSyncArray[2] = Float.floatToRawIntBits(this.getSoil());
+		dataSyncArray[3] = timeSinceLastPowerRequest;
 	}
 
 	@Override
@@ -158,6 +161,7 @@ public class GrowthChamberControllerTileEntity extends cyano.poweradvantage.api.
 		this.setEnergy(Float.intBitsToFloat(dataSyncArray[0]), this.getType());
 		this.getTank().setFluid(new FluidStack(FluidRegistry.WATER,dataSyncArray[1]));
 		this.setSoil(Float.intBitsToFloat(dataSyncArray[2]));
+		timeSinceLastPowerRequest = dataSyncArray[3];
 	}
 
 

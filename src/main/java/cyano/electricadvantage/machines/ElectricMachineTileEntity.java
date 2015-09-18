@@ -64,6 +64,10 @@ public abstract class ElectricMachineTileEntity extends cyano.poweradvantage.api
 		return redstone;
 	}
 
+	public void setEnergy(float amount){
+		this.setEnergy(amount,getType());
+	}
+	
 	protected void setActiveState(boolean active){
 		IBlockState oldState = getWorld().getBlockState(getPos());
 		if(oldState.getBlock() instanceof ElectricMachineBlock 

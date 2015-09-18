@@ -139,7 +139,7 @@ public class ElectricCrusherTileEntity extends ElectricMachineTileEntity{
 	@Override
 	public int[] getDataFieldArray() {
 		if(dataArray == null){
-			dataArray = new int[numberOfInputSlots()];
+			dataArray = new int[numberOfInputSlots()+1];
 		}
 		return dataArray;
 	}
@@ -147,16 +147,18 @@ public class ElectricCrusherTileEntity extends ElectricMachineTileEntity{
 	@Override
 	public void onDataFieldUpdate() {
 		int[] arr = getDataFieldArray();
+		setEnergy(Float.intBitsToFloat(arr[0]),getType());
 		for(int i = 0; i < numberOfInputSlots(); i++){
-			smashTime[i] = (short) arr[i];
+			smashTime[i] = (short) arr[i+1];
 		}
 	}
 
 	@Override
 	public void prepareDataFieldsForSync() {
 		int[] arr = getDataFieldArray();
+		arr[0] = Float.floatToIntBits(getEnergy());
 		for(int i = 0; i < numberOfInputSlots(); i++){
-			arr[i] = smashTime[i];
+			arr[i+1] = smashTime[i];
 		}
 	}
 

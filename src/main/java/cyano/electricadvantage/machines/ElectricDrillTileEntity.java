@@ -27,7 +27,7 @@ public class ElectricDrillTileEntity extends ElectricMachineTileEntity{
 	public static final int MAX_RANGE = 64;
 	public static final float ENERGY_COST_MOVE = 250f;
 	public static final float ENERGY_COST_PROGRESS_TICK = 24f;
-	public static final float MINING_TIME_FACTOR = 16.0f;
+	public static final float MINING_TIME_FACTOR = 32.0f;
 
 	
 	private final int[] dataSyncArray = new int[4];

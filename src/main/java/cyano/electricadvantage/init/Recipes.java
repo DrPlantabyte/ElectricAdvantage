@@ -42,6 +42,7 @@ public abstract class Recipes {
 		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(Items.silicon_blend,1),"sand","dustCarbon"));
 		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(Items.solder_blend,3),"dustTin","dustTin","dustLead"));
 		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(Items.solder_blend,3),"dustTin","dustTin","dustSilver"));
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Blocks.led_bar,3),"ggg","xxx","ccc",'g',"paneGlass",'x',"microchip",'c',"wire"));
 		
 		GameRegistry.addRecipe(batteryRecipe(Items.lead_acid_battery,"ingotLead","sulfur",net.minecraft.init.Items.water_bucket));
 		GameRegistry.addRecipe(batteryRecipe(Items.nickel_hydride_battery,"ingotNickel","dustRedstone",net.minecraft.init.Items.water_bucket));

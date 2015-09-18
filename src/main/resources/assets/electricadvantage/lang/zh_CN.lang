@@ -35,6 +35,7 @@ tile.electricadvantage.growth_chamber.name=生长箱
 tile.electricadvantage.growth_chamber_controller.name=生长箱控制单元
 tile.electricadvantage.li_ore.name=锂矿
 tile.electricadvantage.sulfur_ore.name=硫矿石
+tile.electricadvantage.led_bar.name=LED燈
 
 tooltip.battery.charge=充电
 tooltip.battery.capacity=容量

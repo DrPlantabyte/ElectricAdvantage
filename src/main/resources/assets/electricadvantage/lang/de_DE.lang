@@ -35,6 +35,7 @@ tile.electricadvantage.growth_chamber.name=Wachstumskammer
 tile.electricadvantage.growth_chamber_controller.name=Wachstumskammer Steuereinheit
 tile.electricadvantage.li_ore.name=Lithiumerz
 tile.electricadvantage.sulfur_ore.name=Schwefelerz
+tile.electricadvantage.led_bar.name=LED Draht
 
 tooltip.battery.charge=Lade
 tooltip.battery.capacity=Kapazität

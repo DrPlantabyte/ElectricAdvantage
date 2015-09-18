@@ -35,6 +35,7 @@ tile.electricadvantage.growth_chamber.name=Growth Chamber
 tile.electricadvantage.growth_chamber_controller.name=Growth Chamber Control Unit
 tile.electricadvantage.li_ore.name=Lithium Ore
 tile.electricadvantage.sulfur_ore.name=Sulfur Ore
+tile.electricadvantage.led_bar.name=LED Bar
 
 tooltip.battery.charge=Charge
 tooltip.battery.capacity=Capacity

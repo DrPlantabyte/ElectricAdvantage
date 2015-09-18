@@ -27,6 +27,7 @@ public abstract class Blocks {
 	public static Block sulfur_ore;
 
 	public static Block electric_track;
+	public static Block led_bar;
 	
 	public static GUIBlock steam_powered_generator;
 	public static GUIBlock photovoltaic_generator;
@@ -56,6 +57,7 @@ public abstract class Blocks {
 		
 		electric_track = addBlock(new ElectricScaffoldBlock(),"electric_track");
 		laser_turret = (GUIBlock)addBlock(new LaserTurretBlock(),"laser_turret");
+		led_bar = addBlock(new LEDBlock(),"led_bar");
 
 		photovoltaic_generator = (GUIBlock)addBlock(new PhotovoltaicGeneratorBlock(),"photovoltaic_generator");
 		hydroelectric_generator = (GUIBlock)addBlock(new HydroelectricGeneratorBlock(),"hydroelectric_generator");

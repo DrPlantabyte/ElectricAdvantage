@@ -35,6 +35,7 @@ tile.electricadvantage.growth_chamber.name=Camera di Crescita
 tile.electricadvantage.growth_chamber_controller.name=Controllore Camera di Crescita
 tile.electricadvantage.li_ore.name=Minerale di litio
 tile.electricadvantage.sulfur_ore.name=Minerale di Zolfo
+tile.electricadvantage.led_bar.name=Luce a led
 
 tooltip.battery.charge=Carica
 tooltip.battery.capacity=Capacità

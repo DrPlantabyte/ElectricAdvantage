@@ -1,0 +1,7 @@
+{
+    "parent": "poweradvantage:block/pipe2_ns",
+    "textures": {
+        "texture": "electricadvantage:blocks/led_bar_off",
+        "particle": "electricadvantage:materials/machine_case"
+    }
+}

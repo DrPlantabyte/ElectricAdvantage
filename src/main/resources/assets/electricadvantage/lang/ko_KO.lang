@@ -33,6 +33,7 @@ tile.electricadvantage.growth_chamber.name=성장 상공 회의소
 tile.electricadvantage.growth_chamber_controller.name=성장 챔버 제어 장치
 tile.electricadvantage.li_ore.name=리튬 광석
 tile.electricadvantage.sulfur_ore.name=유황 광석
+tile.electricadvantage.led_bar.name=LED 조명
 
 tooltip.battery.charge=요금
 tooltip.battery.capacity=생산 능력

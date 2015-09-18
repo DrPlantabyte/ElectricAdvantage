@@ -35,6 +35,7 @@ tile.electricadvantage.growth_chamber.name=植物生長室
 tile.electricadvantage.growth_chamber_controller.name=植物成長室コントローラ
 tile.electricadvantage.li_ore.name=リチウム 鉱石
 tile.electricadvantage.sulfur_ore.name=硫黄鉱石
+tile.electricadvantage.led_bar.name=LEDライト
 
 tooltip.battery.charge=量
 tooltip.battery.capacity=合計金額

@@ -77,7 +77,7 @@ public class VirtualCrop {
 				IBlockState agedState = ageToMax(startingState);
 				return new VirtualCrop(startingState.getBlock().getDrops(w, pos, startingState, 0),
 						getNumberOfGrowthStages(startingState),
-						agedState.getBlock().getDrops(w, pos, startingState, 0));
+						agedState.getBlock().getDrops(w, pos, agedState, 0));
 			}
 			// TODO: plant megapack
 		}

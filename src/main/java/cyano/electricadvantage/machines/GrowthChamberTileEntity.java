@@ -33,7 +33,7 @@ public class GrowthChamberTileEntity extends ElectricMachineTileEntity {
 			boolean active = false;
 			boolean flagSync = false;
 			for(int slot = 0; slot < GROWTH_AREA; slot++){
-				if(recalculate[slot]){
+				if(recalculate[slot] || progression[slot] >= progressionMax[slot]){
 					crops[slot] = getVirtualCrop(getInputSlot(slot));
 					progression[slot] = 0;
 					if(crops[slot] != null){
@@ -86,6 +86,7 @@ public class GrowthChamberTileEntity extends ElectricMachineTileEntity {
 									}
 								}
 								progression[slot] = 0;
+								progressionMax[slot] = 0;
 							}
 							if(crops[slot] != null){
 								progressionMax[slot] = crops[slot].getMaxGrowth() * TICKS_PER_GROWTH;
@@ -231,7 +232,7 @@ public class GrowthChamberTileEntity extends ElectricMachineTileEntity {
 			return changes;
 		}
 		for(int i = 0; i < oldInventory.length; i++){
-			changes[i] = !ItemStack.areItemStacksEqual(oldInventory[i], newInventory[i]);
+			changes[i] = !ItemStack.areItemsEqual(oldInventory[i], newInventory[i]);
 		}
 		for(int i = 0; i < oldInventory.length; i++){
 			oldInventory[i] = (newInventory[i] == null ? null : newInventory[i].copy());

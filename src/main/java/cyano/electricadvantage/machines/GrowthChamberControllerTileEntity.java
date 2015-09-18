@@ -31,6 +31,7 @@ public class GrowthChamberControllerTileEntity extends cyano.poweradvantage.api.
 	static final float SOIL_PER_UNIT = 0.001f;
 	static final float SOIL_PER_BLOCK = 1f;
 	static final float MAX_SOIL = SOIL_PER_BLOCK * 1.5f;
+	static final int OUT_OF_DATE_LIMIT = 30;
 
 	private final FluidTank tank;
 
@@ -62,7 +63,7 @@ public class GrowthChamberControllerTileEntity extends cyano.poweradvantage.api.
 					inventory[0] = null;
 				}
 			}
-			if(timeSinceLastPowerRequest < Integer.MAX_VALUE){
+			if(timeSinceLastPowerRequest < OUT_OF_DATE_LIMIT){
 				timeSinceLastPowerRequest++;
 			}
 		}
@@ -86,6 +87,7 @@ public class GrowthChamberControllerTileEntity extends cyano.poweradvantage.api.
 	private float oldEnergy = 0;
 	private float oldSoil = 0;
 	private int oldWater = 0;
+	private int oldCounter = OUT_OF_DATE_LIMIT;
 	@Override
 	public void powerUpdate(){
 		super.powerUpdate();
@@ -105,6 +107,10 @@ public class GrowthChamberControllerTileEntity extends cyano.poweradvantage.api.
 		if(oldWater != getTank().getFluidAmount()){
 			oldWater = getTank().getFluidAmount();
 			updateFlag = true;
+		}
+		if(oldCounter != timeSinceLastPowerRequest){
+			updateFlag = true;
+			oldCounter = timeSinceLastPowerRequest;
 		}
 
 		redstone = hasRedstoneSignal();
@@ -219,7 +225,7 @@ public class GrowthChamberControllerTileEntity extends cyano.poweradvantage.api.
 	}
 	
 	public boolean isPowered(){
-		return this.getEnergy() > 0 || timeSinceLastPowerRequest < 30;
+		return this.getEnergy() > 0 || timeSinceLastPowerRequest < OUT_OF_DATE_LIMIT;
 	}
 
 	///// Overrides to make this a multi-type block /////
@@ -255,7 +261,6 @@ public class GrowthChamberControllerTileEntity extends cyano.poweradvantage.api.
 			capacity = Math.min(capacity, tank.getFluidAmount() / WATER_PER_UNIT);
 			float delta = Math.min(ELECTRICITY_PER_UNIT * capacity,amount);
 			this.addEnergy(delta / ELECTRICITY_PER_UNIT, getType());
-			timeSinceLastPowerRequest = 0;
 			return delta;
 		} else if(ConduitType.areSameType(type, getType())){
 			// greenhouse energy
@@ -308,6 +313,7 @@ public class GrowthChamberControllerTileEntity extends cyano.poweradvantage.api.
 					this);
 			return request;
 		} else if(ConduitType.areSameType(offer, Power.ELECTRIC_POWER)){
+			timeSinceLastPowerRequest = 0;
 			float powerWanted = (this.getEnergyCapacity() - this.getEnergy());
 			powerWanted = Math.min(powerWanted, soil / SOIL_PER_UNIT);
 			powerWanted = Math.min(powerWanted, tank.getFluidAmount() / WATER_PER_UNIT);

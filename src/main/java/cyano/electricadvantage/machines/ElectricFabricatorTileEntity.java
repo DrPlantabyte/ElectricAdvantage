@@ -70,6 +70,7 @@ public class ElectricFabricatorTileEntity extends ElectricMachineTileEntity {
 				}
 				case CRAFT_COMPLETE:{
 					doCraft();
+					getWorld().playSoundEffect(getPos().getX()+0.5, getPos().getY()+0.5, getPos().getZ()+0.5, "random.break", 0.5f, 1f);
 					state = FSM.READY;
 					break;
 				}

@@ -45,6 +45,9 @@ public class SteamPoweredElectricGeneratorTileEntity extends ElectricGeneratorTi
 		}
 		super.powerUpdate();
 		super.setActive(flag);
+		if(flag && getWorld().rand.nextInt(200) == 0){
+			getWorld().playSoundEffect(getPos().getX()+0.5, getPos().getY()+0.5, getPos().getZ()+0.5, "random.fizz", 0.25f, 1f);
+		}
 	}
 
 	@Override

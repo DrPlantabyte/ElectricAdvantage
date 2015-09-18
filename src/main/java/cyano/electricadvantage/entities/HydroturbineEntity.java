@@ -87,7 +87,7 @@ public class HydroturbineEntity extends net.minecraft.entity.Entity{
 				}
 				generator.setActive(isSpinning);
 			}
-			if(getEntityWorld().getTotalWorldTime() % 8 == roffset){
+			if(isSpinning && getEntityWorld().getTotalWorldTime() % 8 == roffset){
 				// slice-n-dice unfortunate souls caught in the blades
 				List<Entity> victims = getEntityWorld().getEntitiesWithinAABB(EntityLivingBase.class, this.getEntityBoundingBox());
 				for(Entity e : victims){

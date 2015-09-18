@@ -43,6 +43,7 @@ public class ElectricCrusherTileEntity extends ElectricMachineTileEntity{
 						smashTime[i]++;
 						if(smashTime[i] >= totalSmashTime){
 							doCrush(i);
+							getWorld().playSoundEffect(getPos().getX()+0.5, getPos().getY()+0.5, getPos().getZ()+0.5, "dig.gravel", 0.5f, 1f);
 							smashTime[i] = 0;
 						}
 						active = true;

@@ -84,9 +84,7 @@ public abstract class Recipes {
 		}
 
 		// Machine recipes
-		if(OreDictionary.getOres("governor") != null && OreDictionary.getOres("governor").isEmpty() == false){
-			GameRegistry.addRecipe(electricMachineRecipe(Blocks.steam_powered_generator, "conduitSteam","governor"));
-		}
+		GameRegistry.addRecipe(electricMachineRecipe(Blocks.steam_powered_generator, "conduitSteam","governor"));
 		GameRegistry.addRecipe(new ShapedOreRecipe(Blocks.arc_furnace, "bbb","bub","bbb",'b',"blockBrick",'u',"PSU"));
 		GameRegistry.addRecipe(electricMachineRecipe(Blocks.hydroelectric_generator, "sprocket", "sprocket"));
 		GameRegistry.addRecipe(electricMachineRecipe(Blocks.battery_array, "chest"));

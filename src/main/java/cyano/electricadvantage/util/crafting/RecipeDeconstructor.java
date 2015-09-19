@@ -72,7 +72,7 @@ public class RecipeDeconstructor {
 					key = new ItemRecord(output);
 				} catch(Exception ex){
 					// extra insurance
-					FMLLog.severe("%s: ERROR! Encountered corrupted item! One of the installed mods added an invalid crafting recipe to teh game registry.");;
+					FMLLog.severe("%s: ERROR! Encountered corrupted item! One of the installed mods added an invalid crafting recipe to the game registry.");;
 					continue;
 				}
 				if(recipeCache.containsKey(key) == false){

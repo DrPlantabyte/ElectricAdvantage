@@ -71,6 +71,10 @@ public class ElectricAdvantage
 		}
 		
 		config.save();
+		
+
+		Blocks.init();
+		Items.init();
 
 
 		if(event.getSide() == Side.CLIENT){
@@ -97,8 +101,6 @@ public class ElectricAdvantage
 	@EventHandler
 	public void init(FMLInitializationEvent event)
 	{
-		Blocks.init();
-		Items.init();
 		Recipes.init();
 		Entities.init();
 		GUI.init();

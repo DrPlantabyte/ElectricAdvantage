@@ -34,7 +34,7 @@ public abstract class Recipes {
 		
 		
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Blocks.electric_conduit,6),"xxx","ccc","xxx",'x',"plastic",'c',"ingotCopper"));
-		if(OreDictionary.getOres("rubber") != null && OreDictionary.getOres("rubber").isEmpty() == false)GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Blocks.electric_conduit,6),"xxx","ccc","xxx",'x',"rubber",'c',"ingotCopper"));
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Blocks.electric_conduit,6),"xxx","ccc","xxx",'x',"rubber",'c',"ingotCopper"));
 		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(Items.blank_circuit_board,2),"plastic","plateCopper"));
 		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(Items.control_circuit,1),Items.blank_circuit_board,"microchip","solder"));
 		GameRegistry.addSmelting(Items.silicon_blend, new ItemStack(Items.silicon_ingot), 0.5f);
@@ -88,7 +88,7 @@ public abstract class Recipes {
 		GameRegistry.addRecipe(new ShapedOreRecipe(Blocks.arc_furnace, "bbb","bub","bbb",'b',"blockBrick",'u',"PSU"));
 		GameRegistry.addRecipe(electricMachineRecipe(Blocks.hydroelectric_generator, "sprocket", "sprocket"));
 		GameRegistry.addRecipe(electricMachineRecipe(Blocks.battery_array, "chest"));
-		GameRegistry.addRecipe(electricMachineRecipe(Blocks.rock_crusher, net.minecraft.init.Blocks.piston, "sprocket"));
+		GameRegistry.addRecipe(electricMachineRecipe(Blocks.rock_crusher, "sprocket", "gemDiamond"));
 		GameRegistry.addRecipe(electricMachineRecipe(Blocks.laser_turret, "gemDiamond", "gemEmerald"));
 		GameRegistry.addRecipe(electricMachineRecipe(Blocks.laser_turret, "gemEmerald", "gemDiamond"));
 		GameRegistry.addRecipe(electricMachineRecipe(Blocks.laser_drill, "blockDiamond"));

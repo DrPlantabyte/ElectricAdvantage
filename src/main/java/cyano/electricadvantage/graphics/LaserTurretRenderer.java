@@ -42,13 +42,13 @@ public class LaserTurretRenderer extends TileEntitySpecialRenderer{
 	
 	private void render(LaserTurretTileEntity e, World world, BlockPos pos, float partialTick){
 		this.bindTexture(texture);
-		final Tessellator instance = Tessellator.getInstance();
+		final Tessellator tessellator = Tessellator.getInstance();
 		
 		//This will make your block brightness dependent from surroundings lighting.
-		instance.getWorldRenderer().setBrightness(world.getCombinedLight(pos, 0));
-		instance.getWorldRenderer().setColorOpaque_F(1f, 1f, 1f);
+		tessellator.getWorldRenderer().setBrightness(world.getCombinedLight(pos, 0));
+		tessellator.getWorldRenderer().setColorOpaque_F(1f, 1f, 1f);
 		
-		final WorldRenderer worldRenderer = instance.getWorldRenderer();
+		final WorldRenderer worldRenderer = tessellator.getWorldRenderer();
 		final float sideU0 = 0;
 		final float sideU1 = 0.5f;
 		final float sideV0 = 0;
@@ -152,7 +152,7 @@ public class LaserTurretRenderer extends TileEntitySpecialRenderer{
 			worldRenderer.addVertexWithUV( x3, y3, z3, laserU0, laserV0);
 		}
 		
-		instance.draw();
+		tessellator.draw();
 	}
 
 	

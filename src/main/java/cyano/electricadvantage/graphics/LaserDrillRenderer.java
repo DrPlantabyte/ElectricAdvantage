@@ -46,13 +46,9 @@ public class LaserDrillRenderer extends TileEntitySpecialRenderer{
 
 		if(laserBlastLength > 0){
 			this.bindTexture(texture);
-			final Tessellator instance = Tessellator.getInstance();
+			final Tessellator tessellator = Tessellator.getInstance();
 
-			//This will make your block brightness dependent from surroundings lighting.
-			instance.getWorldRenderer().setBrightness(world.getCombinedLight(pos, 0));
-			instance.getWorldRenderer().setColorOpaque_F(1f, 1f, 1f);
-
-			final WorldRenderer worldRenderer = instance.getWorldRenderer();
+			final WorldRenderer worldRenderer = tessellator.getWorldRenderer();
 
 
 			final float laserU0 = 0;
@@ -98,7 +94,9 @@ public class LaserDrillRenderer extends TileEntitySpecialRenderer{
 				break;
 			}
 			}
-
+			
+			GlStateManager.disableLighting();
+			
 			GlStateManager.translate(0.5f, 0.5f, 0.5f);
 			GlStateManager.rotate(rotY, 0.0f, 1.0f, 0.0f);
 			GlStateManager.rotate(rotX, 1.0f, 0.0f, 0.0f);
@@ -142,7 +140,9 @@ public class LaserDrillRenderer extends TileEntitySpecialRenderer{
 			worldRenderer.addVertexWithUV( x3, y4, z4, laserU1, laserV0);
 			worldRenderer.addVertexWithUV( x3, y3, z3, laserU0, laserV0);
 
-			instance.draw();
+			tessellator.draw();
+
+			GlStateManager.enableLighting();
 		}
 	}
 

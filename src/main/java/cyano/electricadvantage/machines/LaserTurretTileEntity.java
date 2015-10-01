@@ -24,6 +24,8 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.FMLLog;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class LaserTurretTileEntity extends ElectricMachineTileEntity implements IUpdatePlayerListBox{
 
@@ -581,5 +583,11 @@ public class LaserTurretTileEntity extends ElectricMachineTileEntity implements 
 	public boolean isPowered() {
 		return getEnergy() > ENERGY_PER_TICK;
 	}
-
+	
+	// Helps with laser rendering
+	@SideOnly(Side.CLIENT)
+	public net.minecraft.util.AxisAlignedBB getRenderBoundingBox()
+	{
+		return new net.minecraft.util.AxisAlignedBB(getPos().add(-ATTACK_RANGE, -ATTACK_RANGE, -ATTACK_RANGE), getPos().add(ATTACK_RANGE, ATTACK_RANGE, ATTACK_RANGE));
+	}
 }

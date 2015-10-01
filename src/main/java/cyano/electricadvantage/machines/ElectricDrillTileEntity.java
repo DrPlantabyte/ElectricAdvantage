@@ -20,6 +20,8 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ElectricDrillTileEntity extends ElectricMachineTileEntity{
 
@@ -447,5 +449,12 @@ public class ElectricDrillTileEntity extends ElectricMachineTileEntity{
 	@Override
 	public boolean isActive(){
 		return isPowered() && (!this.hasRedstoneSignal() && (this.getEnergy() > 0 || (Boolean)getWorld().getBlockState(getPos()).getValue(ElectricDrillBlock.ACTIVE)));
+	}
+	
+	// Helps with laser rendering
+	@SideOnly(Side.CLIENT)
+	public net.minecraft.util.AxisAlignedBB getRenderBoundingBox()
+	{
+		return new net.minecraft.util.AxisAlignedBB(getPos().add(-MAX_RANGE, -MAX_RANGE, -MAX_RANGE), getPos().add(MAX_RANGE, MAX_RANGE, MAX_RANGE));
 	}
 }

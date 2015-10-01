@@ -84,6 +84,7 @@ public class LaserTurretRenderer extends TileEntitySpecialRenderer{
 
 		worldRenderer.startDrawingQuads();
 		worldRenderer.setNormal(0.0f, 1.0f, 0.0f);
+		
 		worldRenderer.addVertexWithUV( radius, radius, -radius, endU0, endV0);
 		worldRenderer.addVertexWithUV( radius,-radius, -radius, endU0, endV1);
 		worldRenderer.addVertexWithUV(-radius,-radius, -radius, endU1, endV1);
@@ -113,7 +114,8 @@ public class LaserTurretRenderer extends TileEntitySpecialRenderer{
 		worldRenderer.addVertexWithUV(-radius,-radius, -radius, sideU0, sideV1);
 		worldRenderer.addVertexWithUV( radius,-radius, -radius, sideU1, sideV1);
 		worldRenderer.addVertexWithUV( radius,-radius,  radius, sideU1, sideV0);
-		
+
+		tessellator.draw();
 		if(e.showLaserLine() && e.laserBlastLength > 0){
 			final double x1, y1, z1, x2, y2, z2,  x3, y3, z3, x4, y4, z4;
 			x1 = 0;
@@ -130,6 +132,10 @@ public class LaserTurretRenderer extends TileEntitySpecialRenderer{
 			y4 = 0;
 			z4 = z2;
 
+			worldRenderer.startDrawingQuads();
+			worldRenderer.setNormal(0.0f, 1.0f, 0.0f);
+			worldRenderer.setBrightness(240);
+			
 			worldRenderer.addVertexWithUV( x1, y1, z1, laserU0, laserV1);
 			worldRenderer.addVertexWithUV( x2, y1, z2, laserU1, laserV1);
 			worldRenderer.addVertexWithUV( x2, y2, z2, laserU1, laserV0);
@@ -150,9 +156,10 @@ public class LaserTurretRenderer extends TileEntitySpecialRenderer{
 			worldRenderer.addVertexWithUV( x4, y4, z4, laserU1, laserV1);
 			worldRenderer.addVertexWithUV( x3, y4, z4, laserU1, laserV0);
 			worldRenderer.addVertexWithUV( x3, y3, z3, laserU0, laserV0);
+			
+			tessellator.draw();
 		}
 		
-		tessellator.draw();
 	}
 
 	

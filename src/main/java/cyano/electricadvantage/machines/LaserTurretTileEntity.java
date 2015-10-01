@@ -9,6 +9,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
@@ -245,6 +246,10 @@ public class LaserTurretTileEntity extends ElectricMachineTileEntity implements 
 		e.setFire(BURN_TIME);
 		if(e instanceof EntityLivingBase){
 			((EntityLivingBase)e).attackEntityFrom(Power.laser_damage, ATTACK_DAMAGE);
+			BlockPos bp = e.getPosition();
+			if(getWorld().isAirBlock(bp) && !getWorld().isAirBlock(bp.down())){
+				getWorld().setBlockState(bp, Blocks.fire.getDefaultState());
+			}
 			if(playerOwner != null && !playerOwner.isEmpty()){
 				EntityPlayer p = getWorld().getPlayerEntityByName(playerOwner);
 				if(p != null){

@@ -1,5 +1,7 @@
 package cyano.electricadvantage.graphics;
 
+import org.lwjgl.opengl.GL11;
+
 import cyano.electricadvantage.ElectricAdvantage;
 import cyano.electricadvantage.machines.ElectricDrillTileEntity;
 import net.minecraft.client.renderer.GlStateManager;
@@ -95,14 +97,13 @@ public class LaserDrillRenderer extends TileEntitySpecialRenderer{
 			}
 			}
 			
-			GlStateManager.disableLighting();
-			
 			GlStateManager.translate(0.5f, 0.5f, 0.5f);
 			GlStateManager.rotate(rotY, 0.0f, 1.0f, 0.0f);
 			GlStateManager.rotate(rotX, 1.0f, 0.0f, 0.0f);
 
 			worldRenderer.startDrawingQuads();
 			worldRenderer.setNormal(0.0f, 1.0f, 0.0f);
+			worldRenderer.setBrightness(240);
 
 			final double x1, y1, z1, x2, y2, z2,  x3, y3, z3, x4, y4, z4;
 			x1 = 0;
@@ -142,7 +143,6 @@ public class LaserDrillRenderer extends TileEntitySpecialRenderer{
 
 			tessellator.draw();
 
-			GlStateManager.enableLighting();
 		}
 	}
 

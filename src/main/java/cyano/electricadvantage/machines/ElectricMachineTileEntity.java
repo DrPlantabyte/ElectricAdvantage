@@ -321,6 +321,7 @@ public abstract class ElectricMachineTileEntity extends cyano.poweradvantage.api
 				total += item.getMaxStackSize();
 			}
 		}
+		if(total <= 0) return 0;
 		return 15 * sum / total;
 	}
 

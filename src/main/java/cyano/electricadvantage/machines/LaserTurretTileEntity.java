@@ -589,6 +589,15 @@ public class LaserTurretTileEntity extends ElectricMachineTileEntity implements 
 		return getEnergy() > ENERGY_PER_TICK;
 	}
 	
+	@Override
+	public int getComparatorOutput(){
+		if(this.targetLocked){
+			return 15;
+		} else {
+			return (int)(8 * (this.getEnergy() / this.getEnergyCapacity()));
+		}
+	}
+	
 	// Helps with laser rendering
 	final private int renderRange = ATTACK_RANGE * 2;
 	@SideOnly(Side.CLIENT)

@@ -37,7 +37,7 @@ public class ElectricCrusherTileEntity extends ElectricMachineTileEntity{
 					smashTime[i] = 0;
 					continue;
 				}
-				if(getEnergy() >= ENERGY_PER_TICK){
+				if(getEnergy() >= ENERGY_PER_TICK && !hasRedstoneSignal()){
 					if(canCrush(i)){
 						subtractEnergy(ENERGY_PER_TICK,Power.ELECTRIC_POWER);
 						smashTime[i]++;

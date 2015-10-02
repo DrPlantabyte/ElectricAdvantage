@@ -36,7 +36,7 @@ public class ElectricFurnaceTileEntity extends ElectricMachineTileEntity{
 					burnTime[i] = 0;
 					continue;
 				}
-				if(getEnergy() >= ENERGY_PER_TICK){
+				if(getEnergy() >= ENERGY_PER_TICK && !hasRedstoneSignal()){
 					if(canSmelt(i)){
 						subtractEnergy(ENERGY_PER_TICK,Power.ELECTRIC_POWER);
 						burnTime[i]++;

@@ -452,10 +452,11 @@ public class ElectricDrillTileEntity extends ElectricMachineTileEntity{
 	}
 	
 	// Helps with laser rendering
-		final private int renderRange = MAX_RANGE * 2;
-		@SideOnly(Side.CLIENT)
-		public net.minecraft.util.AxisAlignedBB getRenderBoundingBox()
-		{
-			return new net.minecraft.util.AxisAlignedBB(getPos().add(-renderRange, -renderRange, -renderRange), getPos().add(renderRange, renderRange, renderRange));
-		}
+	final private int renderRange = MAX_RANGE * 2;
+	@SideOnly(Side.CLIENT)
+	public net.minecraft.util.AxisAlignedBB getRenderBoundingBox()
+	{
+		return new net.minecraft.util.AxisAlignedBB(getPos().add(-renderRange, -renderRange, -renderRange), getPos().add(renderRange, renderRange, renderRange));
+		//return super.INFINITE_EXTENT_AABB;
+	}
 }

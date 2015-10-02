@@ -56,7 +56,9 @@ public class ElectricFabricatorTileEntity extends ElectricMachineTileEntity {
 					break;
 				}
 				case CRAFTING:{
-					if(changeDetected && !canCraft()){
+					if(hasRedstoneSignal()){
+						state = FSM.READY;
+					} else if(changeDetected && !canCraft()){
 						state = FSM.READY;
 					} else if(getEnergy() < ENERGY_PER_PROGRESS_TICK){
 						state = FSM.INACTIVE;
@@ -203,6 +205,14 @@ public class ElectricFabricatorTileEntity extends ElectricMachineTileEntity {
 		this.progress = dataArray[1];
 	}
 
+	@Override
+	public int getComparatorOutput(){
+		if(state == FSM.CRAFTING){
+			return 15;
+		} else {
+			return 0;
+		}
+	}
 
 	/*
 	 * finite state machine (FSM):

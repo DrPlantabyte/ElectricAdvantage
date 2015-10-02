@@ -218,12 +218,6 @@ public class GrowthChamberControllerTileEntity extends cyano.poweradvantage.api.
 		return false;
 	}
 	
-	
-	public int getComparatorOutput() {
-		if(inventory[0] == null) return 0;
-		return Math.min(Math.max(15 * inventory[0].stackSize * inventory[0].getMaxStackSize() / inventory[0].getMaxStackSize(),1),15);
-	}
-	
 	public boolean isPowered(){
 		return this.getEnergy() > 0 || timeSinceLastPowerRequest < OUT_OF_DATE_LIMIT;
 	}
@@ -429,4 +423,13 @@ public class GrowthChamberControllerTileEntity extends cyano.poweradvantage.api.
 	}
 
 	///// end of IFluidHandler methods /////
+	
+	public int getComparatorOutput(){
+		if(this.soil > SOIL_PER_UNIT && this.getTank().getFluidAmount() > WATER_PER_UNIT
+				&& this.getEnergy() > ELECTRICITY_PER_UNIT){
+			return 15;
+		} else {
+			return 0;
+		}
+	}
 }

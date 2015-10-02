@@ -17,7 +17,7 @@ public class SteamPoweredElectricGeneratorTileEntity extends ElectricGeneratorTi
 	private final float maxSteam = 32;
 	private float steam = 0;
 	private final float steamDecay = 0.0625f*8;
-	private final float maxSteamConversionPerTick = 1.75f;
+	private final float maxSteamConversionPerTick = maxSteam / 8;
 	
 	private float lastTransmissionCurrent = 0;
 	

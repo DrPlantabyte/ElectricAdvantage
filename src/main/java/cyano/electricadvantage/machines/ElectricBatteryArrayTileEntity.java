@@ -118,6 +118,10 @@ public class ElectricBatteryArrayTileEntity extends ElectricGeneratorTileEntity{
 		if(flag) this.sync();
 	}
 
+	protected boolean hasRedstoneSignal(){
+		return getWorld().isBlockPowered(getPos());
+	}
+	
 	@Override
 	public float getPowerOutput() {
 		// not used
@@ -198,5 +202,4 @@ public class ElectricBatteryArrayTileEntity extends ElectricGeneratorTileEntity{
 	public void tickUpdate(boolean isServer) {
 		// do nothing
 	}
-
 }

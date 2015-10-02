@@ -590,9 +590,10 @@ public class LaserTurretTileEntity extends ElectricMachineTileEntity implements 
 	}
 	
 	// Helps with laser rendering
+	final private int renderRange = ATTACK_RANGE * 2;
 	@SideOnly(Side.CLIENT)
 	public net.minecraft.util.AxisAlignedBB getRenderBoundingBox()
 	{
-		return new net.minecraft.util.AxisAlignedBB(getPos().add(-ATTACK_RANGE, -ATTACK_RANGE, -ATTACK_RANGE), getPos().add(ATTACK_RANGE, ATTACK_RANGE, ATTACK_RANGE));
+		return new net.minecraft.util.AxisAlignedBB(getPos().add(-renderRange, -renderRange, -renderRange), getPos().add(renderRange, renderRange, renderRange));
 	}
 }

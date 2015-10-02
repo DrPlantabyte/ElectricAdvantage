@@ -4,28 +4,30 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.ShapedRecipes;
 import net.minecraft.item.crafting.ShapelessRecipes;
 import net.minecraftforge.fml.common.FMLLog;
-import net.minecraftforge.fml.common.registry.FMLControlledNamespacedRegistry;
-import net.minecraftforge.fml.common.registry.GameData;
-import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 public class RecipeDeconstructor {
 
+	private static final boolean enableDebugOutput = false;
 	
 	private static RecipeDeconstructor instance = null;
 	private static final Lock initLock = new ReentrantLock();
@@ -119,6 +121,21 @@ public class RecipeDeconstructor {
 		if(recursionDepth > RECURSION_LIMIT) return null;
 		if(craftingTarget == null) return null;
 		
+		debug("Looking up recipe for %s in %s",craftingTarget,serializedInventory);
+		// handle wild-card items by attempting to craft each valid variant
+		if(craftingTarget.getMetadata() == OreDictionary.WILDCARD_VALUE){
+			debug("%s has wild-card meta value",craftingTarget);
+			SerializedInventory attempt1 = attemptToCraft(craftingTarget,serializedInventory,output,recursionDepth+1);
+			if(attempt1 != null || craftingTarget.getItem().isDamageable()) return attempt1;
+			ItemStack newTarget = craftingTarget.copy();
+			for(int meta = 0; meta < 16; meta++){
+				debug("Trying recipe with meta value ",meta);
+				newTarget.setItemDamage(meta);
+				SerializedInventory attempt2 = attemptToCraft(newTarget,serializedInventory,output,recursionDepth+1);
+				if(attempt2 != null) return attempt2;
+			}
+			return null;
+		}
 		// get recipes for item
 		List<IRecipe> recipes = getRecipesForItem(craftingTarget);
 		if(recipes == null || recipes.isEmpty()) return null;
@@ -129,10 +146,13 @@ public class RecipeDeconstructor {
 				SerializedInventory tempInv = serializedInventory.copy();
 				List<ItemMatcher> ingredients = marshalCraftingRecipe(recipe);
 				if(ingredients == null || ingredients.isEmpty()) continue;
-	
+
+				debug("Recipe: %s",ingredients);
+				
 				// for each ingredient, either find it in the inventory (and remove it) or craft it from the inventory
 				for(ItemMatcher ingredient : ingredients){
 					if(tempInv.decrement(ingredient)){
+						debug("Consumed %s",ingredient);
 						// inventory contained requested ingredient, move on to the next
 						continue;
 					} else {
@@ -164,6 +184,7 @@ public class RecipeDeconstructor {
 				}
 				// if we made it this far, then we successfully crafted the item
 				// set the output callback
+				debug("Craft successful; New inventory: %s",tempInv);
 				output.set(recipe.getRecipeOutput().copy());
 				// return the new state of the inventory
 				return tempInv;
@@ -219,5 +240,9 @@ public class RecipeDeconstructor {
 		return output;
 	}
 	
-	
+	private static void debug(String msg, Object... data){
+		if(enableDebugOutput){
+			FMLLog.info(RecipeDeconstructor.class.getName()+": "+msg, data);
+		}
+	}
 }

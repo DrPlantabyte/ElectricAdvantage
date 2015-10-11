@@ -1,13 +1,21 @@
 package cyano.electricadvantage.machines;
 
+import java.util.List;
+import java.util.Random;
+
 import cyano.electricadvantage.entities.HydroturbineEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.AxisAlignedBB;
 
 public class HydroelectricGeneratorTileEntity extends ElectricGeneratorTileEntity {
 
 	
 	public static final float ENERGY_PER_TICK = 4;
+	
+	private static final long checkInterval = 101;
+	private static final Random initRand = new Random();
+	private final long checkOffset = initRand.nextInt((int)checkInterval);
 	
 	private boolean isInitialized;
 	
@@ -21,6 +29,16 @@ public class HydroelectricGeneratorTileEntity extends ElectricGeneratorTileEntit
 		if(isServer){
 			if(!isInitialized){
 				initialize();
+			}
+			if((getWorld().getTotalWorldTime() + checkOffset) % checkInterval == 0){
+				// periodically check if the hydroturbine entity is still present
+				List turbines = getWorld().getEntitiesWithinAABB(HydroturbineEntity.class, new AxisAlignedBB(
+						getPos().getX(),getPos().getY()-1,getPos().getZ(),
+						getPos().getX()+1,getPos().getY(),getPos().getZ()+1));
+				if(turbines == null || turbines.isEmpty()){
+					// turbine entity got deleted
+					initialize();
+				}
 			}
 		}
 	}

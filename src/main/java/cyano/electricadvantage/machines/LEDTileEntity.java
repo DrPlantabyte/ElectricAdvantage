@@ -1,6 +1,8 @@
 package cyano.electricadvantage.machines;
 
 import cyano.electricadvantage.init.Power;
+import cyano.poweradvantage.api.ConduitType;
+import cyano.poweradvantage.api.PowerRequest;
 import cyano.poweradvantage.api.simple.TileEntitySimplePowerConsumer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
@@ -61,6 +63,16 @@ public class LEDTileEntity extends TileEntitySimplePowerConsumer{
 		}
 		if((Boolean)bs.getValue(LEDBlock.LIT) != on){
 			getWorld().setBlockState(getPos(),bs.withProperty(LEDBlock.LIT, on));
+		}
+	}
+	
+	@Override
+	public PowerRequest getPowerRequest(ConduitType type){
+		float amount = this.getEnergyCapacity() - this.getEnergy(); 
+		if(this.canAcceptType(type) && amount > 0){
+			return new PowerRequest(PowerRequest.HIGH_PRIORITY,amount,this);
+		} else {
+			return PowerRequest.REQUEST_NOTHING;
 		}
 	}
 

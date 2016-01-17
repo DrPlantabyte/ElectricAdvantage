@@ -72,7 +72,9 @@ public class GrowthChamberControllerTileEntity extends cyano.poweradvantage.api.
 	private static boolean isDirt(ItemStack i){
 		if(i == null) return false;
 		for(ItemStack d : OreDictionary.getOres("blockDirt")){
-			if(OreDictionary.itemMatches(d, i, false)) return true;
+			if(OreDictionary.itemMatches(d, i, false)){
+				return true;
+			}
 		}
 		return false;
 	}

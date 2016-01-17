@@ -20,7 +20,6 @@ public class ElectricOvenTileEntity extends ElectricMachineTileEntity{
 
 	@Override
 	public void tickUpdate(boolean isServerWorld) {
-		//FMLLog.info("Energy is %s", getEnergy()); // TODO: remove
 		if(isServerWorld){
 			boolean active = false;
 			if(getInputSlot(0) == null || hasRedstoneSignal()){

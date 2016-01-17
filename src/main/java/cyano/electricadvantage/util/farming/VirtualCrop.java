@@ -7,6 +7,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import cyano.electricadvantage.util.crafting.ItemRecord;
 import net.minecraft.block.Block;
@@ -149,13 +150,18 @@ public class VirtualCrop {
 	public VirtualCrop(ItemStack item, int numGrowthStages, Collection<ItemStack> harvest){
 		this.numberOfStages = (byte)(numGrowthStages & 0x7F);
 		this.prematureHarvest = Arrays.asList(item);
-		this.harvest = new ArrayList<>(harvest);
+		this.harvest = removeInvalidItemStacks(harvest);
+		if(harvest.isEmpty()){
+			ItemStack pity = item.copy();
+			pity.stackSize = 2;
+			harvest.add(pity);
+		}
 	}
 	
 	public VirtualCrop(Collection<ItemStack> earlyHarvest, int numGrowthStages, Collection<ItemStack> harvest){
 		this.numberOfStages = (byte)(numGrowthStages & 0x7F);
 		this.prematureHarvest = new ArrayList<>(earlyHarvest);
-		this.harvest = new ArrayList<>(harvest);
+		this.harvest = removeInvalidItemStacks(harvest);
 	}
 	
 	public List<ItemStack> getHarvest(){
@@ -183,6 +189,17 @@ public class VirtualCrop {
 	
 	public byte getMaxGrowth(){
 		return this.numberOfStages;
+	}
+	
+	private static List<ItemStack> removeInvalidItemStacks(Collection<ItemStack> items){
+		/// CURSE YOU, MASTERCHEF MOD! DON'T YOU KNOW THAT ITEMSTACKS CAN'T HAVE NULL ITEMS?!?!
+		List<ItemStack> valid = new ArrayList<>(items.size());
+		for(ItemStack i : items){
+			if(i.getItem() != null && i.stackSize > 0){
+				valid.add(i);
+			}
+		}
+		return valid;
 	}
 	
 }

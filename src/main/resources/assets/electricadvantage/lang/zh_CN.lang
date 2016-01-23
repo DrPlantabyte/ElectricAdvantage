@@ -44,3 +44,12 @@ death.attack.laser=％1$s蒸发
 death.attack.laser.player=％2$s汽化％1$s
 death.attack.propeller=％1$s被粉碎螺旋桨。
 death.attack.propeller.player=％2$s推％1$s转换为螺旋桨。
+
+
+tile.electricadvantage.electric_switch.name=電器開關
+tile.electricadvantage.electric_still.name=電熱蒸餾水
+tile.electricadvantage.electric_pump.name=電動泵
+tile.electricadvantage.plastic_refinery.name=塑料煉油廠
+item.electricadvantage.petrolplastic_ingot.name=石油膠錠
+tile.electricadvantage.pump_pipe.name=泵管
+

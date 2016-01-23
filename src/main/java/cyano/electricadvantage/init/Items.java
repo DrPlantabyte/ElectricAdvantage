@@ -40,6 +40,9 @@ public abstract class Items {
 	public static Item lithium_nugget;
 	public static Item sulfur_powder;
 	
+
+	public static Item petrolplastic_ingot;
+	
 	private static boolean initDone = false;
 	public static void init(){
 		if(initDone) return;
@@ -56,6 +59,7 @@ public abstract class Items {
 		lithium_powder = addItem("li_powder",new Item(),"dustLithium");
 		lithium_nugget = addItem("li_nugget",new Item(),"nuggetLithium");
 		sulfur_powder = addItem("sulfur_powder",new Item(),"sulfur","dustSulfur","sulphur","dustSulphur");
+		petrolplastic_ingot = addItem("petrolplastic_ingot",new Item(),"plastic","ingotPlastic");
 		
 		lead_acid_battery = addItem("lead_acid_battery",new BatteryItem(Power.LEAD_ACID_BATTERY_CAPACITY),"battery");
 		nickel_hydride_battery = addItem("nickel_hydride_battery",new BatteryItem(Power.NICKEL_HYDRIDE_BATTERY_CAPACITY),"battery");

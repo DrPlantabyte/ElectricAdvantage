@@ -44,3 +44,11 @@ death.attack.laser=%1$s気化
 蒸発 death.attack.laser.player=%2$sは%1$sを気化しました
 death.attack.propeller=プロペラ殺さ%1$s
 death.attack.propeller.player=%2$sはプロペラと%1$sを殺しました
+
+
+tile.electricadvantage.electric_switch.name=電気スイッチ
+tile.electricadvantage.electric_still.name=電気蒸留器
+tile.electricadvantage.electric_pump.name=電気ポンプ
+tile.electricadvantage.plastic_refinery.name=プラスチック製油所
+item.electricadvantage.petrolplastic_ingot.name=石油系プラスチックインゴット
+tile.electricadvantage.pump_pipe.name=ポンプ配管

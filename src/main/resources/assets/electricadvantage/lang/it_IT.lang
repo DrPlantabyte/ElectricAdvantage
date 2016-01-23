@@ -44,3 +44,10 @@ death.attack.laser=%1$s vaporizzato
 death.attack.laser.player=%2$s vaporizzati %1$s
 death.attack.propeller=%1$s è stato polverizzato da un'elica.
 death.attack.propeller.player=%2$s spinti %1$s nelle eliche.
+
+tile.electricadvantage.electric_switch.name=Interruttore Elettrico
+tile.electricadvantage.electric_still.name=Distillatore Elettrico
+tile.electricadvantage.electric_pump.name=Pompa Elettricaa
+tile.electricadvantage.plastic_refinery.name=Raffineria Plastica
+item.electricadvantage.petrolplastic_ingot.name=Petrolio Plastica Lingotto
+tile.electricadvantage.pump_pipe.name=Tubo Pompa

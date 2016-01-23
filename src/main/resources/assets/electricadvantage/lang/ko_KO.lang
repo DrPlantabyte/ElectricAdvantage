@@ -42,3 +42,11 @@ death.attack.laser=%1$s이 (가) 증발
 death.attack.laser.player=%2$s의 증발 %1$s
 death.attack.propeller=%1$s는 프로펠러에 의해 분쇄 하였다.
 death.attack.propeller.player=%2$s는 프로펠러에 %1$s을 (를) 밀었다.
+
+
+tile.electricadvantage.electric_switch.name=전기 스위치
+tile.electricadvantage.electric_still.name=전기 증류기
+tile.electricadvantage.electric_pump.name=전기 펌프
+tile.electricadvantage.plastic_refinery.name=플라스틱 정유
+item.electricadvantage.petrolplastic_ingot.name=석유 수지 잉곳
+tile.electricadvantage.pump_pipe.name=펌프 파이프

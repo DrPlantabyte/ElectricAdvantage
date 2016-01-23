@@ -42,7 +42,12 @@ public abstract class Blocks {
 	public static GUIBlock growth_chamber;
 	public static GUIBlock growth_chamber_controller;
 	public static GUIBlock oven;
-	
+
+	public static Block pump_pipe;
+	public static Block electric_switch;
+	public static GUIBlock electric_still;
+	public static GUIBlock electric_pump;
+	public static GUIBlock plastic_refinery;
 	
 
 	

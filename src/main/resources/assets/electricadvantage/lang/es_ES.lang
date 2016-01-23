@@ -44,3 +44,12 @@ death.attack.laser=%1$s vaporiza
 death.attack.laser.player=%2$s vaporizado s%1$s
 death.attack.propeller=%1$s se pulverizan por una hélice.
 death.attack.propeller.player=%2$s empujaron %1$s en la hélice.
+
+
+
+tile.electricadvantage.electric_switch.name=Interruptor Eléctrico
+tile.electricadvantage.electric_still.name=Destilador Eléctrico
+tile.electricadvantage.electric_pump.name=Bomba Eléctrica
+tile.electricadvantage.plastic_refinery.name=Refinería de Plástico
+item.electricadvantage.petrolplastic_ingot.name=Petróleo Lingote de Plástico
+tile.electricadvantage.pump_pipe.name=Tubería de la Bomba

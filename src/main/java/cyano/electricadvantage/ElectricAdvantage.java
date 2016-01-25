@@ -40,6 +40,9 @@ public class ElectricAdvantage
 
 	public static ElectricAdvantage INSTANCE = null;
 
+	
+
+	public String LASER_SOUND = "note.bass";
 	/**
 	 * Pre-initialization step. Used for initializing objects and reading the 
 	 * config file
@@ -69,6 +72,8 @@ public class ElectricAdvantage
 				FMLLog.severe(MODID+": Error: Failed to write file "+orespawnFile);
 			}
 		}
+		
+		LASER_SOUND = config.getString("laser_sound", "options", LASER_SOUND, "Set the sound to use when the laser fires");
 		
 		config.save();
 		

@@ -3,6 +3,7 @@ package cyano.electricadvantage.machines;
 import java.util.ArrayList;
 import java.util.List;
 
+import cyano.electricadvantage.ElectricAdvantage;
 import cyano.electricadvantage.init.Power;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -161,7 +162,7 @@ public class LaserTurretTileEntity extends ElectricMachineTileEntity implements 
 					if(laserAttack == HIT_TIME){
 						// dish out the laser damage
 						w.playSoundEffect(getOpticPosition().xCoord, getOpticPosition().yCoord, getOpticPosition().zCoord,
-								"note.bass",3F,1.1F);
+								ElectricAdvantage.INSTANCE.LASER_SOUND,3F,1.1F);
 						List<Entity> victims = getLaserAttackVictims();
 						Entity e = w.getEntityByID(targetID);
 						for(Entity v : victims){

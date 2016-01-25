@@ -1,5 +1,6 @@
 package cyano.electricadvantage.machines;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -36,7 +37,7 @@ public class ElectricDrillTileEntity extends ElectricMachineTileEntity{
 	private int progress = 0;
 	private int progressGoal = 0;
 	private BlockPos targetBlockCoord = null;
-	private Block targetBlock = null;
+	private Block[] targetBlocks = null;
 	private List<ItemStack> targetBlockItems = null;
 	private int laserLength = 0;
 
@@ -84,9 +85,11 @@ public class ElectricDrillTileEntity extends ElectricMachineTileEntity{
 						progress++;
 						if(progress >= progressGoal){
 							// Mined it!
-							getWorld().playSoundEffect(targetBlockCoord.getX()+0.5, targetBlockCoord.getY()+0.5, targetBlockCoord.getZ()+0.5, targetBlock.stepSound.getBreakSound(), 0.5f, 1f);
+							getWorld().playSoundEffect(targetBlockCoord.getX()+0.5, targetBlockCoord.getY()+0.5, targetBlockCoord.getZ()+0.5, targetBlocks[0].stepSound.getBreakSound(), 0.5f, 1f);
 							getWorld().playSoundEffect(getPos().getX()+0.5, getPos().getY()+0.5, getPos().getZ()+0.5, "dig.sand", 0.5f, 1f);
-							getWorld().setBlockToAir(targetBlockCoord);
+							BlockPos[] targets = this.getArea(targetBlockCoord);
+							for(int i = 0; i < 5; i++)
+								getWorld().setBlockToAir(targets[i]);
 							for(ItemStack item : targetBlockItems){
 								addItem(item);
 							}
@@ -244,10 +247,14 @@ public class ElectricDrillTileEntity extends ElectricMachineTileEntity{
 			} else {
 				// currently drilling a block
 				// block validation
-				if(getWorld().isAirBlock(targetBlockCoord) || getWorld().getBlockState(targetBlockCoord).getBlock() != targetBlock){
-					// Block changed! invalidate!
-					untargetBlock();
-					flagSync = true;
+				BlockPos[] targets = getArea(n);
+				for(int i = 0; i < 5; i++){
+					if(getWorld().isAirBlock(targetBlockCoord) || getWorld().getBlockState(targets[i]).getBlock() != targetBlocks[i]){
+						// Block changed! invalidate!
+						untargetBlock();
+						flagSync = true;
+						break;
+					}
 				}
 			}
 		}
@@ -270,11 +277,11 @@ public class ElectricDrillTileEntity extends ElectricMachineTileEntity{
 		}
 		
 		// fry any idiots who stand in the laser's path
-		if(isActive() && targetBlock != null && targetBlockCoord != null){
+		if(isActive() && targetBlocks != null && targetBlockCoord != null){
 			BlockPos pos = getPos();
 			AxisAlignedBB beamArea = new AxisAlignedBB(targetBlockCoord.getX(),targetBlockCoord.getY(),targetBlockCoord.getZ(),
 					pos.getX()+1,pos.getY()+1,pos.getZ()+1);
-			List<Entity> victims = getWorld().getEntitiesWithinAABB(EntityLivingBase.class, beamArea);
+			List<EntityLivingBase> victims = getWorld().getEntitiesWithinAABB(EntityLivingBase.class, beamArea);
 			for(Entity e : victims){
 				e.setFire(3);
 				e.attackEntityFrom(Power.laser_damage, 2f);
@@ -288,7 +295,7 @@ public class ElectricDrillTileEntity extends ElectricMachineTileEntity{
 	}
 	
 	public void calculateDrillLength(){
-		if(this.isActive() && this.targetBlock != null && this.targetBlockCoord != null){
+		if(this.isActive() && this.targetBlocks != null && this.targetBlockCoord != null){
 			BlockPos pos = getPos();
 			// distance calculation is taking a short-cut by assuming that 2 out of the 3 XYZ coordinates are identical
 			laserLength = MathHelper.abs_int((pos.getX() - targetBlockCoord.getX()) + (pos.getY() - targetBlockCoord.getY()) + (pos.getZ() - targetBlockCoord.getZ()));
@@ -297,13 +304,46 @@ public class ElectricDrillTileEntity extends ElectricMachineTileEntity{
 		}
 	}
 
-	private void targetBlock (BlockPos n){
+	private void targetBlock (BlockPos pos){
+		BlockPos[] targets = getArea(pos);
 		progress = 0;
-		targetBlockCoord = n;
-		progressGoal = this.getBlockStrength(n);
-		targetBlock = getWorld().getBlockState(n).getBlock();
-		targetBlockItems = targetBlock.getDrops(getWorld(), n, getWorld().getBlockState(n), 0);
+		targetBlockCoord = pos;
+		progressGoal = 0;
+		targetBlocks = new Block[5];
+		targetBlockItems = new ArrayList<>(5);
+		for(int i = 0; i < 5; i++){
+			targetBlocks[i] = getWorld().getBlockState(targets[i]).getBlock();
+			progressGoal += this.getBlockStrength(targets[i]);
+			targetBlockItems.addAll(targetBlocks[i].getDrops(getWorld(), targets[i], getWorld().getBlockState(targets[i]), 0));
+		}
 		deferred = false;
+	}
+	
+	private BlockPos[] getArea(BlockPos center){
+		BlockPos[] a = new BlockPos[5];
+		a[0] = center;
+		switch(this.getFacing().getAxis()){
+			case X: 
+				a[1] = center.north();
+				a[2] = center.down();
+				a[3] = center.south();
+				a[4] = center.up();
+				break;
+			case Z:
+				a[1] = center.down();
+				a[2] = center.west();
+				a[3] = center.up();
+				a[4] = center.east();
+				break;
+			case Y:
+			default:
+				a[1] = center.north();
+				a[2] = center.west();
+				a[3] = center.south();
+				a[4] = center.east();
+				break;
+		}
+		return a;
 	}
 	
 	private void deferredTargetBlock (BlockPos n){
@@ -315,7 +355,7 @@ public class ElectricDrillTileEntity extends ElectricMachineTileEntity{
 		progress = 0;
 		progressGoal = 0;
 		targetBlockCoord = null;
-		targetBlock = null;
+		targetBlocks = null;
 		targetBlockItems = null;
 	}
 	

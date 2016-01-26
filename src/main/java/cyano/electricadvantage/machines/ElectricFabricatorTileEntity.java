@@ -85,15 +85,6 @@ public class ElectricFabricatorTileEntity extends ElectricMachineTileEntity {
 		
 	}
 	
-	private int oldProgress = 0;
-	@Override
-	public void powerUpdate(){
-		super.powerUpdate();
-		if(oldProgress != progress){
-			oldProgress = progress;
-			this.sync();
-		}
-	}
 	
 	private ItemStack[] oldInventory = null;
 	private boolean inventoryChanged(){

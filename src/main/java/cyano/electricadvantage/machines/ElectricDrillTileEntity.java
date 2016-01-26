@@ -89,7 +89,9 @@ public class ElectricDrillTileEntity extends ElectricMachineTileEntity{
 							getWorld().playSoundEffect(getPos().getX()+0.5, getPos().getY()+0.5, getPos().getZ()+0.5, "dig.sand", 0.5f, 1f);
 							BlockPos[] targets = this.getArea(targetBlockCoord);
 							for(int i = 0; i < 5; i++)
-								getWorld().setBlockToAir(targets[i]);
+								if(getWorld().getBlockState(targets[i]).getBlock() != net.minecraft.init.Blocks.bedrock){
+									getWorld().setBlockToAir(targets[i]);
+								}
 							for(ItemStack item : targetBlockItems){
 								addItem(item);
 							}

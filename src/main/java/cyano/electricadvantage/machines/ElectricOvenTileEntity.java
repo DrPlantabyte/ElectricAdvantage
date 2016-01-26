@@ -62,15 +62,6 @@ public class ElectricOvenTileEntity extends ElectricMachineTileEntity{
 		
 	}
 	
-	short oldValue = 0;
-	@Override
-	public void powerUpdate(){
-		super.powerUpdate();
-		if(oldValue != progress){
-			oldValue = progress;
-			this.sync();
-		}
-	}
 	
 	@Override
 	public boolean isPowered() {

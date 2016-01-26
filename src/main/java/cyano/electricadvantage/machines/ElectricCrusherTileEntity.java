@@ -59,18 +59,6 @@ public class ElectricCrusherTileEntity extends ElectricMachineTileEntity{
 	}
 
 
-	short[] oldValues = null;
-	@Override
-	public void powerUpdate(){
-		super.powerUpdate();
-		if(oldValues == null){
-			oldValues = new short[smashTime.length];
-		}
-		if (areNotEqual(oldValues,smashTime)){
-			System.arraycopy(smashTime, 0, oldValues, 0, smashTime.length);
-			this.sync();
-		}
-	}
 	
 	private static boolean areNotEqual(short[] a, short[] b){
 		if(a.length == b.length){

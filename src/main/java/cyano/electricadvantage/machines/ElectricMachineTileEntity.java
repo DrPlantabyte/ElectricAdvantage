@@ -47,6 +47,8 @@ public abstract class ElectricMachineTileEntity extends cyano.poweradvantage.api
 	
 	private boolean redstone = false;
 	private float oldEnergy = 0f;
+	private int[] syncArrayOld = null;
+	private int[] syncArrayNew = null;
 	@Override
 	public void powerUpdate(){
 		super.powerUpdate();
@@ -54,8 +56,19 @@ public abstract class ElectricMachineTileEntity extends cyano.poweradvantage.api
 		redstone = getWorld().isBlockPowered(getPos());
 		
 		this.setPowerState(this.isPowered());
-		if(oldEnergy != this.getEnergy()){
+		
+		// automatically detect when a sync is needed
+		if(syncArrayOld == null || syncArrayNew == null 
+				|| this.getDataFieldArray().length != syncArrayOld.length){
+			int size = this.getDataFieldArray().length;
+			syncArrayOld = new int[size];
+			syncArrayNew = new int[size];
+		}
+		this.prepareDataFieldsForSync();
+		System.arraycopy(this.getDataFieldArray(), 0, syncArrayNew, 0, syncArrayNew.length);
+		if(!Arrays.equals(syncArrayOld, syncArrayNew)){
 			this.sync();
+			System.arraycopy(syncArrayNew, 0, syncArrayOld, 0, syncArrayOld.length);
 		}
 	}
 

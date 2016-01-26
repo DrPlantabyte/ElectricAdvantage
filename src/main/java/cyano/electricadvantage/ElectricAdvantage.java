@@ -6,7 +6,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
-import java.util.concurrent.atomic.AtomicReference;
+import java.util.HashSet;
+import java.util.Set;
 
 import cyano.electricadvantage.init.Blocks;
 import cyano.electricadvantage.init.Enchantments;
@@ -16,8 +17,6 @@ import cyano.electricadvantage.init.Items;
 import cyano.electricadvantage.init.Recipes;
 import cyano.electricadvantage.init.TreasureChests;
 import cyano.electricadvantage.util.crafting.RecipeDeconstructor;
-import cyano.electricadvantage.util.crafting.SerializedInventory;
-import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.common.Mod;
@@ -39,6 +38,8 @@ public class ElectricAdvantage
 	public static final String VERSION = "1.0.5";
 
 	public static ElectricAdvantage INSTANCE = null;
+	
+	public final Set<String> PLASTIC_FLUID_MATERIALS = new HashSet<>();
 
 	
 
@@ -72,8 +73,12 @@ public class ElectricAdvantage
 				FMLLog.severe(MODID+": Error: Failed to write file "+orespawnFile);
 			}
 		}
-		
+
 		LASER_SOUND = config.getString("laser_sound", "options", LASER_SOUND, "Set the sound to use when the laser fires");
+
+		PLASTIC_FLUID_MATERIALS.addAll(Arrays.asList(config.getString("petrolplastic_fluids", "options", 
+				"refined_oil;oil", "Semicollon-delemited list of the names of fluids that can be used to make plastic")
+				.split(";")));
 		
 		config.save();
 		

@@ -57,18 +57,6 @@ public class ElectricFurnaceTileEntity extends ElectricMachineTileEntity{
 	}
 
 
-	short[] oldValues = null;
-	@Override
-	public void powerUpdate(){
-		super.powerUpdate();
-		if(oldValues == null){
-			oldValues = new short[burnTime.length];
-		}
-		if (areNotEqual(oldValues,burnTime)){
-			System.arraycopy(burnTime, 0, oldValues, 0, burnTime.length);
-			this.sync();
-		}
-	}
 	
 	private static boolean areNotEqual(short[] a, short[] b){
 		if(a.length == b.length){

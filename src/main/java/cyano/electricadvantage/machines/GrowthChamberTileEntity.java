@@ -111,30 +111,7 @@ public class GrowthChamberTileEntity extends ElectricMachineTileEntity {
 	}
 	
 
-	int[] oldDataArray = null;
-	@Override
-	public void powerUpdate(){
-		super.powerUpdate();
-		if(notEqual(oldDataArray,dataArray)){
-			this.sync();
-		}
-		if(oldDataArray == null){
-			oldDataArray = new int[getDataFieldArray().length];
-		}
-		prepareDataFieldsForSync();
-		System.arraycopy(getDataFieldArray(), 0, oldDataArray, 0, oldDataArray.length);
-	}
 	
-	
-	
-	private static boolean notEqual(int[] a, int[] b){
-		if(a == null || b == null) return true;
-		if(a.length != b.length) return true;
-		for(int i = 0; i < a.length; i++){
-			if(a[i] != b[i]) return true;
-		}
-		return false;
-	}
 	
 	private final int[] dataArray = new int[1+GROWTH_AREA*2];
 	@Override

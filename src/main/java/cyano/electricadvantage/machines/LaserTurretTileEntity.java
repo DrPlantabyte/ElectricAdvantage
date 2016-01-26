@@ -199,16 +199,6 @@ public class LaserTurretTileEntity extends ElectricMachineTileEntity implements 
 		}
 	}
 
-	private float oldEnergy = 0;
-	@Override
-	public void powerUpdate(){
-		super.powerUpdate();
-		if(oldEnergy != getEnergy()){
-			oldEnergy = getEnergy();
-			super.setActiveState(isActive());
-			sync();
-		}
-	}
 	
 	public boolean showLaserLine(){
 		return targetLocked && laserAttack > 0 && laserAttack <= BLAST_TIME;

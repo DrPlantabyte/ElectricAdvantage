@@ -51,4 +51,4 @@ tile.electricadvantage.electric_still.name=Elektro Brennerei
 tile.electricadvantage.electric_pump.name=Elektropumpe
 tile.electricadvantage.plastic_refinery.name=Kunststoff-Raffinerie
 item.electricadvantage.petrolplastic_ingot.name=Erdöl Kunststoff Barren
-tile.electricadvantage.pump_pipe.name=Pumpenrohr
+tile.electricadvantage.pump_pipe_electric.name=Pumpenrohr

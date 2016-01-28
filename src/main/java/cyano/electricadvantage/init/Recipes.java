@@ -96,6 +96,12 @@ public abstract class Recipes {
 		GameRegistry.addRecipe(electricMachineRecipe(Blocks.growth_chamber, net.minecraft.init.Items.flower_pot, "microchip"));
 		GameRegistry.addRecipe(electricMachineRecipe(Blocks.growth_chamber_controller, net.minecraft.init.Items.flower_pot, "circuitBoard"));
 		GameRegistry.addRecipe(electricMachineRecipe(Blocks.oven, "paneGlass", "PSU"));
+
+		GameRegistry.addRecipe(new ShapedOreRecipe(Blocks.electric_switch," L ","pfp",'L',net.minecraft.init.Blocks.lever,'p',"wire",'f',"frameSteel"));
+		GameRegistry.addRecipe(electricMachineRecipe(Blocks.electric_still, net.minecraft.init.Items.bucket, net.minecraft.init.Items.bucket));
+		GameRegistry.addRecipe(electricMachineRecipe(Blocks.electric_pump, net.minecraft.init.Blocks.piston, net.minecraft.init.Items.bucket));
+		GameRegistry.addRecipe(electricMachineRecipe(Blocks.plastic_refinery, net.minecraft.init.Blocks.piston, "sprocket"));
+		
 		
 		initDone = true;
 	}

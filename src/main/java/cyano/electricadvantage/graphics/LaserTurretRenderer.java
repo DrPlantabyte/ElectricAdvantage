@@ -6,6 +6,7 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
@@ -44,9 +45,6 @@ public class LaserTurretRenderer extends TileEntitySpecialRenderer{
 		this.bindTexture(texture);
 		final Tessellator tessellator = Tessellator.getInstance();
 		
-		//This will make your block brightness dependent from surroundings lighting.
-		tessellator.getWorldRenderer().setBrightness(world.getCombinedLight(pos, 0));
-		tessellator.getWorldRenderer().setColorOpaque_F(1f, 1f, 1f);
 		
 		final WorldRenderer worldRenderer = tessellator.getWorldRenderer();
 		final float sideU0 = 0;
@@ -82,38 +80,37 @@ public class LaserTurretRenderer extends TileEntitySpecialRenderer{
 		GlStateManager.rotate(yaw, 0.0f, 1.0f, 0.0f);
 		GlStateManager.rotate(pitch, 1.0f, 0.0f, 0.0f);
 
-		worldRenderer.startDrawingQuads();
-		worldRenderer.setNormal(0.0f, 1.0f, 0.0f);
+		worldRenderer.begin(7, DefaultVertexFormats.POSITION_TEX);
 		
-		worldRenderer.addVertexWithUV( radius, radius, -radius, endU0, endV0);
-		worldRenderer.addVertexWithUV( radius,-radius, -radius, endU0, endV1);
-		worldRenderer.addVertexWithUV(-radius,-radius, -radius, endU1, endV1);
-		worldRenderer.addVertexWithUV(-radius, radius, -radius, endU1, endV0);
+		worldRenderer.pos( radius, radius, -radius).tex(endU0, endV0).endVertex();
+		worldRenderer.pos( radius,-radius, -radius).tex(endU0, endV1).endVertex();
+		worldRenderer.pos(-radius,-radius, -radius).tex(endU1, endV1).endVertex();
+		worldRenderer.pos(-radius, radius, -radius).tex(endU1, endV0).endVertex();
 
-		worldRenderer.addVertexWithUV(-radius, radius,  radius, sideU0, sideV0);
-		worldRenderer.addVertexWithUV(-radius,-radius,  radius, sideU0, sideV1);
-		worldRenderer.addVertexWithUV( radius,-radius,  radius, sideU1, sideV1);
-		worldRenderer.addVertexWithUV( radius, radius,  radius, sideU1, sideV0);
+		worldRenderer.pos(-radius, radius,  radius).tex(sideU0, sideV0).endVertex();
+		worldRenderer.pos(-radius,-radius,  radius).tex(sideU0, sideV1).endVertex();
+		worldRenderer.pos( radius,-radius,  radius).tex(sideU1, sideV1).endVertex();
+		worldRenderer.pos( radius, radius,  radius).tex(sideU1, sideV0).endVertex();
 
-		worldRenderer.addVertexWithUV(-radius, radius, -radius, sideU0, sideV0);
-		worldRenderer.addVertexWithUV(-radius,-radius, -radius, sideU0, sideV1);
-		worldRenderer.addVertexWithUV(-radius,-radius,  radius, sideU1, sideV1);
-		worldRenderer.addVertexWithUV(-radius, radius,  radius, sideU1, sideV0);
+		worldRenderer.pos(-radius, radius, -radius).tex(sideU0, sideV0).endVertex();
+		worldRenderer.pos(-radius,-radius, -radius).tex(sideU0, sideV1).endVertex();
+		worldRenderer.pos(-radius,-radius,  radius).tex(sideU1, sideV1).endVertex();
+		worldRenderer.pos(-radius, radius,  radius).tex(sideU1, sideV0).endVertex();
 
-		worldRenderer.addVertexWithUV( radius, radius,  radius, sideU0, sideV0);
-		worldRenderer.addVertexWithUV( radius,-radius,  radius, sideU0, sideV1);
-		worldRenderer.addVertexWithUV( radius,-radius, -radius, sideU1, sideV1);
-		worldRenderer.addVertexWithUV( radius, radius, -radius, sideU1, sideV0);
+		worldRenderer.pos( radius, radius,  radius).tex(sideU0, sideV0).endVertex();
+		worldRenderer.pos( radius,-radius,  radius).tex(sideU0, sideV1).endVertex();
+		worldRenderer.pos( radius,-radius, -radius).tex(sideU1, sideV1).endVertex();
+		worldRenderer.pos( radius, radius, -radius).tex(sideU1, sideV0).endVertex();
 
-		worldRenderer.addVertexWithUV(-radius, radius, -radius, sideU0, sideV0);
-		worldRenderer.addVertexWithUV(-radius, radius,  radius, sideU0, sideV1);
-		worldRenderer.addVertexWithUV( radius, radius,  radius, sideU1, sideV1);
-		worldRenderer.addVertexWithUV( radius, radius, -radius, sideU1, sideV0);
+		worldRenderer.pos(-radius, radius, -radius).tex(sideU0, sideV0).endVertex();
+		worldRenderer.pos(-radius, radius,  radius).tex(sideU0, sideV1).endVertex();
+		worldRenderer.pos( radius, radius,  radius).tex(sideU1, sideV1).endVertex();
+		worldRenderer.pos( radius, radius, -radius).tex(sideU1, sideV0).endVertex();
 
-		worldRenderer.addVertexWithUV(-radius,-radius,  radius, sideU0, sideV0);
-		worldRenderer.addVertexWithUV(-radius,-radius, -radius, sideU0, sideV1);
-		worldRenderer.addVertexWithUV( radius,-radius, -radius, sideU1, sideV1);
-		worldRenderer.addVertexWithUV( radius,-radius,  radius, sideU1, sideV0);
+		worldRenderer.pos(-radius,-radius,  radius).tex(sideU0, sideV0).endVertex();
+		worldRenderer.pos(-radius,-radius, -radius).tex(sideU0, sideV1).endVertex();
+		worldRenderer.pos( radius,-radius, -radius).tex(sideU1, sideV1).endVertex();
+		worldRenderer.pos( radius,-radius,  radius).tex(sideU1, sideV0).endVertex();
 
 		tessellator.draw();
 		if(e.showLaserLine() && e.laserBlastLength > 0){
@@ -132,30 +129,31 @@ public class LaserTurretRenderer extends TileEntitySpecialRenderer{
 			y4 = 0;
 			z4 = z2;
 
-			worldRenderer.startDrawingQuads();
-			worldRenderer.setNormal(0.0f, 1.0f, 0.0f);
-			worldRenderer.setBrightness(240);
+			int lightValue = 15 << 20 | 15 << 4;
+			int lmapX = lightValue >> 16 & 0xFFFF;
+			int lmapY = lightValue & 0xFFFF;
+			worldRenderer.begin(7, DefaultVertexFormats.POSITION_TEX_LMAP_COLOR);
 			
-			worldRenderer.addVertexWithUV( x1, y1, z1, laserU0, laserV1);
-			worldRenderer.addVertexWithUV( x2, y1, z2, laserU1, laserV1);
-			worldRenderer.addVertexWithUV( x2, y2, z2, laserU1, laserV0);
-			worldRenderer.addVertexWithUV( x1, y2, z1, laserU0, laserV0);
+			worldRenderer.pos( x1, y1, z1).tex(laserU0, laserV1).lightmap(lmapX, lmapY).color(1f, 1f, 1f, 1f).endVertex();
+			worldRenderer.pos( x2, y1, z2).tex(laserU1, laserV1).lightmap(lmapX, lmapY).color(1f, 1f, 1f, 1f).endVertex();
+			worldRenderer.pos( x2, y2, z2).tex(laserU1, laserV0).lightmap(lmapX, lmapY).color(1f, 1f, 1f, 1f).endVertex();
+			worldRenderer.pos( x1, y2, z1).tex(laserU0, laserV0).lightmap(lmapX, lmapY).color(1f, 1f, 1f, 1f).endVertex();
 			
-			worldRenderer.addVertexWithUV( x1, y2, z1, laserU0, laserV1);
-			worldRenderer.addVertexWithUV( x2, y2, z2, laserU1, laserV1);
-			worldRenderer.addVertexWithUV( x2, y1, z2, laserU1, laserV0);
-			worldRenderer.addVertexWithUV( x1, y1, z1, laserU0, laserV0);
+			worldRenderer.pos( x1, y2, z1).tex(laserU0, laserV1).lightmap(lmapX, lmapY).color(1f, 1f, 1f, 1f).endVertex();
+			worldRenderer.pos( x2, y2, z2).tex(laserU1, laserV1).lightmap(lmapX, lmapY).color(1f, 1f, 1f, 1f).endVertex();
+			worldRenderer.pos( x2, y1, z2).tex(laserU1, laserV0).lightmap(lmapX, lmapY).color(1f, 1f, 1f, 1f).endVertex();
+			worldRenderer.pos( x1, y1, z1).tex(laserU0, laserV0).lightmap(lmapX, lmapY).color(1f, 1f, 1f, 1f).endVertex();
 
 
-			worldRenderer.addVertexWithUV( x3, y3, z3, laserU0, laserV1);
-			worldRenderer.addVertexWithUV( x3, y4, z4, laserU1, laserV1);
-			worldRenderer.addVertexWithUV( x4, y4, z4, laserU1, laserV0);
-			worldRenderer.addVertexWithUV( x4, y3, z3, laserU0, laserV0);
+			worldRenderer.pos( x3, y3, z3).tex(laserU0, laserV1).lightmap(lmapX, lmapY).color(1f, 1f, 1f, 1f).endVertex();
+			worldRenderer.pos( x3, y4, z4).tex(laserU1, laserV1).lightmap(lmapX, lmapY).color(1f, 1f, 1f, 1f).endVertex();
+			worldRenderer.pos( x4, y4, z4).tex(laserU1, laserV0).lightmap(lmapX, lmapY).color(1f, 1f, 1f, 1f).endVertex();
+			worldRenderer.pos( x4, y3, z3).tex(laserU0, laserV0).lightmap(lmapX, lmapY).color(1f, 1f, 1f, 1f).endVertex();
 			
-			worldRenderer.addVertexWithUV( x4, y3, z3, laserU0, laserV1);
-			worldRenderer.addVertexWithUV( x4, y4, z4, laserU1, laserV1);
-			worldRenderer.addVertexWithUV( x3, y4, z4, laserU1, laserV0);
-			worldRenderer.addVertexWithUV( x3, y3, z3, laserU0, laserV0);
+			worldRenderer.pos( x4, y3, z3).tex(laserU0, laserV1).lightmap(lmapX, lmapY).color(1f, 1f, 1f, 1f).endVertex();
+			worldRenderer.pos( x4, y4, z4).tex(laserU1, laserV1).lightmap(lmapX, lmapY).color(1f, 1f, 1f, 1f).endVertex();
+			worldRenderer.pos( x3, y4, z4).tex(laserU1, laserV0).lightmap(lmapX, lmapY).color(1f, 1f, 1f, 1f).endVertex();
+			worldRenderer.pos( x3, y3, z3).tex(laserU0, laserV0).lightmap(lmapX, lmapY).color(1f, 1f, 1f, 1f).endVertex();
 			
 			tessellator.draw();
 		}

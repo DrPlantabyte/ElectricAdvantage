@@ -17,10 +17,10 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.scoreboard.Team;
-import net.minecraft.server.gui.IUpdatePlayerListBox;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
+import net.minecraft.util.ITickable;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
@@ -29,7 +29,7 @@ import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class LaserTurretTileEntity extends ElectricMachineTileEntity implements IUpdatePlayerListBox{
+public class LaserTurretTileEntity extends ElectricMachineTileEntity implements ITickable{
 
 	private static final float RADIANS_TO_DEGREES = (float)(180 / Math.PI);
 	private static final float DEGREES_TO_RADIANS = (float)(Math.PI / 180);

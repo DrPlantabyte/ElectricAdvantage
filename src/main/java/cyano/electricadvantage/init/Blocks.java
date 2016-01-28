@@ -4,11 +4,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import cyano.electricadvantage.ElectricAdvantage;
-import cyano.electricadvantage.blocks.ElectricConduitBlock;
-import cyano.electricadvantage.blocks.ElectricScaffoldBlock;
-import cyano.electricadvantage.blocks.Ore;
+import cyano.electricadvantage.blocks.*;
 import cyano.electricadvantage.machines.*;
 import cyano.poweradvantage.api.GUIBlock;
+import cyano.poweradvantage.blocks.BlockPowerSwitch;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.model.ModelResourceLocation;
@@ -76,6 +75,14 @@ public abstract class Blocks {
 		growth_chamber = (GUIBlock)addBlock(new GrowthChamberBlock(),"growth_chamber");
 		growth_chamber_controller = (GUIBlock)addBlock(new GrowthChamberControllerBlock(),"growth_chamber_controller");
 		oven = (GUIBlock)addBlock(new ElectricOvenBlock(),"electric_oven");
+		
+		
+
+		electric_switch = addBlock(new BlockPowerSwitch(Power.ELECTRIC_POWER),"electric_switch");
+		electric_pump = (GUIBlock)addBlock(new ElectricPumpBlock(),"electric_pump");
+		electric_still = (GUIBlock)addBlock(new ElectricStillBlock(),"electric_still");
+		plastic_refinery = (GUIBlock)addBlock(new PlasticRefineryBlock(),"plastic_refinery");
+		pump_pipe_electric = addBlock(new PumpPipeBlock(),"pump_pipe_electric");
 		
 		// required OreDictionary entries
 		OreDictionary.registerOre("blockDirt", net.minecraft.init.Blocks.dirt);

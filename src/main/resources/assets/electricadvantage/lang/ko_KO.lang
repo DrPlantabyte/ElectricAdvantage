@@ -49,4 +49,4 @@ tile.electricadvantage.electric_still.name=전기 증류기
 tile.electricadvantage.electric_pump.name=전기 펌프
 tile.electricadvantage.plastic_refinery.name=플라스틱 정유
 item.electricadvantage.petrolplastic_ingot.name=석유 수지 잉곳
-tile.electricadvantage.pump_pipe.name=펌프 파이프
+tile.electricadvantage.pump_pipe_electric.name=펌프 파이프

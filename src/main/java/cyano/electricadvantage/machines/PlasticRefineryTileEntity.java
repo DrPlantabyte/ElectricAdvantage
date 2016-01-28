@@ -80,7 +80,7 @@ public class PlasticRefineryTileEntity extends ElectricMachineTileEntity impleme
 		return progs;
 	}
 
-	private FluidTank getTank(){
+	public FluidTank getTank(){
 		return tank;
 	}
 	

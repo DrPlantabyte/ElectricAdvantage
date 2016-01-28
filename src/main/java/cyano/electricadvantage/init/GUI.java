@@ -26,6 +26,10 @@ public abstract class GUI {
 		Blocks.growth_chamber_controller.setGuiID(MachineGUIRegistry.addGUI(new GrowthChamberControllerGUI()), PowerAdvantage.getInstance());
 		Blocks.oven.setGuiID(MachineGUIRegistry.addGUI(new OvenGUI()), PowerAdvantage.getInstance());
 		
+		Blocks.electric_pump.setGuiID(MachineGUIRegistry.addGUI(new ElectricPumpGUI()), PowerAdvantage.getInstance());
+		Blocks.electric_still.setGuiID(MachineGUIRegistry.addGUI(new ElectricStillGUI()), PowerAdvantage.getInstance());
+		Blocks.plastic_refinery.setGuiID(MachineGUIRegistry.addGUI(new PlasticRefineryGUI()), PowerAdvantage.getInstance());
+		
 		initDone = true;
 	}
 }

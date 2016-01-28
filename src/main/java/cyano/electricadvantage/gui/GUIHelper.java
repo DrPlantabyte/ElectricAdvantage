@@ -45,7 +45,7 @@ public class GUIHelper {
 		final float fluidTexWidth = 16;
 		final float fluidTexHeight = 512;
 		final float texPerPixel = 4 * (fluidTexWidth / fluidTexHeight) / barSlotHeight;
-		if(barHeight > 0){
+		if(barHeight > 0 && fs != null && fs.getFluid() != null){
 			ResourceLocation fluidTexture = realTextureLocationCache.computeIfAbsent(fs.getFluid().getStill(fs),
 					(ResourceLocation r) -> new ResourceLocation(r.getResourceDomain(),"textures/".concat(r.getResourcePath()).concat(".png"))
 					);

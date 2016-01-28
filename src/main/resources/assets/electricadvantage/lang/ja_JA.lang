@@ -51,4 +51,4 @@ tile.electricadvantage.electric_still.name=電気蒸留器
 tile.electricadvantage.electric_pump.name=電気ポンプ
 tile.electricadvantage.plastic_refinery.name=プラスチック製油所
 item.electricadvantage.petrolplastic_ingot.name=石油系プラスチックインゴット
-tile.electricadvantage.pump_pipe.name=ポンプ配管
+tile.electricadvantage.pump_pipe_electric.name=ポンプ配管

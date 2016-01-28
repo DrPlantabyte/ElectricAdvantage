@@ -50,4 +50,4 @@ tile.electricadvantage.electric_still.name=Distillatore Elettrico
 tile.electricadvantage.electric_pump.name=Pompa Elettricaa
 tile.electricadvantage.plastic_refinery.name=Raffineria Plastica
 item.electricadvantage.petrolplastic_ingot.name=Petrolio Plastica Lingotto
-tile.electricadvantage.pump_pipe.name=Tubo Pompa
+tile.electricadvantage.pump_pipe_electric.name=Tubo Pompa

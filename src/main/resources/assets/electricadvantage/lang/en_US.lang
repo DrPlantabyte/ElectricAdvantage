@@ -50,4 +50,5 @@ tile.electricadvantage.electric_still.name=Electric Distiller
 tile.electricadvantage.electric_pump.name=Electric Pump
 tile.electricadvantage.plastic_refinery.name=Petro-Plastic Refinery
 item.electricadvantage.petrolplastic_ingot.name=Petro-Plastic Ingot
-tile.electricadvantage.pump_pipe.name=Pump Pipe
+tile.electricadvantage.pump_pipe_electric.name=Pump Pipe
+

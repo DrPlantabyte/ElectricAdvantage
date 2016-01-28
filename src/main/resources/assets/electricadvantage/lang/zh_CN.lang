@@ -51,5 +51,5 @@ tile.electricadvantage.electric_still.name=電熱蒸餾水
 tile.electricadvantage.electric_pump.name=電動泵
 tile.electricadvantage.plastic_refinery.name=塑料煉油廠
 item.electricadvantage.petrolplastic_ingot.name=石油膠錠
-tile.electricadvantage.pump_pipe.name=泵管
+tile.electricadvantage.pump_pipe_electric.name=泵管
 

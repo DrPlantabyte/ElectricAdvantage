@@ -8,6 +8,7 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
@@ -101,9 +102,10 @@ public class LaserDrillRenderer extends TileEntitySpecialRenderer{
 			GlStateManager.rotate(rotY, 0.0f, 1.0f, 0.0f);
 			GlStateManager.rotate(rotX, 1.0f, 0.0f, 0.0f);
 
-			worldRenderer.startDrawingQuads();
-			worldRenderer.setNormal(0.0f, 1.0f, 0.0f);
-			worldRenderer.setBrightness(240);
+			int lightValue = 15 << 20 | 15 << 4;
+			int lmapX = lightValue >> 16 & 0xFFFF;
+			int lmapY = lightValue & 0xFFFF;
+			worldRenderer.begin(7, DefaultVertexFormats.POSITION_TEX_LMAP_COLOR);
 
 			final double x1, y1, z1, x2, y2, z2,  x3, y3, z3, x4, y4, z4;
 			x1 = 0;
@@ -120,26 +122,26 @@ public class LaserDrillRenderer extends TileEntitySpecialRenderer{
 			y4 = 0;
 			z4 = z2;
 
-			worldRenderer.addVertexWithUV( x1, y1, z1, laserU0, laserV1);
-			worldRenderer.addVertexWithUV( x2, y1, z2, laserU1, laserV1);
-			worldRenderer.addVertexWithUV( x2, y2, z2, laserU1, laserV0);
-			worldRenderer.addVertexWithUV( x1, y2, z1, laserU0, laserV0);
+			worldRenderer.pos( x1, y1, z1).tex(laserU0, laserV1).lightmap(lmapX, lmapY).color(1f, 1f, 1f, 1f).endVertex();
+			worldRenderer.pos( x2, y1, z2).tex(laserU1, laserV1).lightmap(lmapX, lmapY).color(1f, 1f, 1f, 1f).endVertex();
+			worldRenderer.pos( x2, y2, z2).tex(laserU1, laserV0).lightmap(lmapX, lmapY).color(1f, 1f, 1f, 1f).endVertex();
+			worldRenderer.pos( x1, y2, z1).tex(laserU0, laserV0).lightmap(lmapX, lmapY).color(1f, 1f, 1f, 1f).endVertex();
 
-			worldRenderer.addVertexWithUV( x1, y2, z1, laserU0, laserV1);
-			worldRenderer.addVertexWithUV( x2, y2, z2, laserU1, laserV1);
-			worldRenderer.addVertexWithUV( x2, y1, z2, laserU1, laserV0);
-			worldRenderer.addVertexWithUV( x1, y1, z1, laserU0, laserV0);
+			worldRenderer.pos( x1, y2, z1).tex(laserU0, laserV1).lightmap(lmapX, lmapY).color(1f, 1f, 1f, 1f).endVertex();
+			worldRenderer.pos( x2, y2, z2).tex(laserU1, laserV1).lightmap(lmapX, lmapY).color(1f, 1f, 1f, 1f).endVertex();
+			worldRenderer.pos( x2, y1, z2).tex(laserU1, laserV0).lightmap(lmapX, lmapY).color(1f, 1f, 1f, 1f).endVertex();
+			worldRenderer.pos( x1, y1, z1).tex(laserU0, laserV0).lightmap(lmapX, lmapY).color(1f, 1f, 1f, 1f).endVertex();
 
 
-			worldRenderer.addVertexWithUV( x3, y3, z3, laserU0, laserV1);
-			worldRenderer.addVertexWithUV( x3, y4, z4, laserU1, laserV1);
-			worldRenderer.addVertexWithUV( x4, y4, z4, laserU1, laserV0);
-			worldRenderer.addVertexWithUV( x4, y3, z3, laserU0, laserV0);
+			worldRenderer.pos( x3, y3, z3).tex(laserU0, laserV1).lightmap(lmapX, lmapY).color(1f, 1f, 1f, 1f).endVertex();
+			worldRenderer.pos( x3, y4, z4).tex(laserU1, laserV1).lightmap(lmapX, lmapY).color(1f, 1f, 1f, 1f).endVertex();
+			worldRenderer.pos( x4, y4, z4).tex(laserU1, laserV0).lightmap(lmapX, lmapY).color(1f, 1f, 1f, 1f).endVertex();
+			worldRenderer.pos( x4, y3, z3).tex(laserU0, laserV0).lightmap(lmapX, lmapY).color(1f, 1f, 1f, 1f).endVertex();
 
-			worldRenderer.addVertexWithUV( x4, y3, z3, laserU0, laserV1);
-			worldRenderer.addVertexWithUV( x4, y4, z4, laserU1, laserV1);
-			worldRenderer.addVertexWithUV( x3, y4, z4, laserU1, laserV0);
-			worldRenderer.addVertexWithUV( x3, y3, z3, laserU0, laserV0);
+			worldRenderer.pos( x4, y3, z3).tex(laserU0, laserV1).lightmap(lmapX, lmapY).color(1f, 1f, 1f, 1f).endVertex();
+			worldRenderer.pos( x4, y4, z4).tex(laserU1, laserV1).lightmap(lmapX, lmapY).color(1f, 1f, 1f, 1f).endVertex();
+			worldRenderer.pos( x3, y4, z4).tex(laserU1, laserV0).lightmap(lmapX, lmapY).color(1f, 1f, 1f, 1f).endVertex();
+			worldRenderer.pos( x3, y3, z3).tex(laserU0, laserV0).lightmap(lmapX, lmapY).color(1f, 1f, 1f, 1f).endVertex();
 
 			tessellator.draw();
 

@@ -7,6 +7,7 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
@@ -47,34 +48,33 @@ public class HydroturbineRenderer extends Render{
 			GlStateManager.translate(0f, 0.5f, 0f);
 			GlStateManager.rotate(e.rotationYaw, 0.0f, 1.0f, 0.0f);
 			this.bindTexture(this.getEntityTexture(e));
-			worldRenderer.startDrawingQuads();
-			worldRenderer.setNormal(0.0f, 1.0f, 0.0f);
+			worldRenderer.begin(7, DefaultVertexFormats.POSITION_TEX);
 
 			// render shaft
-			worldRenderer.addVertexWithUV(+radius, bottomHeight, -radius, shaftMinU,shaftMinV);
-			worldRenderer.addVertexWithUV(-radius, bottomHeight, -radius, shaftMaxU,shaftMinV);
-			worldRenderer.addVertexWithUV(-radius, topHeight   , -radius, shaftMaxU,shaftMaxV);
-			worldRenderer.addVertexWithUV(+radius, topHeight   , -radius, shaftMinU,shaftMaxV);
+			worldRenderer.pos(+radius, bottomHeight, -radius).tex(shaftMinU,shaftMinV).endVertex();
+			worldRenderer.pos(-radius, bottomHeight, -radius).tex(shaftMaxU,shaftMinV).endVertex();
+			worldRenderer.pos(-radius, topHeight   , -radius).tex(shaftMaxU,shaftMaxV).endVertex();
+			worldRenderer.pos(+radius, topHeight   , -radius).tex(shaftMinU,shaftMaxV).endVertex();
 
-			worldRenderer.addVertexWithUV(-radius, bottomHeight, +radius, shaftMinU,shaftMinV);
-			worldRenderer.addVertexWithUV(+radius, bottomHeight, +radius, shaftMaxU,shaftMinV);
-			worldRenderer.addVertexWithUV(+radius, topHeight   , +radius, shaftMaxU,shaftMaxV);
-			worldRenderer.addVertexWithUV(-radius, topHeight   , +radius, shaftMinU,shaftMaxV);
+			worldRenderer.pos(-radius, bottomHeight, +radius).tex(shaftMinU,shaftMinV).endVertex();
+			worldRenderer.pos(+radius, bottomHeight, +radius).tex(shaftMaxU,shaftMinV).endVertex();
+			worldRenderer.pos(+radius, topHeight   , +radius).tex(shaftMaxU,shaftMaxV).endVertex();
+			worldRenderer.pos(-radius, topHeight   , +radius).tex(shaftMinU,shaftMaxV).endVertex();
 
-			worldRenderer.addVertexWithUV(-radius, bottomHeight, -radius, shaftMinU,shaftMinV);
-			worldRenderer.addVertexWithUV(-radius, bottomHeight, +radius, shaftMaxU,shaftMinV);
-			worldRenderer.addVertexWithUV(-radius, topHeight   , +radius, shaftMaxU,shaftMaxV);
-			worldRenderer.addVertexWithUV(-radius, topHeight   , -radius, shaftMinU,shaftMaxV);
+			worldRenderer.pos(-radius, bottomHeight, -radius).tex(shaftMinU,shaftMinV).endVertex();
+			worldRenderer.pos(-radius, bottomHeight, +radius).tex(shaftMaxU,shaftMinV).endVertex();
+			worldRenderer.pos(-radius, topHeight   , +radius).tex(shaftMaxU,shaftMaxV).endVertex();
+			worldRenderer.pos(-radius, topHeight   , -radius).tex(shaftMinU,shaftMaxV).endVertex();
 
-			worldRenderer.addVertexWithUV(+radius, bottomHeight, +radius, shaftMinU,shaftMinV);
-			worldRenderer.addVertexWithUV(+radius, bottomHeight, -radius, shaftMaxU,shaftMinV);
-			worldRenderer.addVertexWithUV(+radius, topHeight   , -radius, shaftMaxU,shaftMaxV);
-			worldRenderer.addVertexWithUV(+radius, topHeight   , +radius, shaftMinU,shaftMaxV);
+			worldRenderer.pos(+radius, bottomHeight, +radius).tex(shaftMinU,shaftMinV).endVertex();
+			worldRenderer.pos(+radius, bottomHeight, -radius).tex(shaftMaxU,shaftMinV).endVertex();
+			worldRenderer.pos(+radius, topHeight   , -radius).tex(shaftMaxU,shaftMaxV).endVertex();
+			worldRenderer.pos(+radius, topHeight   , +radius).tex(shaftMinU,shaftMaxV).endVertex();
 
-			worldRenderer.addVertexWithUV(-radius, bottomHeight, +radius, shaftMinU,shaftMinV);
-			worldRenderer.addVertexWithUV(-radius, bottomHeight, -radius, shaftMinU+2*pixel,shaftMinV);
-			worldRenderer.addVertexWithUV(+radius, bottomHeight, -radius, shaftMinU+2*pixel,shaftMaxV);
-			worldRenderer.addVertexWithUV(+radius, bottomHeight, +radius, shaftMinU,shaftMaxV);
+			worldRenderer.pos(-radius, bottomHeight, +radius).tex(shaftMinU,shaftMinV).endVertex();
+			worldRenderer.pos(-radius, bottomHeight, -radius).tex(shaftMinU+2*pixel,shaftMinV).endVertex();
+			worldRenderer.pos(+radius, bottomHeight, -radius).tex(shaftMinU+2*pixel,shaftMaxV).endVertex();
+			worldRenderer.pos(+radius, bottomHeight, +radius).tex(shaftMinU,shaftMaxV).endVertex();
 			
 			// render axel
 			final float axelLength = 4 * pixel;
@@ -86,30 +86,30 @@ public class HydroturbineRenderer extends Render{
 			final float axelMaxV = 0.5f + 2 * pixel;
 			final float axelMaxV2 = 0.5f + 4 * pixel;
 			
-			worldRenderer.addVertexWithUV(+axelRadius, -axelRadius, -pixel           , axelMinU,axelMinV);
-			worldRenderer.addVertexWithUV(+axelRadius, -axelRadius, -pixel-axelLength, axelMaxU,axelMinV);
-			worldRenderer.addVertexWithUV(+axelRadius, +axelRadius, -pixel-axelLength, axelMaxU,axelMaxV);
-			worldRenderer.addVertexWithUV(+axelRadius, +axelRadius, -pixel           , axelMinU,axelMaxV);
+			worldRenderer.pos(+axelRadius, -axelRadius, -pixel           ).tex(axelMinU,axelMinV).endVertex();
+			worldRenderer.pos(+axelRadius, -axelRadius, -pixel-axelLength).tex(axelMaxU,axelMinV).endVertex();
+			worldRenderer.pos(+axelRadius, +axelRadius, -pixel-axelLength).tex(axelMaxU,axelMaxV).endVertex();
+			worldRenderer.pos(+axelRadius, +axelRadius, -pixel           ).tex(axelMinU,axelMaxV).endVertex();
 			
-			worldRenderer.addVertexWithUV(-axelRadius, +axelRadius, -pixel           , axelMinU,axelMinV);
-			worldRenderer.addVertexWithUV(-axelRadius, +axelRadius, -pixel-axelLength, axelMaxU,axelMinV);
-			worldRenderer.addVertexWithUV(-axelRadius, -axelRadius, -pixel-axelLength, axelMaxU,axelMaxV);
-			worldRenderer.addVertexWithUV(-axelRadius, -axelRadius, -pixel           , axelMinU,axelMaxV);
+			worldRenderer.pos(-axelRadius, +axelRadius, -pixel           ).tex(axelMinU,axelMinV).endVertex();
+			worldRenderer.pos(-axelRadius, +axelRadius, -pixel-axelLength).tex(axelMaxU,axelMinV).endVertex();
+			worldRenderer.pos(-axelRadius, -axelRadius, -pixel-axelLength).tex(axelMaxU,axelMaxV).endVertex();
+			worldRenderer.pos(-axelRadius, -axelRadius, -pixel           ).tex(axelMinU,axelMaxV).endVertex();
 			
-			worldRenderer.addVertexWithUV(+axelRadius, +axelRadius, -pixel           , axelMinU,axelMaxV2);
-			worldRenderer.addVertexWithUV(+axelRadius, +axelRadius, -pixel-axelLength, axelMinU,axelMinV);
-			worldRenderer.addVertexWithUV(-axelRadius, +axelRadius, -pixel-axelLength,axelMaxU2,axelMinV);
-			worldRenderer.addVertexWithUV(-axelRadius, +axelRadius, -pixel           ,axelMaxU2,axelMaxV2);
+			worldRenderer.pos(+axelRadius, +axelRadius, -pixel           ).tex(axelMinU,axelMaxV2).endVertex();
+			worldRenderer.pos(+axelRadius, +axelRadius, -pixel-axelLength).tex(axelMinU,axelMinV).endVertex();
+			worldRenderer.pos(-axelRadius, +axelRadius, -pixel-axelLength).tex(axelMaxU2,axelMinV).endVertex();
+			worldRenderer.pos(-axelRadius, +axelRadius, -pixel           ).tex(axelMaxU2,axelMaxV2).endVertex();
 			
-			worldRenderer.addVertexWithUV(-axelRadius, -axelRadius, -pixel           , axelMinU,axelMaxV2);
-			worldRenderer.addVertexWithUV(-axelRadius, -axelRadius, -pixel-axelLength, axelMinU,axelMinV);
-			worldRenderer.addVertexWithUV(+axelRadius, -axelRadius, -pixel-axelLength,axelMaxU2,axelMinV);
-			worldRenderer.addVertexWithUV(+axelRadius, -axelRadius, -pixel           ,axelMaxU2,axelMaxV2);
+			worldRenderer.pos(-axelRadius, -axelRadius, -pixel           ).tex(axelMinU,axelMaxV2).endVertex();
+			worldRenderer.pos(-axelRadius, -axelRadius, -pixel-axelLength).tex(axelMinU,axelMinV).endVertex();
+			worldRenderer.pos(+axelRadius, -axelRadius, -pixel-axelLength).tex(axelMaxU2,axelMinV).endVertex();
+			worldRenderer.pos(+axelRadius, -axelRadius, -pixel           ).tex(axelMaxU2,axelMaxV2).endVertex();
 			
-			worldRenderer.addVertexWithUV(-axelRadius, -axelRadius, -pixel-axelLength, axelMinU,axelMaxV2);
-			worldRenderer.addVertexWithUV(-axelRadius, +axelRadius, -pixel-axelLength, axelMinU,axelMinV);
-			worldRenderer.addVertexWithUV(+axelRadius, +axelRadius, -pixel-axelLength,axelMaxU2,axelMinV);
-			worldRenderer.addVertexWithUV(+axelRadius, -axelRadius, -pixel-axelLength,axelMaxU2,axelMaxV2);
+			worldRenderer.pos(-axelRadius, -axelRadius, -pixel-axelLength).tex(axelMinU,axelMaxV2).endVertex();
+			worldRenderer.pos(-axelRadius, +axelRadius, -pixel-axelLength).tex(axelMinU,axelMinV).endVertex();
+			worldRenderer.pos(+axelRadius, +axelRadius, -pixel-axelLength).tex(axelMaxU2,axelMinV).endVertex();
+			worldRenderer.pos(+axelRadius, -axelRadius, -pixel-axelLength).tex(axelMaxU2,axelMaxV2).endVertex();
 			
 			// render spinning (or not) blades
 			float spin1, spin2, spin3;
@@ -146,37 +146,37 @@ public class HydroturbineRenderer extends Render{
 			final float cos3a = MathHelper.cos(t3);
 			final float cos3b = MathHelper.cos(t3+rotaryWidth);
 
-			worldRenderer.addVertexWithUV(cos1b*bladeOffset, sin1b*bladeOffset, depthDelta-axelLength, bladeMinU,bladeMinV); // inner, leading
-			worldRenderer.addVertexWithUV(cos1b*bladeLength, sin1b*bladeLength, depthDelta-axelLength, bladeMinU,bladeMaxV); // outer, leading
-			worldRenderer.addVertexWithUV(cos1a*bladeLength, sin1a*bladeLength,           -axelLength, bladeMaxU,bladeMaxV); // outer, trailing
-			worldRenderer.addVertexWithUV(cos1a*bladeOffset, sin1a*bladeOffset,           -axelLength, bladeMaxU,bladeMinV); // inner, trailing
+			worldRenderer.pos(cos1b*bladeOffset, sin1b*bladeOffset, depthDelta-axelLength).tex(bladeMinU,bladeMinV).endVertex(); // inner, leading
+			worldRenderer.pos(cos1b*bladeLength, sin1b*bladeLength, depthDelta-axelLength).tex(bladeMinU,bladeMaxV).endVertex(); // outer, leading
+			worldRenderer.pos(cos1a*bladeLength, sin1a*bladeLength,           -axelLength).tex(bladeMaxU,bladeMaxV).endVertex(); // outer, trailing
+			worldRenderer.pos(cos1a*bladeOffset, sin1a*bladeOffset,           -axelLength).tex(bladeMaxU,bladeMinV).endVertex(); // inner, trailing
 
-			worldRenderer.addVertexWithUV(cos1a*bladeOffset, sin1a*bladeOffset,           -axelLength, bladeMaxU,bladeMinV); // inner, trailing
-			worldRenderer.addVertexWithUV(cos1a*bladeLength, sin1a*bladeLength,           -axelLength, bladeMaxU,bladeMaxV); // outer, trailing
-			worldRenderer.addVertexWithUV(cos1b*bladeLength, sin1b*bladeLength, depthDelta-axelLength, bladeMinU,bladeMaxV); // outer, leading
-			worldRenderer.addVertexWithUV(cos1b*bladeOffset, sin1b*bladeOffset, depthDelta-axelLength, bladeMinU,bladeMinV); // inner, leading
-
-
-			worldRenderer.addVertexWithUV(cos2b*bladeOffset, sin2b*bladeOffset, depthDelta-axelLength, bladeMinU,bladeMinV); // inner, leading
-			worldRenderer.addVertexWithUV(cos2b*bladeLength, sin2b*bladeLength, depthDelta-axelLength, bladeMinU,bladeMaxV); // outer, leading
-			worldRenderer.addVertexWithUV(cos2a*bladeLength, sin2a*bladeLength,           -axelLength, bladeMaxU,bladeMaxV); // outer, trailing
-			worldRenderer.addVertexWithUV(cos2a*bladeOffset, sin2a*bladeOffset,           -axelLength, bladeMaxU,bladeMinV); // inner, trailing
-
-			worldRenderer.addVertexWithUV(cos2a*bladeOffset, sin2a*bladeOffset,           -axelLength, bladeMaxU,bladeMinV); // inner, trailing
-			worldRenderer.addVertexWithUV(cos2a*bladeLength, sin2a*bladeLength,           -axelLength, bladeMaxU,bladeMaxV); // outer, trailing
-			worldRenderer.addVertexWithUV(cos2b*bladeLength, sin2b*bladeLength, depthDelta-axelLength, bladeMinU,bladeMaxV); // outer, leading
-			worldRenderer.addVertexWithUV(cos2b*bladeOffset, sin2b*bladeOffset, depthDelta-axelLength, bladeMinU,bladeMinV); // inner, leading
+			worldRenderer.pos(cos1a*bladeOffset, sin1a*bladeOffset,           -axelLength).tex(bladeMaxU,bladeMinV).endVertex(); // inner, trailing
+			worldRenderer.pos(cos1a*bladeLength, sin1a*bladeLength,           -axelLength).tex(bladeMaxU,bladeMaxV).endVertex(); // outer, trailing
+			worldRenderer.pos(cos1b*bladeLength, sin1b*bladeLength, depthDelta-axelLength).tex(bladeMinU,bladeMaxV).endVertex(); // outer, leading
+			worldRenderer.pos(cos1b*bladeOffset, sin1b*bladeOffset, depthDelta-axelLength).tex(bladeMinU,bladeMinV).endVertex(); // inner, leading
 
 
-			worldRenderer.addVertexWithUV(cos3b*bladeOffset, sin3b*bladeOffset, depthDelta-axelLength, bladeMinU,bladeMinV); // inner, leading
-			worldRenderer.addVertexWithUV(cos3b*bladeLength, sin3b*bladeLength, depthDelta-axelLength, bladeMinU,bladeMaxV); // outer, leading
-			worldRenderer.addVertexWithUV(cos3a*bladeLength, sin3a*bladeLength,           -axelLength, bladeMaxU,bladeMaxV); // outer, trailing
-			worldRenderer.addVertexWithUV(cos3a*bladeOffset, sin3a*bladeOffset,           -axelLength, bladeMaxU,bladeMinV); // inner, trailing
+			worldRenderer.pos(cos2b*bladeOffset, sin2b*bladeOffset, depthDelta-axelLength).tex(bladeMinU,bladeMinV).endVertex(); // inner, leading
+			worldRenderer.pos(cos2b*bladeLength, sin2b*bladeLength, depthDelta-axelLength).tex(bladeMinU,bladeMaxV).endVertex(); // outer, leading
+			worldRenderer.pos(cos2a*bladeLength, sin2a*bladeLength,           -axelLength).tex(bladeMaxU,bladeMaxV).endVertex(); // outer, trailing
+			worldRenderer.pos(cos2a*bladeOffset, sin2a*bladeOffset,           -axelLength).tex(bladeMaxU,bladeMinV).endVertex(); // inner, trailing
 
-			worldRenderer.addVertexWithUV(cos3a*bladeOffset, sin3a*bladeOffset,           -axelLength, bladeMaxU,bladeMinV); // inner, trailing
-			worldRenderer.addVertexWithUV(cos3a*bladeLength, sin3a*bladeLength,           -axelLength, bladeMaxU,bladeMaxV); // outer, trailing
-			worldRenderer.addVertexWithUV(cos3b*bladeLength, sin3b*bladeLength, depthDelta-axelLength, bladeMinU,bladeMaxV); // outer, leading
-			worldRenderer.addVertexWithUV(cos3b*bladeOffset, sin3b*bladeOffset, depthDelta-axelLength, bladeMinU,bladeMinV); // inner, leading
+			worldRenderer.pos(cos2a*bladeOffset, sin2a*bladeOffset,           -axelLength).tex(bladeMaxU,bladeMinV).endVertex(); // inner, trailing
+			worldRenderer.pos(cos2a*bladeLength, sin2a*bladeLength,           -axelLength).tex(bladeMaxU,bladeMaxV).endVertex(); // outer, trailing
+			worldRenderer.pos(cos2b*bladeLength, sin2b*bladeLength, depthDelta-axelLength).tex(bladeMinU,bladeMaxV).endVertex(); // outer, leading
+			worldRenderer.pos(cos2b*bladeOffset, sin2b*bladeOffset, depthDelta-axelLength).tex(bladeMinU,bladeMinV).endVertex(); // inner, leading
+
+
+			worldRenderer.pos(cos3b*bladeOffset, sin3b*bladeOffset, depthDelta-axelLength).tex(bladeMinU,bladeMinV).endVertex(); // inner, leading
+			worldRenderer.pos(cos3b*bladeLength, sin3b*bladeLength, depthDelta-axelLength).tex(bladeMinU,bladeMaxV).endVertex(); // outer, leading
+			worldRenderer.pos(cos3a*bladeLength, sin3a*bladeLength,           -axelLength).tex(bladeMaxU,bladeMaxV).endVertex(); // outer, trailing
+			worldRenderer.pos(cos3a*bladeOffset, sin3a*bladeOffset,           -axelLength).tex(bladeMaxU,bladeMinV).endVertex(); // inner, trailing
+
+			worldRenderer.pos(cos3a*bladeOffset, sin3a*bladeOffset,           -axelLength).tex(bladeMaxU,bladeMinV).endVertex(); // inner, trailing
+			worldRenderer.pos(cos3a*bladeLength, sin3a*bladeLength,           -axelLength).tex(bladeMaxU,bladeMaxV).endVertex(); // outer, trailing
+			worldRenderer.pos(cos3b*bladeLength, sin3b*bladeLength, depthDelta-axelLength).tex(bladeMinU,bladeMaxV).endVertex(); // outer, leading
+			worldRenderer.pos(cos3b*bladeOffset, sin3b*bladeOffset, depthDelta-axelLength).tex(bladeMinU,bladeMinV).endVertex(); // inner, leading
 			
 			
 			instance.draw();

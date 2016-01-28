@@ -1,0 +1,6 @@
+{
+    "variants": {
+        "active=false":  { "model": "electricadvantage:electric_switch_off"},
+        "active=true":   { "model": "electricadvantage:electric_switch_on"}
+    }
+}

@@ -71,12 +71,13 @@ public class LEDBlock extends ElectricConduitBlock implements ITileEntityProvide
      */
 	@Override
     public void setBlockBoundsBasedOnState(final IBlockAccess world, final BlockPos coord) {
-        final boolean connectNorth = this.canConnectTo(world,coord,EnumFacing.NORTH, coord.north());
-        final boolean connectSouth = this.canConnectTo(world,coord,EnumFacing.SOUTH, coord.south());
-        final boolean connectWest = this.canConnectTo(world,coord,EnumFacing.WEST, coord.west());
-        final boolean connectEast = this.canConnectTo(world,coord,EnumFacing.EAST, coord.east());
-        final boolean connectUp = this.canConnectTo(world,coord,EnumFacing.UP, coord.up());
-        boolean connectDown = this.canConnectTo(world,coord,EnumFacing.DOWN, coord.down());
+		IBlockState oldState = world.getBlockState(coord);
+        final boolean connectNorth = this.canConnectTo(world,coord,oldState,EnumFacing.NORTH, coord.north());
+        final boolean connectSouth = this.canConnectTo(world,coord,oldState,EnumFacing.SOUTH, coord.south());
+        final boolean connectWest =  this.canConnectTo(world,coord,oldState,EnumFacing.WEST,  coord.west());
+        final boolean connectEast =  this.canConnectTo(world,coord,oldState,EnumFacing.EAST,  coord.east());
+        final boolean connectUp =    this.canConnectTo(world,coord,oldState,EnumFacing.UP,    coord.up());
+        boolean       connectDown =  this.canConnectTo(world,coord,oldState,EnumFacing.DOWN,  coord.down());
         
         if(!(connectNorth || connectSouth || connectWest || connectEast || connectUp || connectDown)){
         	connectDown = true;
@@ -120,12 +121,13 @@ public class LEDBlock extends ElectricConduitBlock implements ITileEntityProvide
     public void addCollisionBoxesToList(final World world, final BlockPos coord, 
     		final IBlockState bs, final AxisAlignedBB box, final List collisionBoxList, 
     		final Entity entity) {
-        final boolean connectNorth = this.canConnectTo(world,coord,EnumFacing.NORTH, coord.north());
-        final boolean connectSouth = this.canConnectTo(world,coord,EnumFacing.SOUTH, coord.south());
-        final boolean connectWest = this.canConnectTo(world,coord,EnumFacing.WEST, coord.west());
-        final boolean connectEast = this.canConnectTo(world,coord,EnumFacing.EAST, coord.east());
-        final boolean connectUp = this.canConnectTo(world,coord,EnumFacing.UP, coord.up());
-        boolean connectDown = this.canConnectTo(world,coord,EnumFacing.DOWN, coord.down());
+		IBlockState oldState = bs;
+        final boolean connectNorth = this.canConnectTo(world,coord,oldState,EnumFacing.NORTH, coord.north());
+        final boolean connectSouth = this.canConnectTo(world,coord,oldState,EnumFacing.SOUTH, coord.south());
+        final boolean connectWest =  this.canConnectTo(world,coord,oldState,EnumFacing.WEST,  coord.west());
+        final boolean connectEast =  this.canConnectTo(world,coord,oldState,EnumFacing.EAST,  coord.east());
+        final boolean connectUp =    this.canConnectTo(world,coord,oldState,EnumFacing.UP,    coord.up());
+        boolean       connectDown =  this.canConnectTo(world,coord,oldState,EnumFacing.DOWN,  coord.down());
         
         if(!(connectNorth || connectSouth || connectWest || connectEast || connectUp || connectDown)){
         	connectDown = true;

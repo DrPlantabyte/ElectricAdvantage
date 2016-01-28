@@ -1,0 +1,7 @@
+{
+    "parent": "block/cube_all",
+    "textures": {
+        "all": "electricadvantage:blocks/electric_switch_on",
+        "particle": "electricadvantage:materials/machine_case"
+    }
+}

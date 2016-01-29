@@ -19,6 +19,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
+import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.oredict.OreDictionary;
 
 public class PlasticRefineryTileEntity extends ElectricMachineTileEntity implements IFluidHandler{
@@ -32,39 +33,54 @@ public class PlasticRefineryTileEntity extends ElectricMachineTileEntity impleme
 	private short fabTime = 0;
 	
 	private final int[] dataSyncArray = new int[4];
-	private final ItemStack plasticIngot = new ItemStack(Items.petrolplastic_ingot,1);
 	
 	public PlasticRefineryTileEntity() {
 		super(PlasticRefineryTileEntity.class.getSimpleName(), 
 				0, 1, 0);
-		tank = new FluidTank(FluidContainerRegistry.BUCKET_VOLUME);
+		tank = new FluidTank(FluidContainerRegistry.BUCKET_VOLUME * 2);
 	}
 
-
+	private boolean wasActive = false;
 	@Override
 	public void tickUpdate(boolean isServerWorld) {
 		if(isServerWorld){
 			// server-side logic
-			if(!this.hasRedstoneSignal() && outputIsAvailable()){
+			if(!this.hasRedstoneSignal() && outputIsAvailable()
+					&& getTank().getFluidAmount() >= OIL_PER_INGOT){
 				if(fabTime < TICKS_PER_INGOT){
 					// working
 					if(this.getEnergy() > ENERGY_PER_TICK){
 						this.subtractEnergy(ENERGY_PER_TICK, Power.ELECTRIC_POWER);
 						fabTime++;
+						if(!wasActive){
+							this.setActiveState(true);
+							wasActive = true;
+						}
 					}
 				} else {
 					// done
-					this.insertItemToOutputSlots(plasticIngot.copy());
+					getTank().drain(OIL_PER_INGOT, true);
+					this.insertItemToOutputSlots(new ItemStack(Items.petrolplastic_ingot,1));
+					getWorld().playSoundEffect(getPos().getX()+0.5, getPos().getY()+0.5, getPos().getZ()+0.5, "random.anvil_land", 0.15f, 1f);
+					fabTime = 0;
+					if(wasActive){
+						this.setActiveState(false);
+						wasActive = false;
+					}
 				}
 			} else {
 				fabTime = 0;
+				if(wasActive){
+					this.setActiveState(false);
+					wasActive = false;
+				}
 			}
 		}
 	}
 	
 	private boolean outputIsAvailable(){
 		return this.getOutputSlot(0) == null 
-				|| (this.getOutputSlot(0).getItem().equals(plasticIngot.getItem()) 
+				|| (this.getOutputSlot(0).getItem().equals(Items.petrolplastic_ingot) 
 						&& this.getOutputSlot(0).stackSize < this.getOutputSlot(0).getMaxStackSize());
 	}
 	

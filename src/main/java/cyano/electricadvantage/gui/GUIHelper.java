@@ -6,6 +6,7 @@ import java.util.Map;
 import cyano.poweradvantage.api.simple.SimpleMachineGUI.GUIContainer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fml.common.FMLLog;
 
 public class GUIHelper {
 	private static final int INDICATOR_LED_X = 182;
@@ -39,6 +40,7 @@ public class GUIHelper {
 	public static void drawFluidBar(FluidStack fs, float barHeight, int xPos, int yPos, 
 			GUIContainer guiContainer, int x, int y,
 			ResourceLocation displayImage){
+
 		final int w = 16;
 		final int barSlotHeight = 60;
 		final int h = (int)(barSlotHeight * barHeight);

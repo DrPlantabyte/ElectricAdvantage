@@ -2,7 +2,9 @@ package cyano.electricadvantage.graphics;
 
 import cyano.electricadvantage.ElectricAdvantage;
 import cyano.electricadvantage.machines.LaserTurretTileEntity;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
@@ -75,11 +77,26 @@ public class LaserTurretRenderer extends TileEntitySpecialRenderer{
 		float tickRemainder = 1 - partialTick;
 		float yaw = -1*(tickRemainder * e.rotOldYaw + partialTick * e.rotYaw) - 90;
 		float pitch = tickRemainder * e.rotOldPitch + partialTick * e.rotPitch;
+		
+
+		RenderHelper.disableStandardItemLighting();
+		GlStateManager.blendFunc(770, 771);
+		GlStateManager.enableBlend();
+		GlStateManager.disableCull();
+
+		if (Minecraft.isAmbientOcclusionEnabled())
+		{
+			GlStateManager.shadeModel(7425);
+		}
+		else
+		{
+			GlStateManager.shadeModel(7424);
+		}
 
 		GlStateManager.translate(0.5f, 0.75f, 0.5f);
 		GlStateManager.rotate(yaw, 0.0f, 1.0f, 0.0f);
 		GlStateManager.rotate(pitch, 1.0f, 0.0f, 0.0f);
-
+		
 		worldRenderer.begin(7, DefaultVertexFormats.POSITION_TEX);
 		
 		worldRenderer.pos( radius, radius, -radius).tex(endU0, endV0).endVertex();
@@ -113,6 +130,7 @@ public class LaserTurretRenderer extends TileEntitySpecialRenderer{
 		worldRenderer.pos( radius,-radius,  radius).tex(sideU1, sideV0).endVertex();
 
 		tessellator.draw();
+		
 		if(e.showLaserLine() && e.laserBlastLength > 0){
 			final double x1, y1, z1, x2, y2, z2,  x3, y3, z3, x4, y4, z4;
 			x1 = 0;
@@ -128,6 +146,8 @@ public class LaserTurretRenderer extends TileEntitySpecialRenderer{
 			x4 = laserRadius;
 			y4 = 0;
 			z4 = z2;
+			
+			GlStateManager.disableLighting();
 
 			int lightValue = 15 << 20 | 15 << 4;
 			int lmapX = lightValue >> 16 & 0xFFFF;
@@ -156,8 +176,11 @@ public class LaserTurretRenderer extends TileEntitySpecialRenderer{
 			worldRenderer.pos( x3, y3, z3).tex(laserU0, laserV0).lightmap(lmapX, lmapY).color(1f, 1f, 1f, 1f).endVertex();
 			
 			tessellator.draw();
+			
+			GlStateManager.enableLighting();
 		}
-		
+
+		RenderHelper.enableStandardItemLighting();
 	}
 
 	

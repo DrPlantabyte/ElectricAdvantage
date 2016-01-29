@@ -39,8 +39,6 @@ guiContainer.drawTexturedModalRect(x+79, y+35, 0, 0, arrowLength, 17); // x, y, 
 			ElectricStillTileEntity te = (ElectricStillTileEntity)srcEntity;
 			boolean on = te.isPowered();
 			GUIHelper.drawIndicatorLight(on, guiContainer,x,y);
-			float[] progressBars = te.getProgress();
-			GUIHelper.drawProgressBar(x+72, y+53, progressBars[0], guiContainer);
 			
 			FluidStack inputFluid = te.getInputTank().getFluid();
 			float inputAmount = (float)te.getInputTank().getFluidAmount() / (float)te.getInputTank().getCapacity();

@@ -40,8 +40,6 @@ guiContainer.drawTexturedModalRect(x+79, y+35, 0, 0, arrowLength, 17); // x, y, 
 			ElectricPumpTileEntity te = (ElectricPumpTileEntity)srcEntity;
 			boolean on = te.isPowered();
 			GUIHelper.drawIndicatorLight(on, guiContainer,x,y);
-			float[] progressBars = te.getProgress();
-			GUIHelper.drawProgressBar(x+72, y+53, progressBars[0], guiContainer);
 			
 			FluidStack inputFluid = te.getTank().getFluid();
 			float inputAmount = (float)te.getTank().getFluidAmount() / (float)te.getTank().getCapacity();

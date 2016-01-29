@@ -20,6 +20,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
+import net.minecraftforge.fml.common.FMLLog;
 
 public class ElectricStillTileEntity extends ElectricMachineTileEntity implements IFluidHandler{
 
@@ -39,6 +40,7 @@ public class ElectricStillTileEntity extends ElectricMachineTileEntity implement
 	}
 	
 
+	private boolean wasActive = false;
 	private int timeSinceSound = 0;
 	@Override
 	public void tickUpdate(boolean isServerWorld) {
@@ -46,15 +48,29 @@ public class ElectricStillTileEntity extends ElectricMachineTileEntity implement
 			// server-side logic
 			if(!this.hasRedstoneSignal()){
 				if(getInputTank().getFluidAmount() > 0 
-						&& getEnergy() > electricityPerDistill
+						&& getEnergy() >= electricityPerDistill
 						&& canDistill(getInputTank().getFluid())){
 					distill();
+					if(!wasActive){
+						this.setActiveState(true);
+						wasActive = true;
+					}
 					this.subtractEnergy(electricityPerDistill, Power.ELECTRIC_POWER);
 					if(timeSinceSound > 200){
 						getWorld().playSoundEffect(getPos().getX()+0.5, getPos().getY()+0.5, getPos().getZ()+0.5, "liquid.lava", 0.3f, 1.5f);
 						timeSinceSound = 0;
 					}
 					timeSinceSound++;
+				} else {
+					if(wasActive){
+						this.setActiveState(false);
+						wasActive = false;
+					}
+				}
+			} else {
+				if(wasActive){
+					this.setActiveState(false);
+					wasActive = false;
 				}
 			}
 		}
@@ -82,7 +98,11 @@ public class ElectricStillTileEntity extends ElectricMachineTileEntity implement
 		DistillationRecipe recipe = DistillationRecipeRegistry.getInstance()
 				.getDistillationRecipeForFluid(getInputTank().getFluid().getFluid());
 		FluidStack output = recipe.applyRecipe(inputTank.getFluid(), speed);
-		getOutputTank().fill(output, true);
+		if(getOutputTank().getFluidAmount() <= 0){
+			getOutputTank().setFluid(output);
+		} else {
+			getOutputTank().fill(output, true);
+		}
 	}
 	
 
@@ -134,8 +154,8 @@ public class ElectricStillTileEntity extends ElectricMachineTileEntity implement
 		dataSyncArray[0] = Float.floatToRawIntBits(this.getEnergy());
 		dataSyncArray[1] = this.getOutputTank().getFluidAmount();
 		dataSyncArray[2] = (this.getOutputTank().getFluidAmount() > 0 ? this.getOutputTank().getFluid().getFluid().getID() : FluidRegistry.WATER.getID());
-		dataSyncArray[3] = inputTank.getFluidAmount();
-		dataSyncArray[4] = (inputTank.getFluidAmount() > 0 ? inputTank.getFluid().getFluid().getID() : FluidRegistry.WATER.getID());
+		dataSyncArray[3] = getInputTank().getFluidAmount();
+		dataSyncArray[4] = (getInputTank().getFluidAmount() > 0 ? getInputTank().getFluid().getFluid().getID() : FluidRegistry.WATER.getID());
 	}
 
 	@Override
@@ -198,13 +218,15 @@ public class ElectricStillTileEntity extends ElectricMachineTileEntity implement
 		if(this.getOutputTank().getFluidAmount() > 0){
 			ConduitType type = Fluids.fluidToConduitType(getOutputTank().getFluid().getFluid());
 			float availableAmount = getOutputTank().getFluidAmount();
-			float delta = ConduitRegistry.transmitPowerToConsumers(availableAmount, type, PowerRequest.LAST_PRIORITY, this);
+			float delta = ConduitRegistry.transmitPowerToConsumers(availableAmount, cyano.poweradvantage.init.Fluids.fluidConduit_general, type, 
+					PowerRequest.LAST_PRIORITY, getWorld(), getPos(), this);
 			if(delta > 0){
 				getOutputTank().drain(Math.max((int)delta,1),true); // no free energy!
 			}
 		}
 		
 		redstone = getWorld().isBlockPowered(getPos());
+		this.setPowerState(this.isPowered());
 		
 		// automatically detect when a sync is needed
 		if(syncArrayOld == null || syncArrayNew == null 
@@ -270,7 +292,6 @@ public class ElectricStillTileEntity extends ElectricMachineTileEntity implement
 	
 	@Override
 	public PowerRequest getPowerRequest(ConduitType offer) {
-		if(redstone) return PowerRequest.REQUEST_NOTHING;
 		if(Fluids.isFluidType(offer) 
 				&& DistillationRecipeRegistry.getInstance().getDistillationRecipeForFluid( Fluids.conduitTypeToFluid(offer)) != null){
 			if(canDistill(Fluids.conduitTypeToFluid(offer))){
@@ -286,10 +307,9 @@ public class ElectricStillTileEntity extends ElectricMachineTileEntity implement
 			} else {
 				return PowerRequest.REQUEST_NOTHING;
 			} 
-		} else if(ConduitType.areSameType(offer, Power.ELECTRIC_POWER)){
-			return new PowerRequest(PowerRequest.MEDIUM_PRIORITY,this.getEnergyCapacity() - this.getEnergy(), this);
+		} else{
+			return super.getPowerRequest(offer);
 		}
-		return PowerRequest.REQUEST_NOTHING;
 	}
 	
 	/**

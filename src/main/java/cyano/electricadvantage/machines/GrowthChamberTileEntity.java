@@ -186,7 +186,13 @@ public class GrowthChamberTileEntity extends ElectricMachineTileEntity {
 
 
 	private VirtualCrop getVirtualCrop(ItemStack inputSlot) {
-		return VirtualCrop.createVirtualCrop(inputSlot, getWorld(), getPos());
+		if(inputSlot == null) return null;
+		try{
+			return VirtualCrop.createVirtualCrop(inputSlot, getWorld(), getPos());
+		} catch(Exception ex){
+			FMLLog.severe("Error occured while trying to make a virtual crop for %s:\n%s", inputSlot,ex);
+			return null;
+		}
 	}
 
 

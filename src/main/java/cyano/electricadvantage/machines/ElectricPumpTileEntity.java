@@ -98,7 +98,7 @@ public class ElectricPumpTileEntity extends ElectricMachineTileEntity implements
 						timeUntilNextPump = PUMP_INTERVAL;
 					}
 					if(success){
-						getWorld().playSoundEffect(getPos().getX()+0.5, getPos().getY()+0.5, getPos().getZ()+0.5, "random.fizz", 0.5f, 1f);
+						getWorld().playSoundEffect(getPos().getX()+0.5, getPos().getY()+0.5, getPos().getZ()+0.5, "game.neutral.swim.splash", 0.5f, 1f);
 						getWorld().playSoundEffect(getPos().getX()+0.5, getPos().getY()+0.5, getPos().getZ()+0.5, "tile.piston.out", 0.3f, 1f);
 						timeToSound = 14;
 					}
@@ -195,7 +195,8 @@ public class ElectricPumpTileEntity extends ElectricMachineTileEntity implements
 		if(this.getTank().getFluidAmount() > 0){
 			ConduitType type = Fluids.fluidToConduitType(getTank().getFluid().getFluid());
 			float availableAmount = getTank().getFluidAmount();
-			float delta = ConduitRegistry.transmitPowerToConsumers(availableAmount, type, PowerRequest.LAST_PRIORITY, this);
+			float delta = ConduitRegistry.transmitPowerToConsumers(availableAmount, cyano.poweradvantage.init.Fluids.fluidConduit_general, type, 
+					PowerRequest.LAST_PRIORITY, getWorld(), getPos(), this);
 			if(delta > 0){
 				getTank().drain(Math.max((int)delta,1),true); // no free energy!
 			}
@@ -215,6 +216,7 @@ public class ElectricPumpTileEntity extends ElectricMachineTileEntity implements
 		}
 
 		redstone = hasRedstoneSignal();
+		this.setPowerState(this.isPowered());
 
 		if(updateFlag){
 			super.sync();
@@ -272,7 +274,7 @@ public class ElectricPumpTileEntity extends ElectricMachineTileEntity implements
 	@Override
 	public void loadFrom(final NBTTagCompound tagRoot) {
 		if (tagRoot.hasKey("Tank")) {
-			NBTTagCompound tankTag = tagRoot.getCompoundTag("TankOut");
+			NBTTagCompound tankTag = tagRoot.getCompoundTag("Tank");
 			getTank().readFromNBT(tankTag);
 			if(tankTag.hasKey("Empty")){
 				// empty the tank if NBT says its empty (not default behavior of Tank.readFromNBT(...) )

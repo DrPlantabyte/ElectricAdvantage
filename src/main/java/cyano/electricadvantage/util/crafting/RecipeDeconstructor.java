@@ -165,7 +165,6 @@ public class RecipeDeconstructor {
 						}
 						boolean failure = true;
 						for(ItemStack vi : validItems){
-							// TODO: figure out why this fails to craft a stick from non-oak logs
 							AtomicReference<ItemStack> ret = new AtomicReference<>();
 							SerializedInventory r = attemptToCraft(vi,tempInv,ret,recursionDepth+1);
 							if(r != null) {

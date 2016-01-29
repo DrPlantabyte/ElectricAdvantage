@@ -21,6 +21,7 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -89,7 +90,7 @@ public class ElectricDrillTileEntity extends ElectricMachineTileEntity{
 							getWorld().playSoundEffect(getPos().getX()+0.5, getPos().getY()+0.5, getPos().getZ()+0.5, "dig.sand", 0.5f, 1f);
 							BlockPos[] targets = this.getArea(targetBlockCoord);
 							for(int i = 0; i < 5; i++)
-								if(getWorld().getBlockState(targets[i]).getBlock() != net.minecraft.init.Blocks.bedrock){
+								if(canMine(targets[i])){
 									getWorld().setBlockToAir(targets[i]);
 								}
 							for(ItemStack item : targetBlockItems){
@@ -248,11 +249,11 @@ public class ElectricDrillTileEntity extends ElectricMachineTileEntity{
 				}
 			} else {
 				// currently drilling a block
-				// block validation
-				BlockPos[] targets = getArea(n);
+				// block revalidation
+				BlockPos[] targets = getArea(targetBlockCoord);
 				for(int i = 0; i < 5; i++){
-					if(getWorld().isAirBlock(targetBlockCoord) || getWorld().getBlockState(targets[i]).getBlock() != targetBlocks[i]){
-						// Block changed! invalidate!
+					if(!getWorld().getBlockState(targets[i]).getBlock().equals(targetBlocks[i])){
+						// Block changed! Invalidate!
 						untargetBlock();
 						flagSync = true;
 						break;
@@ -373,7 +374,8 @@ public class ElectricDrillTileEntity extends ElectricMachineTileEntity{
 	
 	private boolean canMine(BlockPos coord){
 		Block b = getWorld().getBlockState(coord).getBlock();
-		return !(b == net.minecraft.init.Blocks.bedrock || b == net.minecraft.init.Blocks.barrier);
+		// indestructable blocks have negative hardness
+		return !(b.getBlockHardness(getWorld(), coord) < 0);
 	}
 	
 	private int getBlockStrength(BlockPos coord){

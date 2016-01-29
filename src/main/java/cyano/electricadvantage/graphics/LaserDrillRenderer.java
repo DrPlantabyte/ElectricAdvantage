@@ -98,6 +98,8 @@ public class LaserDrillRenderer extends TileEntitySpecialRenderer{
 			}
 			}
 			
+			GlStateManager.disableLighting();
+			
 			GlStateManager.translate(0.5f, 0.5f, 0.5f);
 			GlStateManager.rotate(rotY, 0.0f, 1.0f, 0.0f);
 			GlStateManager.rotate(rotX, 1.0f, 0.0f, 0.0f);
@@ -144,6 +146,7 @@ public class LaserDrillRenderer extends TileEntitySpecialRenderer{
 			worldRenderer.pos( x3, y3, z3).tex(laserU0, laserV0).lightmap(lmapX, lmapY).color(1f, 1f, 1f, 1f).endVertex();
 
 			tessellator.draw();
+			GlStateManager.enableLighting();
 
 		}
 	}

@@ -80,7 +80,6 @@ public class VirtualCrop {
 						getNumberOfGrowthStages(startingState),
 						agedState.getBlock().getDrops(w, pos, agedState, 0));
 			}
-			// TODO: plant megapack
 		}
 		return null;
 	}

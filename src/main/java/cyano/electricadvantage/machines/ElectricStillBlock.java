@@ -44,7 +44,18 @@ public class ElectricStillBlock extends ElectricMachineBlock{
 		ConduitRegistry.getInstance().conduitBlockPlacedEvent(w, w.provider.getDimensionId(), coord, Fluids.fluidConduit_general);
 	}
 	
-	
+
+	/**
+	 * Determines whether this conduit is compatible with an adjacent one
+	 * @param type The type of energy in the conduit
+	 * @param state The blockstate
+	 * @param blockFace The side through-which the energy is flowing
+	 * @return true if this conduit can flow the given energy type through the given face, false 
+	 * otherwise
+	 */
+	public boolean canAcceptType(IBlockState state, ConduitType type, EnumFacing blockFace){
+		return canAcceptType(type,blockFace);
+	}
 	/**
 	 * Determines whether this conduit is compatible with an adjacent one
 	 * @param type The type of energy in the conduit
@@ -53,7 +64,7 @@ public class ElectricStillBlock extends ElectricMachineBlock{
 	 * otherwise
 	 */
 	public boolean canAcceptType(ConduitType type, EnumFacing blockFace){
-		return ConduitType.areSameType(getType(), type) || ConduitType.areSameType(Fluids.fluidConduit_general, type);
+		return canAcceptType(type);
 	}
 	/**
 	 * Determines whether this conduit is compatible with a type of energy through any side

@@ -16,6 +16,7 @@ import cyano.electricadvantage.init.GUI;
 import cyano.electricadvantage.init.Items;
 import cyano.electricadvantage.init.Recipes;
 import cyano.electricadvantage.init.TreasureChests;
+import cyano.electricadvantage.init.Villages;
 import cyano.electricadvantage.util.crafting.RecipeDeconstructor;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.FMLLog;
@@ -35,7 +36,7 @@ public class ElectricAdvantage
 	/** The display name for this mod */
 	public static final String NAME = "Electric Advantage";
 	/** The version of this mod, in the format major.minor.update */
-	public static final String VERSION = "1.0.5";
+	public static final String VERSION = "1.1.1";
 
 	public static ElectricAdvantage INSTANCE = null;
 	
@@ -116,6 +117,7 @@ public class ElectricAdvantage
 		GUI.init();
 		TreasureChests.init();
 		Enchantments.init();
+		Villages.init();
 
 		if(event.getSide() == Side.CLIENT){
 			clientInit(event);

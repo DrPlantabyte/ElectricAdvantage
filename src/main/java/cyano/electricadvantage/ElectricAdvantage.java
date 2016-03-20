@@ -1,22 +1,6 @@
 package cyano.electricadvantage;
 
-import java.io.IOException;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
-
-import cyano.electricadvantage.init.Blocks;
-import cyano.electricadvantage.init.Enchantments;
-import cyano.electricadvantage.init.Entities;
-import cyano.electricadvantage.init.GUI;
-import cyano.electricadvantage.init.Items;
-import cyano.electricadvantage.init.Recipes;
-import cyano.electricadvantage.init.TreasureChests;
-import cyano.electricadvantage.init.Villages;
+import cyano.electricadvantage.init.*;
 import cyano.electricadvantage.util.crafting.RecipeDeconstructor;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.FMLLog;
@@ -28,6 +12,15 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 @Mod(modid = ElectricAdvantage.MODID, version = ElectricAdvantage.VERSION, name=ElectricAdvantage.NAME, 
 		dependencies = "required-after:poweradvantage;required-after:basemetals")
 public class ElectricAdvantage
@@ -36,7 +29,7 @@ public class ElectricAdvantage
 	/** The display name for this mod */
 	public static final String NAME = "Electric Advantage";
 	/** The version of this mod, in the format major.minor.update */
-	public static final String VERSION = "1.1.1";
+	public static final String VERSION = "1.1.2";
 
 	public static ElectricAdvantage INSTANCE = null;
 	

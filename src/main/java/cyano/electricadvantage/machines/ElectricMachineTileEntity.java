@@ -1,7 +1,5 @@
 package cyano.electricadvantage.machines;
 
-import java.util.Arrays;
-
 import cyano.electricadvantage.init.Power;
 import cyano.poweradvantage.api.ConduitType;
 import net.minecraft.block.state.IBlockState;
@@ -12,6 +10,8 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.FMLLog;
+
+import java.util.Arrays;
 
 public abstract class ElectricMachineTileEntity extends cyano.poweradvantage.api.simple.TileEntitySimplePowerConsumer{
 
@@ -274,6 +274,8 @@ public abstract class ElectricMachineTileEntity extends cyano.poweradvantage.api
 	}
 	
 	public ItemStack insertItemToInputSlots(ItemStack itemStack){
+        if(itemStack == null) return null;
+        if(itemStack.getItem() == null) return null;
 		itemStack = itemStack.copy();
 		for(int slot = 0; slot < numberOfInputSlots(); slot++){
 			ItemStack slotContent = this.getInputSlot(slot);
@@ -298,6 +300,8 @@ public abstract class ElectricMachineTileEntity extends cyano.poweradvantage.api
 	}
 	
 	public ItemStack insertItemToOutputSlots(ItemStack itemStack){
+        if(itemStack == null) return null;
+        if(itemStack.getItem() == null) return null;
 		itemStack = itemStack.copy();
 		for(int slot = 0; slot < numberOfOutputSlots(); slot++){
 			ItemStack slotContent = this.getOutputSlot(slot);

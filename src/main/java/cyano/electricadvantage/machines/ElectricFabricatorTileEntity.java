@@ -1,14 +1,13 @@
 package cyano.electricadvantage.machines;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
-
 import cyano.electricadvantage.util.crafting.RecipeDeconstructor;
 import cyano.electricadvantage.util.crafting.SerializedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.fml.common.FMLLog;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class ElectricFabricatorTileEntity extends ElectricMachineTileEntity {
 
@@ -71,8 +70,10 @@ public class ElectricFabricatorTileEntity extends ElectricMachineTileEntity {
 					break;
 				}
 				case CRAFT_COMPLETE:{
-					doCraft();
-					getWorld().playSoundEffect(getPos().getX()+0.5, getPos().getY()+0.5, getPos().getZ()+0.5, "random.anvil_land", 0.15f, 1f);
+                    if(canCraft()) {
+                        doCraft();
+                        getWorld().playSoundEffect(getPos().getX() + 0.5, getPos().getY() + 0.5, getPos().getZ() + 0.5, "random.anvil_land", 0.15f, 1f);
+                    }
 					state = FSM.READY;
 					break;
 				}

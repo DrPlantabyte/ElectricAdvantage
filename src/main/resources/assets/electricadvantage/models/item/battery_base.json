@@ -1,5 +1,6 @@
 {
-     "textures": {
+  "parent": "block/block",
+  "textures": {
         "particle": "electricadvantage:materials/machine_case"
     },
     "ambientocclusion": false,
@@ -16,12 +17,5 @@
                 "east":  { "uv": [ 0, 8, 8,16 ], "texture": "#item_texture" }
             }
         }
-    ],
-    "display": {
-        "thirdperson": {
-            "rotation": [ 0, 0, 90 ],
-            "translation": [ 0, 1.5, -2.75 ],
-            "scale": [ 0.5, 0.5, 0.5 ]
-        }
-    }
+    ]
 }

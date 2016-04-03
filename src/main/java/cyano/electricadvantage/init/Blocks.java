@@ -11,6 +11,7 @@ import cyano.poweradvantage.blocks.BlockPowerSwitch;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.model.ModelResourceLocation;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -83,6 +84,7 @@ public abstract class Blocks {
 		electric_still = (GUIBlock)addBlock(new ElectricStillBlock(),"electric_still");
 		plastic_refinery = (GUIBlock)addBlock(new PlasticRefineryBlock(),"plastic_refinery");
 		pump_pipe_electric = addBlock(new PumpPipeBlock(),"pump_pipe_electric");
+		pump_pipe_electric.setCreativeTab(CreativeTabs.tabAllSearch);
 		
 		// required OreDictionary entries
 		OreDictionary.registerOre("blockDirt", net.minecraft.init.Blocks.dirt);

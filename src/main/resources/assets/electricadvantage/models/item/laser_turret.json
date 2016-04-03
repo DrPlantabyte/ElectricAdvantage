@@ -1,5 +1,6 @@
 {
-    "textures": {
+  "parent": "block/block",
+  "textures": {
         "bottom": "electricadvantage:blocks/laser_turret_base",
         "top": "electricadvantage:blocks/laser_turret_base",
         "side": "electricadvantage:blocks/laser_turret_base",
@@ -40,12 +41,5 @@
                 "east":  { "uv": [ 0, 0, 8, 8], "texture": "#head" }
             }
         }
-    ],
-    "display": {
-        "thirdperson": {
-            "rotation": [ 0, 0, 90 ],
-            "translation": [ 0, 1.5, -2.75 ],
-            "scale": [ 0.5, 0.5, 0.5 ]
-        }
-    }
+    ]
 }

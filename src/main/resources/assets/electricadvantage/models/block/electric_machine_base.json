@@ -1,5 +1,6 @@
 {
-     "textures": {
+  "parent": "block/block",
+  "textures": {
         "particle": "electricadvantage:materials/machine_case"
     },
     "elements": [

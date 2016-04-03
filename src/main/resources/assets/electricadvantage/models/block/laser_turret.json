@@ -1,5 +1,6 @@
 {
-     "textures": {
+  "parent": "block/block",
+  "textures": {
         "bottom": "electricadvantage:blocks/laser_turret_base",
         "top": "electricadvantage:blocks/laser_turret_base",
         "side": "electricadvantage:blocks/laser_turret_base",

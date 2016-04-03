@@ -1,9 +1,5 @@
 package cyano.electricadvantage.machines;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import cyano.electricadvantage.init.Blocks;
 import cyano.electricadvantage.init.Power;
 import cyano.poweradvantage.util.InventoryWrapper;
@@ -16,14 +12,17 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class ElectricDrillTileEntity extends ElectricMachineTileEntity{
 
@@ -323,7 +322,7 @@ public class ElectricDrillTileEntity extends ElectricMachineTileEntity{
 	}
 	
 	private BlockPos[] getArea(BlockPos center){
-		BlockPos[] a = new BlockPos[5];
+		BlockPos[] a = new BlockPos[9];
 		a[0] = center;
 		switch(this.getFacing().getAxis()){
 			case X: 
@@ -331,12 +330,20 @@ public class ElectricDrillTileEntity extends ElectricMachineTileEntity{
 				a[2] = center.down();
 				a[3] = center.south();
 				a[4] = center.up();
+				a[5] = a[2].north();
+				a[6] = a[2].south();
+				a[7] = a[4].north();
+				a[8] = a[4].south();
 				break;
 			case Z:
 				a[1] = center.down();
 				a[2] = center.west();
 				a[3] = center.up();
 				a[4] = center.east();
+				a[5] = a[1].east();
+				a[6] = a[1].west();
+				a[7] = a[3].east();
+				a[8] = a[3].west();
 				break;
 			case Y:
 			default:
@@ -344,6 +351,10 @@ public class ElectricDrillTileEntity extends ElectricMachineTileEntity{
 				a[2] = center.west();
 				a[3] = center.south();
 				a[4] = center.east();
+				a[5] = a[1].east();
+				a[6] = a[1].west();
+				a[7] = a[3].east();
+				a[8] = a[3].west();
 				break;
 		}
 		return a;

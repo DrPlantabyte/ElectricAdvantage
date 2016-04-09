@@ -1,26 +1,21 @@
 package cyano.electricadvantage.machines;
 
-import java.util.List;
-
 import cyano.electricadvantage.ElectricAdvantage;
 import cyano.electricadvantage.init.Items;
 import cyano.electricadvantage.init.Power;
 import cyano.poweradvantage.api.ConduitType;
+import cyano.poweradvantage.api.PowerConnectorContext;
 import cyano.poweradvantage.api.PowerRequest;
 import cyano.poweradvantage.api.fluid.FluidRequest;
 import cyano.poweradvantage.init.Fluids;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidContainerRegistry;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTank;
-import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.IFluidHandler;
-import net.minecraftforge.fml.common.FMLLog;
+import net.minecraftforge.fluids.*;
 import net.minecraftforge.oredict.OreDictionary;
+
+import java.util.List;
 
 public class PlasticRefineryTileEntity extends ElectricMachineTileEntity implements IFluidHandler{
 
@@ -61,7 +56,7 @@ public class PlasticRefineryTileEntity extends ElectricMachineTileEntity impleme
 					// done
 					getTank().drain(OIL_PER_INGOT, true);
 					this.insertItemToOutputSlots(new ItemStack(Items.petrolplastic_ingot,1));
-					getWorld().playSoundEffect(getPos().getX()+0.5, getPos().getY()+0.5, getPos().getZ()+0.5, "random.anvil_land", 0.15f, 1f);
+					playSoundEffect(getPos().getX()+0.5, getPos().getY()+0.5, getPos().getZ()+0.5, SoundEvents.block_anvil_land, 0.15f, 1f);
 					fabTime = 0;
 					if(wasActive){
 						this.setActiveState(false);
@@ -143,8 +138,8 @@ public class PlasticRefineryTileEntity extends ElectricMachineTileEntity impleme
 		dataSyncArray[1] = this.fabTime;
 		dataSyncArray[2] = this.getTank().getFluidAmount();
 		dataSyncArray[3] = (getTank().getFluid() != null && getTank().getFluid().getFluid() != null 
-				? getTank().getFluid().getFluid().getID() 
-						: FluidRegistry.WATER.getID());
+				? FluidRegistry.getFluidID(getTank().getFluid().getFluid())
+						: FluidRegistry.getFluidID(FluidRegistry.WATER));
 		
 	}
 
@@ -236,14 +231,9 @@ public class PlasticRefineryTileEntity extends ElectricMachineTileEntity impleme
 	}
 	
 
-	/**
-	 * Determines whether this conduit is compatible with a type of energy through any side
-	 * @param type The type of energy in the conduit
-	 * @return true if this conduit can flow the given energy type through one or more of its block 
-	 * faces, false otherwise
-	 */
 	@Override
-	public boolean canAcceptType(ConduitType type){
+	public boolean canAcceptConnection(PowerConnectorContext p){
+		ConduitType type = p.powerType;
 		return ConduitType.areSameType(getType(), type) || ConduitType.areSameType(Fluids.fluidConduit_general, type);
 	}
 	
@@ -327,6 +317,19 @@ public class PlasticRefineryTileEntity extends ElectricMachineTileEntity impleme
 		return arr;
 	}
 
+	@Override
+	public boolean isPowerSource(ConduitType e){
+		return false;
+	}
+	@Override
+	public boolean isPowerSink(ConduitType e){
+		return true;
+	}
+	private final ConduitType[] types = {Power.ELECTRIC_POWER,Fluids.fluidConduit_general};
+	@Override
+	public ConduitType[] getTypes(){
+		return types;
+	}
 
 	///// end multi-type overrides /////
 }

@@ -1,22 +1,20 @@
 package cyano.electricadvantage.machines;
 
-import com.google.common.base.Predicate;
-
+import cyano.electricadvantage.init.Power;
+import cyano.poweradvantage.api.ConduitType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
-import net.minecraft.block.state.BlockState;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import cyano.electricadvantage.init.Power;
-import cyano.poweradvantage.api.PoweredEntity;
 
-public abstract class ElectricGeneratorBlock extends cyano.poweradvantage.api.simple.BlockSimplePowerConsumer{
+public abstract class ElectricGeneratorBlock extends cyano.poweradvantage.api.simple.BlockSimplePowerMachine{
 
 	/**
 	 * Blockstate property
@@ -37,8 +35,8 @@ public abstract class ElectricGeneratorBlock extends cyano.poweradvantage.api.si
 	 * Creates a blockstate
 	 */
 	@Override
-	protected BlockState createBlockState() {
-		return new BlockState(this, new IProperty[] { ACTIVE,FACING });
+	protected BlockStateContainer createBlockState() {
+		return new BlockStateContainer(this, new IProperty[] { ACTIVE,FACING });
 	}
 
 	/**
@@ -71,16 +69,22 @@ public abstract class ElectricGeneratorBlock extends cyano.poweradvantage.api.si
 	public abstract ElectricGeneratorTileEntity createNewTileEntity(World arg0, int arg1);
 
 	@Override
+	public int getComparatorInputOverride(IBlockState bs, World w, BlockPos p){
+		return getComparatorInputOverride(w,p);
+	}
 	public int getComparatorInputOverride(World w, BlockPos p) {
 		TileEntity te = w.getTileEntity(p);
 		if(te instanceof ElectricGeneratorTileEntity){
 			return ((ElectricGeneratorTileEntity)te).getComparatorOutput();
 		}
 		return 0;
-		
+
 	}
 
 	@Override
+	public boolean hasComparatorInputOverride(IBlockState bs){
+		return hasComparatorInputOverride();
+	}
 	public boolean hasComparatorInputOverride() {
 		return true;
 	}
@@ -98,4 +102,16 @@ public abstract class ElectricGeneratorBlock extends cyano.poweradvantage.api.si
 		super.breakBlock(world, pos, state);
 	}
 
+
+	@Override
+	public boolean isPowerSink(ConduitType e){
+		return false;
+	}
+
+	@Override
+	public boolean isPowerSource(ConduitType e){
+		return true;
+	}
+
+	public ConduitType getType() {return Power.ELECTRIC_POWER;}
 }

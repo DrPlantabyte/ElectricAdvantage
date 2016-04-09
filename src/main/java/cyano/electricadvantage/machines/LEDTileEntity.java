@@ -3,13 +3,13 @@ package cyano.electricadvantage.machines;
 import cyano.electricadvantage.init.Power;
 import cyano.poweradvantage.api.ConduitType;
 import cyano.poweradvantage.api.PowerRequest;
-import cyano.poweradvantage.api.simple.TileEntitySimplePowerConsumer;
+import cyano.poweradvantage.api.simple.TileEntitySimplePowerMachine;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class LEDTileEntity extends TileEntitySimplePowerConsumer{
+public class LEDTileEntity extends TileEntitySimplePowerMachine {
 
 	private static final float ENERGY_COST = 0.125f;
 	
@@ -32,12 +32,12 @@ public class LEDTileEntity extends TileEntitySimplePowerConsumer{
 
 	@Override
 	public void onDataFieldUpdate() {
-		this.setEnergy(Float.intBitsToFloat(dataArray[0]), getType());
+		this.setEnergy(Float.intBitsToFloat(dataArray[0]),Power.ELECTRIC_POWER);
 	}
 
 	@Override
 	public void prepareDataFieldsForSync() {
-		dataArray[0] = Float.floatToIntBits(getEnergy());
+		dataArray[0] = Float.floatToIntBits(getEnergy(Power.ELECTRIC_POWER));
 	}
 	
 
@@ -56,10 +56,10 @@ public class LEDTileEntity extends TileEntitySimplePowerConsumer{
 	@Override
 	public void powerUpdate(){
 		super.powerUpdate();
-		boolean on = getEnergy() > 0;
+		boolean on = getEnergy(Power.ELECTRIC_POWER) > 0;
 		IBlockState bs = getWorld().getBlockState(getPos());
 		if(on){
-			this.subtractEnergy(ENERGY_COST, getType());
+			this.subtractEnergy(ENERGY_COST, Power.ELECTRIC_POWER);
 		}
 		if((Boolean)bs.getValue(LEDBlock.LIT) != on){
 			getWorld().setBlockState(getPos(),bs.withProperty(LEDBlock.LIT, on));
@@ -68,12 +68,22 @@ public class LEDTileEntity extends TileEntitySimplePowerConsumer{
 	
 	@Override
 	public PowerRequest getPowerRequest(ConduitType type){
-		float amount = this.getEnergyCapacity() - this.getEnergy(); 
-		if(this.canAcceptType(type) && amount > 0){
+		if(!ConduitType.areSameType(Power.ELECTRIC_POWER,type)) return PowerRequest.REQUEST_NOTHING;
+		float amount = this.getEnergyCapacity(Power.ELECTRIC_POWER) - this.getEnergy(Power.ELECTRIC_POWER);
+		if(amount > 0){
 			return new PowerRequest(PowerRequest.HIGH_PRIORITY,amount,this);
 		} else {
 			return PowerRequest.REQUEST_NOTHING;
 		}
 	}
 
+	@Override
+	public boolean isPowerSink(ConduitType conduitType) {
+		return true;
+	}
+
+	@Override
+	public boolean isPowerSource(ConduitType conduitType) {
+		return false;
+	}
 }

@@ -1,6 +1,6 @@
 package cyano.electricadvantage.machines;
 
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class HydroelectricGeneratorBlock extends ElectricGeneratorBlock {
@@ -17,6 +17,6 @@ public class HydroelectricGeneratorBlock extends ElectricGeneratorBlock {
 	@Override
 	public boolean canPlaceBlockAt(World worldIn, BlockPos pos)
 	{
-		return super.canPlaceBlockAt(worldIn, pos) && !worldIn.getBlockState( pos.down()).getBlock().getMaterial().isSolid();
+		return super.canPlaceBlockAt(worldIn, pos) && !worldIn.getBlockState( pos.down()).getMaterial().isSolid();
 	}
 }

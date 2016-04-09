@@ -1,17 +1,15 @@
 package cyano.electricadvantage.items;
 
-import java.text.NumberFormat;
-import java.util.List;
-import java.util.Locale;
-
 import cyano.electricadvantage.common.IRechargeableItem;
 import cyano.electricadvantage.init.Power;
 import cyano.poweradvantage.api.ConduitType;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.text.translation.I18n;
+
+import java.text.NumberFormat;
+import java.util.List;
 
 
 public class BatteryItem extends net.minecraft.item.Item implements IRechargeableItem {
@@ -108,10 +106,10 @@ public class BatteryItem extends net.minecraft.item.Item implements IRechargeabl
 		if(max <= 0) return; // not a battery!
 		float e = getEnergy(stack);
 		//sb.append(nf.format(e)).append('/').append(nf.format(max)).append(" kJ");
-		sb.append(nf.format(100*e/max)).append("% ").append(StatCollector.translateToLocal("tooltip.battery.charge"));
+		sb.append(nf.format(100*e/max)).append("% ").append(I18n.translateToLocal("tooltip.battery.charge"));
 		list.add(sb.toString());
 		StringBuilder sb2 = new StringBuilder();
-		sb2.append('(').append(nf.format(max)).append("kJ ").append(StatCollector.translateToLocal("tooltip.battery.capacity")).append(')');
+		sb2.append('(').append(nf.format(max)).append("kJ ").append(I18n.translateToLocal("tooltip.battery.capacity")).append(')');
 		list.add(sb2.toString());
 	}
 }

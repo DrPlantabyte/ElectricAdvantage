@@ -3,7 +3,6 @@ package cyano.electricadvantage.gui;
 import cyano.electricadvantage.ElectricAdvantage;
 import cyano.electricadvantage.machines.ElectricPumpTileEntity;
 import cyano.poweradvantage.api.simple.SimpleMachineGUI;
-import cyano.poweradvantage.api.simple.SimpleMachineGUI.GUIContainer;
 import cyano.poweradvantage.math.Integer2D;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
@@ -44,7 +43,7 @@ guiContainer.drawTexturedModalRect(x+79, y+35, 0, 0, arrowLength, 17); // x, y, 
 			FluidStack inputFluid = te.getTank().getFluid();
 			float inputAmount = (float)te.getTank().getFluidAmount() / (float)te.getTank().getCapacity();
 
-			GUIHelper.drawFluidBar(inputFluid, inputAmount, 80, 42, guiContainer, x, y, super.guiDisplayImage);
+			GUIHelper.drawFluidBar(inputFluid, inputAmount, 80, 42, guiContainer, x, y, z, super.guiDisplayImage);
 		}
 	}
 }

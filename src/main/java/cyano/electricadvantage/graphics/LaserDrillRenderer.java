@@ -1,18 +1,16 @@
 package cyano.electricadvantage.graphics;
 
-import org.lwjgl.opengl.GL11;
-
 import cyano.electricadvantage.ElectricAdvantage;
 import cyano.electricadvantage.machines.ElectricDrillTileEntity;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -51,7 +49,7 @@ public class LaserDrillRenderer extends TileEntitySpecialRenderer{
 			this.bindTexture(texture);
 			final Tessellator tessellator = Tessellator.getInstance();
 
-			final WorldRenderer worldRenderer = tessellator.getWorldRenderer();
+			final VertexBuffer worldRenderer = tessellator.getBuffer();
 
 
 			final float laserU0 = 0;

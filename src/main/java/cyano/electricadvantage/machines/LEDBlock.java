@@ -1,20 +1,20 @@
 package cyano.electricadvantage.machines;
 
-import java.util.List;
-
 import cyano.electricadvantage.blocks.ElectricConduitBlock;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
-import net.minecraft.block.state.BlockState;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+
+import java.util.List;
 
 public class LEDBlock extends ElectricConduitBlock implements ITileEntityProvider{
 
@@ -32,8 +32,7 @@ public class LEDBlock extends ElectricConduitBlock implements ITileEntityProvide
 	}
 	
 	@Override
-	public int getLightValue(IBlockAccess world, BlockPos pos){
-		IBlockState bs = world.getBlockState(pos);
+	public int getLightValue(IBlockState bs, IBlockAccess world, BlockPos pos){
 		if(bs.getBlock() == this && (Boolean)bs.getValue(LIT) == true){
 			return 15;
 		} else {
@@ -56,114 +55,117 @@ public class LEDBlock extends ElectricConduitBlock implements ITileEntityProvide
 	}
 	
 	@Override
-	protected BlockState createBlockState() {
-		return new BlockState(this, new IProperty[] { WEST, DOWN, SOUTH, EAST, UP, NORTH, LIT });
+	protected BlockStateContainer createBlockState() {
+		return new BlockStateContainer(this, new IProperty[] { WEST, DOWN, SOUTH, EAST, UP, NORTH, LIT });
 	}
 	
 	@Override
 	public boolean isPowerSink(){
 		return true;
 	}
-	
 
-    /**
-     * Calculates the collision boxes for this block.
-     */
+
+	/**
+	 * Calculates the collision boxes for this block.
+	 */
 	@Override
-    public void setBlockBoundsBasedOnState(final IBlockAccess world, final BlockPos coord) {
-		IBlockState oldState = world.getBlockState(coord);
-        final boolean connectNorth = this.canConnectTo(world,coord,oldState,EnumFacing.NORTH, coord.north());
-        final boolean connectSouth = this.canConnectTo(world,coord,oldState,EnumFacing.SOUTH, coord.south());
-        final boolean connectWest =  this.canConnectTo(world,coord,oldState,EnumFacing.WEST,  coord.west());
-        final boolean connectEast =  this.canConnectTo(world,coord,oldState,EnumFacing.EAST,  coord.east());
-        final boolean connectUp =    this.canConnectTo(world,coord,oldState,EnumFacing.UP,    coord.up());
-        boolean       connectDown =  this.canConnectTo(world,coord,oldState,EnumFacing.DOWN,  coord.down());
-        
-        if(!(connectNorth || connectSouth || connectWest || connectEast || connectUp || connectDown)){
-        	connectDown = true;
-        }
-        
-        float radius = pipeRadius;
-        float rminus = 0.5f - radius;
-        float rplus = 0.5f + radius;
-        
-        float x1 = rminus;
-        float x2 = rplus;
-        float y1 = rminus;
-        float y2 = rplus;
-        float z1 = rminus;
-        float z2 = rplus;
-        if (connectNorth) {
-            z1 = 0.0f;
-        }
-        if (connectSouth) {
-            z2 = 1.0f;
-        }
-        if (connectWest) {
-            x1 = 0.0f;
-        }
-        if (connectEast) {
-            x2 = 1.0f;
-        }
-        if(connectDown){
-        	y1 = 0.0f;
-        }
-        if(connectUp){
-        	y2 = 1.0f;
-        }
-        this.setBlockBounds(x1, y1, z1, x2, y2, z2);
-    }
+	public AxisAlignedBB getBoundingBox(final IBlockState bs, final IBlockAccess world, final BlockPos coord) {
+		IBlockState oldBS = bs;
+		final boolean connectNorth = this.canConnectTo(world,coord,oldBS,EnumFacing.NORTH, coord.north());
+		final boolean connectSouth = this.canConnectTo(world,coord,oldBS,EnumFacing.SOUTH, coord.south());
+		final boolean connectWest = this.canConnectTo(world,coord,oldBS,EnumFacing.WEST, coord.west());
+		final boolean connectEast = this.canConnectTo(world,coord,oldBS,EnumFacing.EAST, coord.east());
+		final boolean connectUp = this.canConnectTo(world,coord,oldBS,EnumFacing.UP, coord.up());
+		final boolean connectDown = this.canConnectTo(world,coord,oldBS,EnumFacing.DOWN, coord.down());
+		final boolean allFalse = !(connectNorth || connectSouth || connectWest || connectEast || connectUp || connectDown);
 
-    /**
-     * Calculates the collision boxes for this block.
-     */
+		float radius = pipeRadius;
+		float rminus = 0.5f - radius;
+		float rplus = 0.5f + radius;
+
+		float x1 = rminus;
+		float x2 = rplus;
+		float y1 = rminus;
+		float y2 = rplus;
+		float z1 = rminus;
+		float z2 = rplus;
+		if (connectNorth) {
+			z1 = 0.0f;
+		}
+		if (connectSouth) {
+			z2 = 1.0f;
+		}
+		if (connectWest) {
+			x1 = 0.0f;
+		}
+		if (connectEast) {
+			x2 = 1.0f;
+		}
+		if(connectDown){
+			y1 = 0.0f;
+		}
+		if(connectUp){
+			y2 = 1.0f;
+		}
+		if(allFalse){ // Horizontal '+' when making no connections
+			z1 = 0.0f;
+			z2 = 1.0f;
+			x1 = 0.0f;
+			x2 = 1.0f;
+		}
+
+		return new AxisAlignedBB(x1, y1, z1, x2, y2, z2);
+	}
+
+	/**
+	 * Calculates the collision boxes for this block.
+	 */
 	@Override
-    public void addCollisionBoxesToList(final World world, final BlockPos coord, 
-    		final IBlockState bs, final AxisAlignedBB box, final List collisionBoxList, 
-    		final Entity entity) {
-		IBlockState oldState = bs;
-        final boolean connectNorth = this.canConnectTo(world,coord,oldState,EnumFacing.NORTH, coord.north());
-        final boolean connectSouth = this.canConnectTo(world,coord,oldState,EnumFacing.SOUTH, coord.south());
-        final boolean connectWest =  this.canConnectTo(world,coord,oldState,EnumFacing.WEST,  coord.west());
-        final boolean connectEast =  this.canConnectTo(world,coord,oldState,EnumFacing.EAST,  coord.east());
-        final boolean connectUp =    this.canConnectTo(world,coord,oldState,EnumFacing.UP,    coord.up());
-        boolean       connectDown =  this.canConnectTo(world,coord,oldState,EnumFacing.DOWN,  coord.down());
-        
-        if(!(connectNorth || connectSouth || connectWest || connectEast || connectUp || connectDown)){
-        	connectDown = true;
-        }
-        
-        float radius = pipeRadius;
-        float rminus = 0.5f - radius;
-        float rplus = 0.5f + radius;
-        
-        this.setBlockBounds(rminus, rminus, rminus, rplus, rplus, rplus);
-        super.addCollisionBoxesToList(world, coord, bs, box, collisionBoxList, entity);
+	public void addCollisionBoxToList(final IBlockState bs, final World world, final BlockPos coord,
+									  final AxisAlignedBB box, final List<AxisAlignedBB> collisionBoxList,
+									  final Entity entity) {
+		IBlockState oldBS = bs;
+		final boolean connectNorth = this.canConnectTo(world,coord,oldBS,EnumFacing.NORTH, coord.north());
+		final boolean connectSouth = this.canConnectTo(world,coord,oldBS,EnumFacing.SOUTH, coord.south());
+		final boolean connectWest = this.canConnectTo(world,coord,oldBS,EnumFacing.WEST, coord.west());
+		final boolean connectEast = this.canConnectTo(world,coord,oldBS,EnumFacing.EAST, coord.east());
+		final boolean connectUp = this.canConnectTo(world,coord,oldBS,EnumFacing.UP, coord.up());
+		final boolean connectDown = this.canConnectTo(world,coord,oldBS,EnumFacing.DOWN, coord.down());
+		final boolean allFalse = !(connectNorth || connectSouth || connectWest || connectEast || connectUp || connectDown);
+// Horizontal '+' when making no connections
 
-        if(connectUp){
-            this.setBlockBounds(rminus, rminus, rminus, rplus, 1f, rplus);
-            super.addCollisionBoxesToList(world, coord, bs, box, collisionBoxList, entity);
-        }
-        if(connectDown){
-            this.setBlockBounds(rminus, 0f, rminus, rplus, rplus, rplus);
-            super.addCollisionBoxesToList(world, coord, bs, box, collisionBoxList, entity);
-        }
-        if(connectEast){
-            this.setBlockBounds(rminus, rminus, rminus, 1f, rplus, rplus);
-            super.addCollisionBoxesToList(world, coord, bs, box, collisionBoxList, entity);
-        }
-        if(connectWest){
-            this.setBlockBounds(0f, rminus, rminus, rplus, rplus, rplus);
-            super.addCollisionBoxesToList(world, coord, bs, box, collisionBoxList, entity);
-        }
-        if(connectSouth){
-            this.setBlockBounds(rminus, rminus, rminus, rplus, rplus, 1f);
-            super.addCollisionBoxesToList(world, coord, bs, box, collisionBoxList, entity);
-        }
-        if(connectNorth){
-            this.setBlockBounds(rminus, rminus, 0f, rplus, rplus, rplus);
-            super.addCollisionBoxesToList(world, coord, bs, box, collisionBoxList, entity);
-        }
-    }
+		float radius = pipeRadius;
+		float rminus = 0.5f - radius;
+		float rplus = 0.5f + radius;
+
+		AxisAlignedBB newBox;
+		newBox = new AxisAlignedBB(rminus, rminus, rminus, rplus, rplus, rplus);
+		super.addCollisionBoxToList(coord, box, collisionBoxList, newBox);
+
+		if(connectUp){
+			newBox = new AxisAlignedBB(rminus, rminus, rminus, rplus, 1f, rplus);
+			super.addCollisionBoxToList(coord, box, collisionBoxList, newBox);
+		}
+		if(connectDown){
+			newBox = new AxisAlignedBB(rminus, 0f, rminus, rplus, rplus, rplus);
+			super.addCollisionBoxToList(coord, box, collisionBoxList, newBox);
+		}
+		if(allFalse || connectEast){
+			newBox = new AxisAlignedBB(rminus, rminus, rminus, 1f, rplus, rplus);
+			super.addCollisionBoxToList(coord, box, collisionBoxList, newBox);
+		}
+		if(allFalse || connectWest){
+			newBox = new AxisAlignedBB(0f, rminus, rminus, rplus, rplus, rplus);
+			super.addCollisionBoxToList(coord, box, collisionBoxList, newBox);
+		}
+		if(allFalse || connectSouth){
+			newBox = new AxisAlignedBB(rminus, rminus, rminus, rplus, rplus, 1f);
+			super.addCollisionBoxToList(coord, box, collisionBoxList, newBox);
+		}
+		if(allFalse || connectNorth){
+			newBox = new AxisAlignedBB(rminus, rminus, 0f, rplus, rplus, rplus);
+			super.addCollisionBoxToList(coord, box, collisionBoxList, newBox);
+		}
+	}
 	
 }

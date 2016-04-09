@@ -4,13 +4,13 @@ import cyano.electricadvantage.ElectricAdvantage;
 import cyano.electricadvantage.entities.HydroturbineEntity;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
-import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -36,7 +36,7 @@ public class HydroturbineRenderer extends Render{
 			//   final float scale = this.scale;
 			//   GlStateManager.scale(scale / 1.0f, scale / 1.0f, scale / 1.0f);
 			final Tessellator instance = Tessellator.getInstance();
-			final WorldRenderer worldRenderer = instance.getWorldRenderer();
+			final VertexBuffer worldRenderer = instance.getBuffer();
 			final float topHeight = 0.5f;
 			final float bottomHeight = 0.375f-0.5f;
 			final float radius = pixel;

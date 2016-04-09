@@ -1,11 +1,11 @@
 package cyano.electricadvantage.machines;
 
 import cyano.electricadvantage.init.Power;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.fml.common.FMLLog;
 
 public class ElectricOvenTileEntity extends ElectricMachineTileEntity{
 
@@ -36,7 +36,7 @@ public class ElectricOvenTileEntity extends ElectricMachineTileEntity{
 							setInputSlot(0,null);
 						}
 						progress = 0;
-						getWorld().playSoundEffect(getPos().getX()+0.5, getPos().getY()+0.5, getPos().getZ()+0.5, "random.orb", 0.5f, 1.0f);
+						playSoundEffect(getPos().getX()+0.5, getPos().getY()+0.5, getPos().getZ()+0.5, SoundEvents.entity_experience_orb_pickup, 0.5f, 1.0f);
 					}
 					active = true;
 				} else {

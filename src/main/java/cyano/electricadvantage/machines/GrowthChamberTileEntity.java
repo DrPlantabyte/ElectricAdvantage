@@ -1,16 +1,15 @@
 package cyano.electricadvantage.machines;
 
-import java.util.Arrays;
-import java.util.List;
-
 import cyano.electricadvantage.init.Power;
 import cyano.electricadvantage.util.farming.VirtualCrop;
-import cyano.poweradvantage.api.ConduitType;
-import cyano.poweradvantage.api.PowerRequest;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.common.FMLLog;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class GrowthChamberTileEntity extends ElectricMachineTileEntity {
 
@@ -63,7 +62,7 @@ public class GrowthChamberTileEntity extends ElectricMachineTileEntity {
 								List<ItemStack> harvest = crops[slot].getHarvest();
 								if(harvest != null && (!harvest.isEmpty()) 
 										&& this.hasSpaceForItemInOutputSlots(harvest.get(0))){
-									getWorld().playSoundEffect(getPos().getX()+0.5, getPos().getY()+0.5, getPos().getZ()+0.5, "dig.grass", 0.35f, 1f);
+									playSoundEffect(getPos().getX()+0.5, getPos().getY()+0.5, getPos().getZ()+0.5, SoundEvents.block_grass_break, 0.35f, 1f);
 									for(ItemStack i : harvest){
 										ItemStack remainder = this.insertItemToOutputSlots(i);
 										if(remainder != null){

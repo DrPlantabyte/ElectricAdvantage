@@ -2,6 +2,7 @@ package cyano.electricadvantage.machines;
 
 import cyano.electricadvantage.util.crafting.RecipeDeconstructor;
 import cyano.electricadvantage.util.crafting.SerializedInventory;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
@@ -72,7 +73,7 @@ public class ElectricFabricatorTileEntity extends ElectricMachineTileEntity {
 				case CRAFT_COMPLETE:{
                     if(canCraft()) {
                         doCraft();
-                        getWorld().playSoundEffect(getPos().getX() + 0.5, getPos().getY() + 0.5, getPos().getZ() + 0.5, "random.anvil_land", 0.15f, 1f);
+                        playSoundEffect(getPos().getX() + 0.5, getPos().getY() + 0.5, getPos().getZ() + 0.5, SoundEvents.block_anvil_land, 0.15f, 1f);
                     }
 					state = FSM.READY;
 					break;

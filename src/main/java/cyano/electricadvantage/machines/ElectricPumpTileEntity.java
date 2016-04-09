@@ -1,10 +1,8 @@
 package cyano.electricadvantage.machines;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import cyano.electricadvantage.init.Power;
 import cyano.poweradvantage.api.ConduitType;
+import cyano.poweradvantage.api.PowerConnectorContext;
 import cyano.poweradvantage.api.PowerRequest;
 import cyano.poweradvantage.conduitnetwork.ConduitRegistry;
 import cyano.poweradvantage.init.Fluids;
@@ -12,20 +10,16 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockDynamicLiquid;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fluids.BlockFluidClassic;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidContainerRegistry;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTank;
-import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.IFluidBlock;
-import net.minecraftforge.fluids.IFluidHandler;
+import net.minecraftforge.fluids.*;
+
+import java.util.HashSet;
+import java.util.Set;
 
 public class ElectricPumpTileEntity extends ElectricMachineTileEntity implements IFluidHandler{
 
@@ -34,7 +28,7 @@ public class ElectricPumpTileEntity extends ElectricMachineTileEntity implements
 	public static final float ENERGY_COST_PIPE = 100f;
 	public static final float ENERGY_COST_VERTICAL = 32f;
 	public static final float ENERGY_COST_PUMP = 1000f;
-	public static final int VOLUME_PER_PUMP = FluidContainerRegistry.BUCKET_VOLUME;
+	public static final int VOLUME_PER_PUMP = 1000;
 	public static final byte PUMP_INTERVAL = 32;
 	public static final byte PIPE_INTERVAL = 11;
 	private static final int limit = 5 * 5 * 5; // do not search more than this many blocks at a time
@@ -73,7 +67,7 @@ public class ElectricPumpTileEntity extends ElectricMachineTileEntity implements
 						w.setBlockState(target, cyano.electricadvantage.init.Blocks.pump_pipe_electric.getDefaultState());
 						this.subtractEnergy(ENERGY_COST_PIPE, Power.ELECTRIC_POWER);
 						timeUntilNextPump = PIPE_INTERVAL;
-						getWorld().playSoundEffect(target.getX()+0.5, target.getY()+0.5, target.getZ()+0.5, "step.stone", 0.3f, 1f);
+						playSoundEffect(target.getX()+0.5, target.getY()+0.5, target.getZ()+0.5, SoundEvents.block_stone_step, 0.3f, 1f);
 					} else {
 						// pump fluids
 						BlockPos fluidSource = null;
@@ -98,14 +92,14 @@ public class ElectricPumpTileEntity extends ElectricMachineTileEntity implements
 						timeUntilNextPump = PUMP_INTERVAL;
 					}
 					if(success){
-						getWorld().playSoundEffect(getPos().getX()+0.5, getPos().getY()+0.5, getPos().getZ()+0.5, "game.neutral.swim.splash", 0.5f, 1f);
-						getWorld().playSoundEffect(getPos().getX()+0.5, getPos().getY()+0.5, getPos().getZ()+0.5, "tile.piston.out", 0.3f, 1f);
+						playSoundEffect(getPos().getX()+0.5, getPos().getY()+0.5, getPos().getZ()+0.5, SoundEvents.item_bucket_fill, 0.5f, 1f);
+						playSoundEffect(getPos().getX()+0.5, getPos().getY()+0.5, getPos().getZ()+0.5, SoundEvents.block_piston_extend, 0.3f, 1f);
 						timeToSound = 14;
 					}
 				}
 			}
 			if(timeToSound == 1){
-				getWorld().playSoundEffect(getPos().getX()+0.5, getPos().getY()+0.5, getPos().getZ()+0.5, "tile.piston.in", 0.3f, 1f);
+				playSoundEffect(getPos().getX()+0.5, getPos().getY()+0.5, getPos().getZ()+0.5, SoundEvents.block_piston_contract, 0.3f, 1f);
 			}
 			if(timeToSound > 0) timeToSound--;
 		}
@@ -232,7 +226,13 @@ public class ElectricPumpTileEntity extends ElectricMachineTileEntity implements
 	public FluidTank getTank(){
 		return tank;
 	}
-	
+
+	private final ConduitType[] types = {Power.ELECTRIC_POWER, Fluids.fluidConduit_general};
+
+	@Override
+	public ConduitType[] getTypes(){
+		return types;
+	}
 
 	@Override
 	public int[] getDataFieldArray() {
@@ -243,7 +243,7 @@ public class ElectricPumpTileEntity extends ElectricMachineTileEntity implements
 	public void prepareDataFieldsForSync() {
 		dataSyncArray[0] = Float.floatToRawIntBits(this.getEnergy());
 		dataSyncArray[1] = this.getTank().getFluidAmount();
-		dataSyncArray[2] = (this.getTank().getFluidAmount() > 0 ? this.getTank().getFluid().getFluid().getID() : FluidRegistry.WATER.getID());
+		dataSyncArray[2] = (this.getTank().getFluidAmount() > 0 ? FluidRegistry.getFluidID(this.getTank().getFluid().getFluid()) : FluidRegistry.getFluidID(FluidRegistry.WATER));
 		dataSyncArray[3] = this.timeUntilNextPump;
 	}
 
@@ -298,16 +298,16 @@ public class ElectricPumpTileEntity extends ElectricMachineTileEntity implements
 	 * @return true if this block/entity should receive energy
 	 */
 	@Override
-	public boolean isPowerSink(){
-		return true;
+	public boolean isPowerSink(ConduitType p){
+		return ConduitType.areSameType(Power.ELECTRIC_POWER,p);
 	}
 	/**
 	 * Determines whether this block/entity can provide energy 
 	 * @return true if this block/entity can provide energy
 	 */
 	@Override
-	public boolean isPowerSource(){
-		return true;
+	public boolean isPowerSource(ConduitType p){
+		return Fluids.isFluidType(p);
 	}
 
 	/**
@@ -350,15 +350,9 @@ public class ElectricPumpTileEntity extends ElectricMachineTileEntity implements
 	}
 
 
-	/**
-	 * Determines whether this conduit is compatible with a type of energy through any side
-	 * @param type The type of energy in the conduit
-	 * @return true if this conduit can flow the given energy type through one or more of its block 
-	 * faces, false otherwise
-	 */
 	@Override
-	public boolean canAcceptType(ConduitType type){
-		return ConduitType.areSameType(getType(), type) || ConduitType.areSameType(Fluids.fluidConduit_general, type);
+	public boolean canAcceptConnection(PowerConnectorContext c){
+		return ConduitType.areSameType(getType(), c.powerType) || Fluids.isFluidType( c.powerType);
 	}
 	
 	/**

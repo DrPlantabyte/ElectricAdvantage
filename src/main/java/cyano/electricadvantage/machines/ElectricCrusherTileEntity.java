@@ -1,14 +1,15 @@
 package cyano.electricadvantage.machines;
 
-import java.util.Arrays;
-
 import cyano.basemetals.registry.CrusherRecipeRegistry;
 import cyano.basemetals.registry.recipe.ICrusherRecipe;
 import cyano.electricadvantage.init.Power;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagShort;
+
+import java.util.Arrays;
 
 public class ElectricCrusherTileEntity extends ElectricMachineTileEntity{
 	
@@ -37,13 +38,13 @@ public class ElectricCrusherTileEntity extends ElectricMachineTileEntity{
 					smashTime[i] = 0;
 					continue;
 				}
-				if(getEnergy() >= ENERGY_PER_TICK && !hasRedstoneSignal()){
+				if(getEnergy(Power.ELECTRIC_POWER) >= ENERGY_PER_TICK && !hasRedstoneSignal()){
 					if(canCrush(i)){
 						subtractEnergy(ENERGY_PER_TICK,Power.ELECTRIC_POWER);
 						smashTime[i]++;
 						if(smashTime[i] >= totalSmashTime){
 							doCrush(i);
-							getWorld().playSoundEffect(getPos().getX()+0.5, getPos().getY()+0.5, getPos().getZ()+0.5, "dig.gravel", 0.5f, 1f);
+							this.playSoundEffect(getPos().getX()+0.5, getPos().getY()+0.5, getPos().getZ()+0.5, SoundEvents.block_gravel_break, 0.5f, 1f);
 							smashTime[i] = 0;
 						}
 						active = true;
@@ -54,7 +55,7 @@ public class ElectricCrusherTileEntity extends ElectricMachineTileEntity{
 					if(smashTime[i] > 0) smashTime[i]--;
 				}
 			}
-			this.setActiveState(active && getEnergy() >= ENERGY_PER_TICK);
+			this.setActiveState(active && getEnergy(Power.ELECTRIC_POWER) >= ENERGY_PER_TICK);
 		}
 	}
 
@@ -135,7 +136,7 @@ public class ElectricCrusherTileEntity extends ElectricMachineTileEntity{
 	@Override
 	public void onDataFieldUpdate() {
 		int[] arr = getDataFieldArray();
-		setEnergy(Float.intBitsToFloat(arr[0]),getType());
+		setEnergy(Float.intBitsToFloat(arr[0]),Power.ELECTRIC_POWER);
 		for(int i = 0; i < numberOfInputSlots(); i++){
 			smashTime[i] = (short) arr[i+1];
 		}
@@ -144,7 +145,7 @@ public class ElectricCrusherTileEntity extends ElectricMachineTileEntity{
 	@Override
 	public void prepareDataFieldsForSync() {
 		int[] arr = getDataFieldArray();
-		arr[0] = Float.floatToIntBits(getEnergy());
+		arr[0] = Float.floatToIntBits(getEnergy(Power.ELECTRIC_POWER));
 		for(int i = 0; i < numberOfInputSlots(); i++){
 			arr[i+1] = smashTime[i];
 		}
@@ -153,7 +154,7 @@ public class ElectricCrusherTileEntity extends ElectricMachineTileEntity{
 
 	@Override
 	public boolean isPowered() {
-		return getEnergy() >= ENERGY_PER_TICK;
+		return getEnergy(Power.ELECTRIC_POWER) >= ENERGY_PER_TICK;
 	}
 
 }

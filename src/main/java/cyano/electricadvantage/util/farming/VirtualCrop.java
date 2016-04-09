@@ -1,28 +1,20 @@
 package cyano.electricadvantage.util.farming;
 
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
 import cyano.electricadvantage.util.crafting.ItemRecord;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockBush;
-import net.minecraft.block.BlockSapling;
 import net.minecraft.block.BlockStem;
 import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IPlantable;
-import net.minecraftforge.fml.common.FMLLog;
+
+import java.lang.reflect.Field;
+import java.util.*;
 
 public class VirtualCrop {
 
@@ -52,7 +44,7 @@ public class VirtualCrop {
 		}
 		if(customRecipes.get(r) != null){
 			return customRecipes.get(r).copy();
-		} else if(i instanceof net.minecraft.item.ItemReed
+		} else if(i == Items.reeds
 				|| b instanceof net.minecraft.block.BlockMushroom
 				|| b instanceof net.minecraft.block.BlockCactus
 				|| b instanceof net.minecraft.block.BlockBush

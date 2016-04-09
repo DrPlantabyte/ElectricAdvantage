@@ -1,11 +1,11 @@
 package cyano.electricadvantage.machines;
 
+import cyano.electricadvantage.init.Power;
 import cyano.poweradvantage.api.ConduitType;
+import cyano.poweradvantage.api.PowerConnectorContext;
 import cyano.poweradvantage.conduitnetwork.ConduitRegistry;
-import cyano.poweradvantage.init.Fluids;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 
@@ -26,7 +26,7 @@ public class SteamPoweredElectricGeneratorBlock extends ElectricGeneratorBlock{
 	@Override
 	public void onBlockAdded(World w, BlockPos coord, IBlockState state){
 		super.onBlockAdded(w, coord, state);
-		ConduitRegistry.getInstance().conduitBlockPlacedEvent(w, w.provider.getDimensionId(), coord, STEAM_POWER);
+		ConduitRegistry.getInstance().conduitBlockPlacedEvent(w, w.provider.getDimension(), coord, STEAM_POWER);
 	}
 	
 	/**
@@ -35,7 +35,7 @@ public class SteamPoweredElectricGeneratorBlock extends ElectricGeneratorBlock{
 	@Override
 	public void onBlockDestroyedByPlayer(World w, BlockPos coord, IBlockState state){
 		super.onBlockDestroyedByPlayer(w, coord, state);
-		ConduitRegistry.getInstance().conduitBlockPlacedEvent(w, w.provider.getDimensionId(), coord,STEAM_POWER);
+		ConduitRegistry.getInstance().conduitBlockPlacedEvent(w, w.provider.getDimension(), coord,STEAM_POWER);
 	}
 	/**
 	 * This method is called when the block is destroyed by an explosion.
@@ -43,28 +43,20 @@ public class SteamPoweredElectricGeneratorBlock extends ElectricGeneratorBlock{
 	@Override
 	public void onBlockDestroyedByExplosion(World w, BlockPos coord, Explosion boom){
 		super.onBlockDestroyedByExplosion(w, coord, boom);
-		ConduitRegistry.getInstance().conduitBlockPlacedEvent(w, w.provider.getDimensionId(), coord, STEAM_POWER);
+		ConduitRegistry.getInstance().conduitBlockPlacedEvent(w, w.provider.getDimension(), coord, STEAM_POWER);
 	}
-	
-	
-	/**
-	 * Determines whether this conduit is compatible with an adjacent one
-	 * @param type The type of energy in the conduit
-	 * @param blockFace The side through-which the energy is flowing
-	 * @return true if this conduit can flow the given energy type through the given face, false 
-	 * otherwise
-	 */
-	public boolean canAcceptType(ConduitType type, EnumFacing blockFace){
-		return ConduitType.areSameType(getType(), type) || ConduitType.areSameType(STEAM_POWER, type);
+
+
+
+	@Override
+	public boolean canAcceptConnection(PowerConnectorContext c){
+		return ConduitType.areSameType(Power.ELECTRIC_POWER,c.powerType)
+				|| ConduitType.areSameType(STEAM_POWER,c.powerType);
 	}
-	/**
-	 * Determines whether this conduit is compatible with a type of energy through any side
-	 * @param type The type of energy in the conduit
-	 * @return true if this conduit can flow the given energy type through one or more of its block 
-	 * faces, false otherwise
-	 */
-	public boolean canAcceptType(ConduitType type){
-		return  ConduitType.areSameType(getType(), type) || ConduitType.areSameType(STEAM_POWER, type);
+	private final ConduitType[] types = {Power.ELECTRIC_POWER,STEAM_POWER};
+	@Override
+	public ConduitType[] getTypes(){
+		return types;
 	}
 	
 	///// end multi-type overrides /////

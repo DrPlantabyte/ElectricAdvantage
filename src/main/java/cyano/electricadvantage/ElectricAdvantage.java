@@ -37,7 +37,7 @@ public class ElectricAdvantage
 
 	
 
-	public String LASER_SOUND = "note.bass";
+	public String LASER_SOUND = "block.note.bass";
 	/**
 	 * Pre-initialization step. Used for initializing objects and reading the 
 	 * config file

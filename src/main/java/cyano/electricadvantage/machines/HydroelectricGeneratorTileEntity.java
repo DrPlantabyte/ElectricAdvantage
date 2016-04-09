@@ -1,12 +1,12 @@
 package cyano.electricadvantage.machines;
 
-import java.util.List;
-import java.util.Random;
-
 import cyano.electricadvantage.entities.HydroturbineEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.math.AxisAlignedBB;
+
+import java.util.List;
+import java.util.Random;
 
 public class HydroelectricGeneratorTileEntity extends ElectricGeneratorTileEntity {
 

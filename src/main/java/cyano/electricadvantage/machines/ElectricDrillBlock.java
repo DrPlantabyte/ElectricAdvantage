@@ -1,22 +1,13 @@
 package cyano.electricadvantage.machines;
 
-import java.util.Random;
-
-import com.google.common.base.Predicate;
-
 import cyano.electricadvantage.init.Power;
-import cyano.poweradvantage.api.ConduitType;
-import cyano.poweradvantage.api.GUIBlock;
-import cyano.poweradvantage.api.ITypedConduit;
-import cyano.poweradvantage.api.PoweredEntity;
-import cyano.poweradvantage.api.simple.TileEntitySimplePowerConsumer;
+import cyano.poweradvantage.api.*;
 import cyano.poweradvantage.conduitnetwork.ConduitRegistry;
-import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyDirection;
-import net.minecraft.block.state.BlockState;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.inventory.IInventory;
@@ -24,19 +15,19 @@ import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.FMLLog;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+
+import java.util.Random;
 
 public class ElectricDrillBlock extends GUIBlock implements ITypedConduit {
 
 
 
 	private final ConduitType type;
+	private final ConduitType[] types = new ConduitType[1];
 
 	/**
 	 * Blockstate property
@@ -51,6 +42,7 @@ public class ElectricDrillBlock extends GUIBlock implements ITypedConduit {
 	public ElectricDrillBlock(){
 		super(Material.piston);
 		this.type = Power.ELECTRIC_POWER;
+		types[0] = this.type;
 		super.setHardness(0.75f);
 		this.setDefaultState(getDefaultState().withProperty(ACTIVE, false).withProperty(FACING, EnumFacing.DOWN));
 	}
@@ -60,8 +52,8 @@ public class ElectricDrillBlock extends GUIBlock implements ITypedConduit {
 	 * Creates a blockstate
 	 */
 	@Override
-	protected BlockState createBlockState() {
-		return new BlockState(this, new IProperty[] { ACTIVE,FACING });
+	protected BlockStateContainer createBlockState() {
+		return new BlockStateContainer(this, new IProperty[] { ACTIVE,FACING });
 	}
 
 	@Override
@@ -76,7 +68,7 @@ public class ElectricDrillBlock extends GUIBlock implements ITypedConduit {
 	 */
 	@Override
 	public void onBlockAdded(final World world, final BlockPos coord, final IBlockState state) {
-		ConduitRegistry.getInstance().conduitBlockPlacedEvent(world, world.provider.getDimensionId(), coord, getType());
+		ConduitRegistry.getInstance().conduitBlockPlacedEvent(world, world.provider.getDimension(), coord, type);
 	}
 	/**
 	 * This method is called when the block is removed from the world by an entity.
@@ -84,7 +76,7 @@ public class ElectricDrillBlock extends GUIBlock implements ITypedConduit {
 	@Override
 	public void onBlockDestroyedByPlayer(World w, BlockPos coord, IBlockState state){
 		super.onBlockDestroyedByPlayer(w, coord, state);
-		ConduitRegistry.getInstance().conduitBlockRemovedEvent(w, w.provider.getDimensionId(), coord, getType());
+		ConduitRegistry.getInstance().conduitBlockRemovedEvent(w, w.provider.getDimension(), coord, type);
 	}
 	/**
 	 * This method is called when the block is destroyed by an explosion.
@@ -92,7 +84,7 @@ public class ElectricDrillBlock extends GUIBlock implements ITypedConduit {
 	@Override
 	public void onBlockDestroyedByExplosion(World w, BlockPos coord, Explosion boom){
 		super.onBlockDestroyedByExplosion(w, coord, boom);
-		ConduitRegistry.getInstance().conduitBlockRemovedEvent(w, w.provider.getDimensionId(), coord, getType());
+		ConduitRegistry.getInstance().conduitBlockRemovedEvent(w, w.provider.getDimension(), coord, type);
 	}
 
 	/**
@@ -101,30 +93,26 @@ public class ElectricDrillBlock extends GUIBlock implements ITypedConduit {
 	 * @return The type of energy for this block 
 	 */
 	@Override
-	public ConduitType getType() {
-		return type;
+	public ConduitType[] getTypes() {
+		return types;
 	}
 
-	
 	@Override
-	public boolean canAcceptType(IBlockState blockstate, ConduitType type, EnumFacing blockFace) {
-		return ConduitType.areSameType(getType(), type);
-	}
-
-	/**
-	 * Determines whether this block/entity should receive energy 
-	 * @return true if this block/entity should receive energy
-	 */
-	public boolean isPowerSink(){
+	public boolean isPowerSink(ConduitType conduitType) {
 		return true;
 	}
-	/**
-	 * Determines whether this block/entity can provide energy 
-	 * @return true if this block/entity can provide energy
-	 */
-	public boolean isPowerSource(){
+
+	@Override
+	public boolean isPowerSource(ConduitType conduitType) {
 		return false;
 	}
+
+
+	@Override
+	public boolean canAcceptConnection(PowerConnectorContext connection) {
+		return ConduitType.areSameType( type, connection.powerType);
+	}
+
 
 	/**
 	 * Override of default block behavior
@@ -177,13 +165,6 @@ public class ElectricDrillBlock extends GUIBlock implements ITypedConduit {
 		w.setBlockState(coord, state.withProperty((IProperty) FACING, (Comparable)enumFacing), 2);
 	}
 
-	/**
-	 * Override of default block behavior
-	 */
-	@Override
-	public int getRenderType() {
-		return 3;
-	}
 
 	/**
 	 * Converts metadata into blockstate
@@ -222,7 +203,7 @@ public class ElectricDrillBlock extends GUIBlock implements ITypedConduit {
 
 
 	@Override
-	public int getComparatorInputOverride(World w, BlockPos p) {
+	public int getComparatorInputOverride(IBlockState bs, World w, BlockPos p) {
 		TileEntity te = w.getTileEntity(p);
 		if(te instanceof ElectricMachineTileEntity){
 			return ((ElectricMachineTileEntity)te).getComparatorOutput();
@@ -232,7 +213,7 @@ public class ElectricDrillBlock extends GUIBlock implements ITypedConduit {
 	}
 
 	@Override
-	public boolean hasComparatorInputOverride() {
+	public boolean hasComparatorInputOverride(IBlockState bs) {
 		return true;
 	}
 
@@ -246,26 +227,6 @@ public class ElectricDrillBlock extends GUIBlock implements ITypedConduit {
 			world.updateComparatorOutputLevel(pos, this);
 		}
 		super.breakBlock(world, pos, state);
-	}
-
-	///// CLIENT-SIDE CODE /////
-
-	/**
-	 * (Client-only) Gets the blockstate used for GUI and such.
-	 */
-	@SideOnly(Side.CLIENT)
-	@Override
-	public IBlockState getStateForEntityRender(final IBlockState bs) {
-		return this.getDefaultState().withProperty( FACING, EnumFacing.SOUTH);
-	}
-
-	/**
-	 * (Client-only) Override of default block behavior
-	 */
-	@SideOnly(Side.CLIENT)
-	@Override
-	public Item getItem(final World world, final BlockPos coord) {
-		return Item.getItemFromBlock(this);
 	}
 
 

@@ -1,12 +1,12 @@
 package cyano.electricadvantage.gui;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import cyano.poweradvantage.api.simple.SimpleMachineGUI.GUIContainer;
+import cyano.poweradvantage.gui.FluidTankGUI;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fml.common.FMLLog;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class GUIHelper {
 	private static final int INDICATOR_LED_X = 182;
@@ -38,24 +38,9 @@ public class GUIHelper {
 	
 
 	public static void drawFluidBar(FluidStack fs, float barHeight, int xPos, int yPos, 
-			GUIContainer guiContainer, int x, int y,
+			GUIContainer guiContainer, int x, int y, float z,
 			ResourceLocation displayImage){
 
-		final int w = 16;
-		final int barSlotHeight = 60;
-		final int h = (int)(barSlotHeight * barHeight);
-		final float fluidTexWidth = 16;
-		final float fluidTexHeight = 512;
-		final float texPerPixel = 4 * (fluidTexWidth / fluidTexHeight) / barSlotHeight;
-		if(barHeight > 0 && fs != null && fs.getFluid() != null){
-			ResourceLocation fluidTexture = realTextureLocationCache.computeIfAbsent(fs.getFluid().getStill(fs),
-					(ResourceLocation r) -> new ResourceLocation(r.getResourceDomain(),"textures/".concat(r.getResourcePath()).concat(".png"))
-					);
-			guiContainer.mc.renderEngine.bindTexture(fluidTexture);
-			
-			guiContainer.drawModalRectWithCustomSizedTexture(x+xPos, y+yPos+barSlotHeight-h, 0, 0, w, h, 16, h);//h * texPerPixel); // x, y, u, v, width, height, textureWidth, textureHeight
-		}
-			guiContainer.mc.renderEngine.bindTexture(displayImage);
-		
+		FluidTankGUI.drawFluidBar(fs,barHeight,xPos,yPos,displayImage,guiContainer,x,y,z);
 	}
 }

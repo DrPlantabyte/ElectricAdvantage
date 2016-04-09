@@ -25,19 +25,14 @@ public class ElectricBatteryArrayTileEntity extends ElectricGeneratorTileEntity{
 			return super.transmitPowerToConsumers(amount,type,priority);
 		}
 	}
-	
 
-	@Override
-	public boolean isPowerSink(){
-		return true;
-	}
 	
 
 	@Override
 	public PowerRequest getPowerRequest(ConduitType offer) {
 		if(ConduitType.areSameType(Power.ELECTRIC_POWER, offer)){
 			PowerRequest request = new PowerRequest(PowerRequest.BACKUP_PRIORITY,
-					(this.getEnergyCapacity() - this.getEnergy()),
+					(this.getEnergyCapacity(Power.ELECTRIC_POWER) - this.getEnergy(Power.ELECTRIC_POWER)),
 					this);
 			return request;
 		} else {
@@ -56,7 +51,7 @@ public class ElectricBatteryArrayTileEntity extends ElectricGeneratorTileEntity{
 	
 	///// energy handling /////
 	@Override
-	public float getEnergy(){
+	public float getEnergy(ConduitType e){
 		float sum = 0;
 		for(int i = 0; i < numberOfInputSlots(); i++){
 			sum += getEnergyStored(this.getInputSlot(i));
@@ -65,7 +60,7 @@ public class ElectricBatteryArrayTileEntity extends ElectricGeneratorTileEntity{
 	}
 	
 	@Override
-	public float getEnergyCapacity(){
+	public float getEnergyCapacity(ConduitType e){
 		float sum = 0;
 		for(int i = 0; i < numberOfInputSlots(); i++){
 			sum += getEnergyCapacity(this.getInputSlot(i));
@@ -74,7 +69,7 @@ public class ElectricBatteryArrayTileEntity extends ElectricGeneratorTileEntity{
 	}
 	
 	public void setEnergy(float energy, ConduitType type){
-		addEnergy(energy - getEnergy(),type);
+		addEnergy(energy - getEnergy(Power.ELECTRIC_POWER),type);
 	}
 	
 	public float addEnergy(float energy, ConduitType type){
@@ -102,9 +97,9 @@ public class ElectricBatteryArrayTileEntity extends ElectricGeneratorTileEntity{
 		}
 		
 
-		float availableEnergy = this.getEnergy();
+		float availableEnergy = this.getEnergy(Power.ELECTRIC_POWER);
 		if(availableEnergy > 0 && !this.hasRedstoneSignal()){
-			ConduitType type = this.getType();
+			ConduitType type = Power.ELECTRIC_POWER;
 			this.subtractEnergy(this.transmitPowerToConsumers(availableEnergy, type, getMinimumSinkPriority()),type);
 		}
 		
@@ -201,5 +196,9 @@ public class ElectricBatteryArrayTileEntity extends ElectricGeneratorTileEntity{
 	@Override
 	public void tickUpdate(boolean isServer) {
 		// do nothing
+	}
+	@Override
+	public boolean isPowerSink(ConduitType e){
+		return true;
 	}
 }

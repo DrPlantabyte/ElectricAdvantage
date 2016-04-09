@@ -1,7 +1,5 @@
 package cyano.electricadvantage.machines;
 
-import java.util.Arrays;
-
 import cyano.electricadvantage.init.Power;
 import cyano.poweradvantage.api.ConduitType;
 import cyano.poweradvantage.api.PowerRequest;
@@ -10,17 +8,13 @@ import cyano.poweradvantage.conduitnetwork.ConduitRegistry;
 import cyano.poweradvantage.init.Fluids;
 import cyano.poweradvantage.registry.still.recipe.DistillationRecipe;
 import cyano.poweradvantage.registry.still.recipe.DistillationRecipeRegistry;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidContainerRegistry;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTank;
-import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.IFluidHandler;
-import net.minecraftforge.fml.common.FMLLog;
+import net.minecraftforge.fluids.*;
+
+import java.util.Arrays;
 
 public class ElectricStillTileEntity extends ElectricMachineTileEntity implements IFluidHandler{
 
@@ -57,7 +51,7 @@ public class ElectricStillTileEntity extends ElectricMachineTileEntity implement
 					}
 					this.subtractEnergy(electricityPerDistill, Power.ELECTRIC_POWER);
 					if(timeSinceSound > 200){
-						getWorld().playSoundEffect(getPos().getX()+0.5, getPos().getY()+0.5, getPos().getZ()+0.5, "liquid.lava", 0.3f, 1.5f);
+						playSoundEffect(getPos().getX()+0.5, getPos().getY()+0.5, getPos().getZ()+0.5, SoundEvents.block_lava_ambient, 0.3f, 1.5f);
 						timeSinceSound = 0;
 					}
 					timeSinceSound++;
@@ -153,9 +147,9 @@ public class ElectricStillTileEntity extends ElectricMachineTileEntity implement
 	public void prepareDataFieldsForSync() {
 		dataSyncArray[0] = Float.floatToRawIntBits(this.getEnergy());
 		dataSyncArray[1] = this.getOutputTank().getFluidAmount();
-		dataSyncArray[2] = (this.getOutputTank().getFluidAmount() > 0 ? this.getOutputTank().getFluid().getFluid().getID() : FluidRegistry.WATER.getID());
+		dataSyncArray[2] = (this.getOutputTank().getFluidAmount() > 0 ? FluidRegistry.getFluidID(this.getOutputTank().getFluid().getFluid()) : FluidRegistry.getFluidID(FluidRegistry.WATER));
 		dataSyncArray[3] = getInputTank().getFluidAmount();
-		dataSyncArray[4] = (getInputTank().getFluidAmount() > 0 ? getInputTank().getFluid().getFluid().getID() : FluidRegistry.WATER.getID());
+		dataSyncArray[4] = (getInputTank().getFluidAmount() > 0 ? FluidRegistry.getFluidID(getInputTank().getFluid().getFluid()) : FluidRegistry.getFluidID(FluidRegistry.WATER));
 	}
 
 	@Override
@@ -251,16 +245,16 @@ public class ElectricStillTileEntity extends ElectricMachineTileEntity implement
 	 * @return true if this block/entity should receive energy
 	 */
 	@Override
-	public boolean isPowerSink(){
-		return true;
+	public boolean isPowerSink(ConduitType p){
+		return ConduitType.areSameType(Power.ELECTRIC_POWER,p);
 	}
 	/**
-	 * Determines whether this block/entity can provide energy 
+	 * Determines whether this block/entity can provide energy
 	 * @return true if this block/entity can provide energy
 	 */
 	@Override
-	public boolean isPowerSource(){
-		return true;
+	public boolean isPowerSource(ConduitType p){
+		return Fluids.isFluidType(p);
 	}
 	
 	/**
@@ -390,6 +384,14 @@ public class ElectricStillTileEntity extends ElectricMachineTileEntity implement
 		arr[0] = getInputTank().getInfo();
 		arr[1] = getOutputTank().getInfo();
 		return arr;
+	}
+
+
+	private final ConduitType[] types = {Power.ELECTRIC_POWER, Fluids.fluidConduit_general};
+
+	@Override
+	public ConduitType[] getTypes(){
+		return types;
 	}
 	///// end multi-type overrides /////
 

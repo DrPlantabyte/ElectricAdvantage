@@ -1,29 +1,18 @@
 package cyano.electricadvantage.machines;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import cyano.electricadvantage.init.Power;
 import cyano.poweradvantage.api.ConduitType;
+import cyano.poweradvantage.api.PowerConnectorContext;
 import cyano.poweradvantage.api.PowerRequest;
 import cyano.poweradvantage.api.fluid.FluidRequest;
 import cyano.poweradvantage.init.Fluids;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.EnumFacing;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidContainerRegistry;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTank;
-import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.IFluidHandler;
-import net.minecraftforge.fml.common.FMLLog;
+import net.minecraftforge.fluids.*;
 import net.minecraftforge.oredict.OreDictionary;
 
-public class GrowthChamberControllerTileEntity extends cyano.poweradvantage.api.simple.TileEntitySimplePowerSource implements IFluidHandler{
+public class GrowthChamberControllerTileEntity extends cyano.poweradvantage.api.simple.TileEntitySimplePowerMachine implements IFluidHandler{
 
 
 	static final float ELECTRICITY_PER_UNIT = 4f;
@@ -39,12 +28,14 @@ public class GrowthChamberControllerTileEntity extends cyano.poweradvantage.api.
 
 	private float soil = 0f;
 
+	private static final ConduitType[] types = new ConduitType[]{Power.GROWTHCHAMBER_POWER,Power.ELECTRIC_POWER,Fluids.fluidConduit_general};
+	private static final float[] capacities = {100F, 100F, 2000F};
 
 	private final int[] dataSyncArray = new int[4];
 
 	public GrowthChamberControllerTileEntity() {
-		super(Power.GROWTHCHAMBER_POWER, 100, GrowthChamberControllerTileEntity.class.getSimpleName());
-		tank = new FluidTank(FluidContainerRegistry.BUCKET_VOLUME * 2);
+		super(types, capacities, GrowthChamberControllerTileEntity.class.getSimpleName());
+		tank = new FluidTank((int)capacities[2]);
 		inventory = new ItemStack[1];
 	}
 
@@ -98,8 +89,8 @@ public class GrowthChamberControllerTileEntity extends cyano.poweradvantage.api.
 		// I'm doing the synchonization logic here instead of in the tickUpdate method
 		boolean updateFlag = false;
 
-		if(oldEnergy != getEnergy()){
-			oldEnergy = getEnergy();
+		if(oldEnergy != getEnergy(Power.GROWTHCHAMBER_POWER)){
+			oldEnergy = getEnergy(Power.GROWTHCHAMBER_POWER);
 			updateFlag = true;
 		}
 		if(oldSoil != soil){
@@ -127,7 +118,7 @@ public class GrowthChamberControllerTileEntity extends cyano.poweradvantage.api.
 	}
 
 	public float getEnergyLevel(){
-		return this.getEnergy() / this.getEnergyCapacity();
+		return this.getEnergy(Power.GROWTHCHAMBER_POWER) / this.getEnergyCapacity(Power.GROWTHCHAMBER_POWER);
 	}
 
 	public float getSoil(){
@@ -158,7 +149,7 @@ public class GrowthChamberControllerTileEntity extends cyano.poweradvantage.api.
 
 	@Override
 	public void prepareDataFieldsForSync() {
-		dataSyncArray[0] = Float.floatToRawIntBits(this.getEnergy());
+		dataSyncArray[0] = Float.floatToRawIntBits(this.getEnergy(Power.GROWTHCHAMBER_POWER));
 		dataSyncArray[1] = getTank().getFluidAmount();
 		dataSyncArray[2] = Float.floatToRawIntBits(this.getSoil());
 		dataSyncArray[3] = timeSinceLastPowerRequest;
@@ -166,7 +157,7 @@ public class GrowthChamberControllerTileEntity extends cyano.poweradvantage.api.
 
 	@Override
 	public void onDataFieldUpdate() {
-		this.setEnergy(Float.intBitsToFloat(dataSyncArray[0]), this.getType());
+		this.setEnergy(Float.intBitsToFloat(dataSyncArray[0]), Power.GROWTHCHAMBER_POWER);
 		this.getTank().setFluid(new FluidStack(FluidRegistry.WATER,dataSyncArray[1]));
 		this.setSoil(Float.intBitsToFloat(dataSyncArray[2]));
 		timeSinceLastPowerRequest = dataSyncArray[3];
@@ -221,17 +212,18 @@ public class GrowthChamberControllerTileEntity extends cyano.poweradvantage.api.
 	}
 	
 	public boolean isPowered(){
-		return this.getEnergy() > 0 || timeSinceLastPowerRequest < OUT_OF_DATE_LIMIT;
+		return this.getEnergy(Power.GROWTHCHAMBER_POWER) > 0 || timeSinceLastPowerRequest < OUT_OF_DATE_LIMIT;
 	}
 
 	///// Overrides to make this a multi-type block /////
 	@Override
-	public boolean isPowerSink(){
-		return true;
+	public boolean isPowerSink(ConduitType pt){
+		return ConduitType.areSameType(Power.ELECTRIC_POWER,pt)
+				|| Fluids.isFluidType(pt);
 	}
 	@Override
-	public boolean isPowerSource(){
-		return true;
+	public boolean isPowerSource(ConduitType pt){
+		return ConduitType.areSameType(Power.GROWTHCHAMBER_POWER,pt);
 	}
 
 	/**
@@ -252,15 +244,15 @@ public class GrowthChamberControllerTileEntity extends cyano.poweradvantage.api.
 			}
 		} else if(ConduitType.areSameType(type, Power.ELECTRIC_POWER)){
 			// electricity
-			float capacity = (this.getEnergyCapacity() - this.getEnergy());
+			float capacity = (this.getEnergyCapacity(Power.GROWTHCHAMBER_POWER) - this.getEnergy(Power.GROWTHCHAMBER_POWER));
 			capacity = Math.min(capacity, soil / SOIL_PER_UNIT);
 			capacity = Math.min(capacity, tank.getFluidAmount() / WATER_PER_UNIT);
 			float delta = Math.min(ELECTRICITY_PER_UNIT * capacity,amount);
-			this.addEnergy(delta / ELECTRICITY_PER_UNIT, getType());
+			this.addEnergy(delta / ELECTRICITY_PER_UNIT, Power.GROWTHCHAMBER_POWER);
 			soil -= delta * SOIL_PER_UNIT;
 			tank.drain(Math.max(1, (int)(delta * WATER_PER_UNIT)), true);
 			return delta;
-		} else if(ConduitType.areSameType(type, getType())){
+		} else if(ConduitType.areSameType(type, Power.GROWTHCHAMBER_POWER)){
 			// greenhouse energy
 			return super.addEnergy(amount, type);
 		}
@@ -277,8 +269,8 @@ public class GrowthChamberControllerTileEntity extends cyano.poweradvantage.api.
 		if(Fluids.isFluidType(type)){
 			getTank().setFluid(new FluidStack(Fluids.conduitTypeToFluid(type),(int)amount));
 		} else if(ConduitType.areSameType(type, Power.ELECTRIC_POWER)){
-			this.addEnergy(amount / ELECTRICITY_PER_UNIT, getType());
-		} else if(ConduitType.areSameType(type, getType())){
+			this.addEnergy(amount / ELECTRICITY_PER_UNIT, Power.GROWTHCHAMBER_POWER);
+		} else if(ConduitType.areSameType(type, Power.GROWTHCHAMBER_POWER)){
 			super.setEnergy(amount, type);
 		}
 	}
@@ -312,7 +304,7 @@ public class GrowthChamberControllerTileEntity extends cyano.poweradvantage.api.
 			return request;
 		} else if(ConduitType.areSameType(offer, Power.ELECTRIC_POWER)){
 			timeSinceLastPowerRequest = 0;
-			float powerWanted = (this.getEnergyCapacity() - this.getEnergy());
+			float powerWanted = (this.getEnergyCapacity(Power.GROWTHCHAMBER_POWER) - this.getEnergy(Power.GROWTHCHAMBER_POWER));
 			powerWanted = Math.min(powerWanted, soil / SOIL_PER_UNIT);
 			powerWanted = Math.min(powerWanted, tank.getFluidAmount() / WATER_PER_UNIT);
 			return new PowerRequest(PowerRequest.MEDIUM_PRIORITY,ELECTRICITY_PER_UNIT * powerWanted,this);
@@ -320,27 +312,11 @@ public class GrowthChamberControllerTileEntity extends cyano.poweradvantage.api.
 			return PowerRequest.REQUEST_NOTHING;
 		}
 	}
-
-	/**
-	 * Determines whether this conduit is compatible with an adjacent one
-	 * @param type The type of energy in the conduit
-	 * @param blockFace The side through-which the energy is flowing
-	 * @return true if this conduit can flow the given energy type through the given face, false 
-	 * otherwise
-	 */
-	public boolean canAcceptType(ConduitType type, EnumFacing blockFace){
-		return ConduitType.areSameType(getType(), type) || ConduitType.areSameType(Power.ELECTRIC_POWER, type)
-				 || ConduitType.areSameType(Fluids.fluidConduit_general, type);
-	}
-	/**
-	 * Determines whether this conduit is compatible with a type of energy through any side
-	 * @param type The type of energy in the conduit
-	 * @return true if this conduit can flow the given energy type through one or more of its block 
-	 * faces, false otherwise
-	 */
-	public boolean canAcceptType(ConduitType type){
-		return ConduitType.areSameType(getType(), type) || ConduitType.areSameType(Power.ELECTRIC_POWER, type)
-				 || ConduitType.areSameType(Fluids.fluidConduit_general, type);
+	@Override
+	public boolean canAcceptConnection(PowerConnectorContext c){
+		return ConduitType.areSameType(Power.ELECTRIC_POWER,c.powerType)
+				|| ConduitType.areSameType(Power.GROWTHCHAMBER_POWER, c.powerType)
+				|| Fluids.isFluidType(c.powerType);
 	}
 	///// end multi-type overrides /////
 
@@ -428,7 +404,7 @@ public class GrowthChamberControllerTileEntity extends cyano.poweradvantage.api.
 	
 	public int getComparatorOutput(){
 		if(this.soil > SOIL_PER_UNIT && this.getTank().getFluidAmount() > WATER_PER_UNIT
-				&& this.getEnergy() > ELECTRICITY_PER_UNIT){
+				&& this.getEnergy(Power.GROWTHCHAMBER_POWER) > ELECTRICITY_PER_UNIT){
 			return 15;
 		} else {
 			return 0;

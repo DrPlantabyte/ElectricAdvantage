@@ -1,14 +1,15 @@
 package cyano.electricadvantage.machines;
 
+import cyano.electricadvantage.init.Power;
+import cyano.poweradvantage.api.ConduitType;
+import cyano.poweradvantage.api.PowerConnectorContext;
+import cyano.poweradvantage.api.PowerRequest;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
-import net.minecraftforge.fml.common.FMLLog;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-import cyano.electricadvantage.init.Power;
-import cyano.poweradvantage.api.ConduitType;
-import cyano.poweradvantage.api.PowerRequest;
+
+import static cyano.electricadvantage.machines.SteamPoweredElectricGeneratorBlock.STEAM_POWER;
 
 public class SteamPoweredElectricGeneratorTileEntity extends ElectricGeneratorTileEntity{
 
@@ -46,7 +47,7 @@ public class SteamPoweredElectricGeneratorTileEntity extends ElectricGeneratorTi
 		super.powerUpdate();
 		super.setActive(flag);
 		if(flag && getWorld().rand.nextInt(200) == 0){
-			getWorld().playSoundEffect(getPos().getX()+0.5, getPos().getY()+0.5, getPos().getZ()+0.5, "random.fizz", 0.25f, 1f);
+			playSoundEffect(getPos().getX()+0.5, getPos().getY()+0.5, getPos().getZ()+0.5, SoundEvents.block_fire_extinguish, 0.25f, 1f);
 		}
 	}
 
@@ -70,7 +71,7 @@ public class SteamPoweredElectricGeneratorTileEntity extends ElectricGeneratorTi
 	@Override
 	public void onDataFieldUpdate() {
 		this.setEnergy(Float.intBitsToFloat(dataArray[0]), Power.ELECTRIC_POWER);
-		this.setEnergy(Float.intBitsToFloat(dataArray[1]), SteamPoweredElectricGeneratorBlock.STEAM_POWER);
+		this.setEnergy(Float.intBitsToFloat(dataArray[1]), STEAM_POWER);
 		lastTransmissionCurrent = Float.intBitsToFloat(dataArray[2]);
 	}
 
@@ -87,11 +88,27 @@ public class SteamPoweredElectricGeneratorTileEntity extends ElectricGeneratorTi
 	}
 
 ///// Overrides to make this a multi-type block /////
+@Override
+public boolean isPowerSink(ConduitType pt){
+	return ConduitType.areSameType(STEAM_POWER,pt);
+}
 	@Override
-	public boolean isPowerSink(){
-		return true;
+	public boolean isPowerSource(ConduitType pt){
+		return ConduitType.areSameType(Power.ELECTRIC_POWER,pt);
 	}
-	
+
+
+	@Override
+	public boolean canAcceptConnection(PowerConnectorContext c){
+		return ConduitType.areSameType(Power.ELECTRIC_POWER,c.powerType)
+				|| ConduitType.areSameType(STEAM_POWER,c.powerType);
+	}
+	private final ConduitType[] types = {Power.ELECTRIC_POWER,STEAM_POWER};
+	@Override
+	public ConduitType[] getTypes(){
+		return types;
+	}
+
 	/**
 	 * Adds "energy" as a fluid to the FluidTank returned by getTank(). This implementation ignores 
 	 * all non-fluid energy types.
@@ -101,7 +118,7 @@ public class SteamPoweredElectricGeneratorTileEntity extends ElectricGeneratorTi
 	 */
 	@Override
 	public float addEnergy(float amount, ConduitType type){
-		if(ConduitType.areSameType(type, SteamPoweredElectricGeneratorBlock.STEAM_POWER)){
+		if(ConduitType.areSameType(type, STEAM_POWER)){
 			float delta = Math.max(Math.min(amount, maxSteam - steam),-1 * steam);
 			steam += delta;
 			return delta;
@@ -116,7 +133,7 @@ public class SteamPoweredElectricGeneratorTileEntity extends ElectricGeneratorTi
 	 */
 	@Override
 	public void setEnergy(float amount,ConduitType type) {
-		if(ConduitType.areSameType(type, SteamPoweredElectricGeneratorBlock.STEAM_POWER)){
+		if(ConduitType.areSameType(type, STEAM_POWER)){
 			steam = amount;
 		} else {
 			super.setEnergy(amount, type);
@@ -125,7 +142,7 @@ public class SteamPoweredElectricGeneratorTileEntity extends ElectricGeneratorTi
 	
 	@Override
 	public PowerRequest getPowerRequest(ConduitType offer) {
-		if(ConduitType.areSameType(offer, SteamPoweredElectricGeneratorBlock.STEAM_POWER)){
+		if(ConduitType.areSameType(offer, STEAM_POWER)){
 			return new PowerRequest(PowerRequest.LOW_PRIORITY, maxSteam - steam,this);
 		} else {
 			return PowerRequest.REQUEST_NOTHING;
@@ -140,7 +157,7 @@ public class SteamPoweredElectricGeneratorTileEntity extends ElectricGeneratorTi
 	 * otherwise
 	 */
 	public boolean canAcceptType(ConduitType type, EnumFacing blockFace){
-		return ConduitType.areSameType(getType(), type) || ConduitType.areSameType(SteamPoweredElectricGeneratorBlock.STEAM_POWER, type);
+		return ConduitType.areSameType(getType(), type) || ConduitType.areSameType(STEAM_POWER, type);
 	}
 	/**
 	 * Determines whether this conduit is compatible with a type of energy through any side
@@ -149,7 +166,7 @@ public class SteamPoweredElectricGeneratorTileEntity extends ElectricGeneratorTi
 	 * faces, false otherwise
 	 */
 	public boolean canAcceptType(ConduitType type){
-		return ConduitType.areSameType(getType(), type) || ConduitType.areSameType(SteamPoweredElectricGeneratorBlock.STEAM_POWER, type);
+		return ConduitType.areSameType(getType(), type) || ConduitType.areSameType(STEAM_POWER, type);
 	}
 	///// end multi-type overrides /////
 

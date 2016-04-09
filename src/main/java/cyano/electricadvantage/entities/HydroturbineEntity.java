@@ -1,7 +1,5 @@
 package cyano.electricadvantage.entities;
 
-import java.util.List;
-
 import cyano.electricadvantage.init.Power;
 import cyano.electricadvantage.machines.HydroelectricGeneratorTileEntity;
 import net.minecraft.block.Block;
@@ -11,9 +9,11 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+
+import java.util.List;
 
 public class HydroturbineEntity extends net.minecraft.entity.Entity{
 
@@ -56,13 +56,13 @@ public class HydroturbineEntity extends net.minecraft.entity.Entity{
 		super.onUpdate();
 		IBlockState bs = this.worldObj.getBlockState(getPosition());
 		Block b = bs.getBlock();
-		Vec3 directionVector;
+		Vec3d directionVector;
 		if(b instanceof BlockLiquid){
-			directionVector = ((BlockLiquid)b).modifyAcceleration(getEntityWorld(), getPosition(), null, new Vec3(0,0,0));
+			directionVector = ((BlockLiquid)b).modifyAcceleration(getEntityWorld(), getPosition(), null, new Vec3d(0,0,0));
 			isSpinning = !(directionVector.xCoord == 0 && directionVector.zCoord == 0);
 		} else {
 			isSpinning = false;
-			directionVector = new Vec3(0,0,0);
+			directionVector = new Vec3d(0,0,0);
 		}
 		if(this.getEntityWorld().isRemote){
 			// client-side only

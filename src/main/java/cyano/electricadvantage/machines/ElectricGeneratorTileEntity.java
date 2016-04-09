@@ -1,20 +1,25 @@
 package cyano.electricadvantage.machines;
 
-import java.util.Arrays;
-
+import cyano.electricadvantage.init.Power;
+import cyano.poweradvantage.api.ConduitType;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.play.server.SPacketCustomSound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.FMLLog;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-import cyano.electricadvantage.init.Power;
 
-public abstract class ElectricGeneratorTileEntity extends cyano.poweradvantage.api.simple.TileEntitySimplePowerSource {
+import java.util.Arrays;
+import java.util.List;
+
+public abstract class ElectricGeneratorTileEntity extends cyano.poweradvantage.api.simple.TileEntitySimplePowerMachine {
 
 	private final ItemStack[] inventory;
 	private final int[] inputSlots;
@@ -38,7 +43,7 @@ public abstract class ElectricGeneratorTileEntity extends cyano.poweradvantage.a
 		
 		redstone = getWorld().isBlockPowered(getPos());
 		
-		if(oldEnergy != this.getEnergy()){
+		if(oldEnergy != this.getEnergy(Power.ELECTRIC_POWER)){
 			this.sync();
 		}
 	}
@@ -70,11 +75,32 @@ public abstract class ElectricGeneratorTileEntity extends cyano.poweradvantage.a
 		// used to allow change in blockstate without interrupting the TileEntity or the GUI
 		return (oldState.getBlock() != newSate.getBlock());
 	}
-	
+
+	protected void playSoundEffect(double x, double y, double z, SoundEvent sound, float volume, float pitch){
+		if(getWorld().isRemote) return;
+		final double range = 16;
+		List<EntityPlayerMP> players = getWorld().getEntitiesWithinAABB(EntityPlayerMP.class, new AxisAlignedBB(
+				x - range, y - range, z - range,
+				x + range, y + range, z + range));
+		for(EntityPlayerMP player : players){
+			player.playerNetServerHandler.sendPacket(new SPacketCustomSound(sound.getRegistryName().toString(), SoundCategory.BLOCKS,
+					x, y, z, (float)volume, (float)pitch));
+		}
+	}
+
 	public boolean isActive(){
 		return (Boolean)getWorld().getBlockState(getPos()).getValue(ElectricGeneratorBlock.ACTIVE);
 	}
 
+	@Override
+	public boolean isPowerSink(ConduitType e){
+		return false;
+	}
+
+	@Override
+	public boolean isPowerSource(ConduitType e){
+		return true;
+	}
 	
 	public abstract float getPowerOutput();
 
@@ -115,11 +141,33 @@ public abstract class ElectricGeneratorTileEntity extends cyano.poweradvantage.a
 		}
 		return false;
 	}
-	
-	
+
+
+
+	public float getEnergy(){
+		return getEnergy(Power.ELECTRIC_POWER);
+	}
+
+	public float getEnergyCapacity(){
+		return getEnergyCapacity(Power.ELECTRIC_POWER);
+	}
+
+	public float addEnergy(float amount){
+		return addEnergy(amount,Power.ELECTRIC_POWER);
+	}
+
+	public float subtractEnergy(float amount){
+		return subtractEnergy(amount,Power.ELECTRIC_POWER);
+	}
+
+	public void setEnergy(float amount){
+		super.setEnergy(amount,Power.ELECTRIC_POWER);
+	}
+
+	public ConduitType getType() {return Power.ELECTRIC_POWER;}
 
 	public int getComparatorOutput(){
-		return (int)(15 * this.getEnergy() / this.getEnergyCapacity());
+		return (int)(15 * this.getEnergy(Power.ELECTRIC_POWER) / this.getEnergyCapacity(Power.ELECTRIC_POWER));
 	}
 
 	

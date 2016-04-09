@@ -7,6 +7,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
@@ -85,8 +86,8 @@ public class ElectricDrillTileEntity extends ElectricMachineTileEntity{
 						progress++;
 						if(progress >= progressGoal){
 							// Mined it!
-							getWorld().playSoundEffect(targetBlockCoord.getX()+0.5, targetBlockCoord.getY()+0.5, targetBlockCoord.getZ()+0.5, targetBlocks[0].stepSound.getBreakSound(), 0.5f, 1f);
-							getWorld().playSoundEffect(getPos().getX()+0.5, getPos().getY()+0.5, getPos().getZ()+0.5, "dig.sand", 0.5f, 1f);
+							playSoundEffect(targetBlockCoord.getX()+0.5, targetBlockCoord.getY()+0.5, targetBlockCoord.getZ()+0.5, targetBlocks[0].getStepSound().getBreakSound(), 0.5f, 1f);
+							playSoundEffect(getPos().getX()+0.5, getPos().getY()+0.5, getPos().getZ()+0.5, SoundEvents.block_sand_break, 0.5f, 1f);
 							BlockPos[] targets = this.getArea(targetBlockCoord);
 							for(int i = 0; i < 5; i++)
 								if(canMine(targets[i])){
@@ -242,7 +243,7 @@ public class ElectricDrillTileEntity extends ElectricMachineTileEntity{
 					boolean moved = followTrack();
 					if(moved){
 						cyano.poweradvantage.conduitnetwork.ConduitRegistry.getInstance()
-								.conduitBlockRemovedEvent(getWorld(), getWorld().provider.getDimensionId(), getPos(), getType());
+								.conduitBlockRemovedEvent(getWorld(), getWorld().provider.getDimension(), getPos(), getType());
 						return;
 					}
 				}
@@ -384,17 +385,19 @@ public class ElectricDrillTileEntity extends ElectricMachineTileEntity{
 	
 	
 	private boolean canMine(BlockPos coord){
-		Block b = getWorld().getBlockState(coord).getBlock();
+		IBlockState bs  = getWorld().getBlockState(coord);
+		Block b = bs.getBlock();
 		// indestructable blocks have negative hardness
-		return !(b.getBlockHardness(getWorld(), coord) < 0);
+		return !(b.getBlockHardness(bs, getWorld(), coord) < 0);
 	}
 	
 	private int getBlockStrength(BlockPos coord){
 		if(getWorld().isAirBlock(coord)){
 			return 0;
 		}
-		Block block = getWorld().getBlockState(coord).getBlock();
-		return (int)(Math.max(MINING_TIME_FACTOR * block.getBlockHardness(getWorld(), coord),0.5f * MINING_TIME_FACTOR));
+		IBlockState bs  = getWorld().getBlockState(coord);
+		Block block = bs.getBlock();
+		return (int)(Math.max(MINING_TIME_FACTOR * block.getBlockHardness(bs, getWorld(), coord),0.5f * MINING_TIME_FACTOR));
 	}
 	
 	
@@ -509,9 +512,9 @@ public class ElectricDrillTileEntity extends ElectricMachineTileEntity{
 	// Helps with laser rendering
 	final private int renderRange = MAX_RANGE * 2;
 	@SideOnly(Side.CLIENT)
-	public net.minecraft.util.AxisAlignedBB getRenderBoundingBox()
+	public AxisAlignedBB getRenderBoundingBox()
 	{
-		return new net.minecraft.util.AxisAlignedBB(getPos().add(-renderRange, -renderRange, -renderRange), getPos().add(renderRange, renderRange, renderRange));
+		return new AxisAlignedBB(getPos().add(-renderRange, -renderRange, -renderRange), getPos().add(renderRange, renderRange, renderRange));
 		//return super.INFINITE_EXTENT_AABB;
 	}
 }

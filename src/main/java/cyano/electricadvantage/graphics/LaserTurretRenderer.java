@@ -6,13 +6,12 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -48,7 +47,7 @@ public class LaserTurretRenderer extends TileEntitySpecialRenderer{
 		final Tessellator tessellator = Tessellator.getInstance();
 		
 		
-		final WorldRenderer worldRenderer = tessellator.getWorldRenderer();
+		final VertexBuffer worldRenderer = tessellator.getBuffer();
 		final float sideU0 = 0;
 		final float sideU1 = 0.5f;
 		final float sideV0 = 0;

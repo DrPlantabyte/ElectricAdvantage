@@ -79,6 +79,7 @@ public class ElectricAdvantage
 
 		Blocks.init();
 		Items.init();
+		TreasureChests.init(config.getConfigFile().toPath().getParent());
 
 
 		if(event.getSide() == Side.CLIENT){
@@ -108,7 +109,6 @@ public class ElectricAdvantage
 		Recipes.init();
 		Entities.init();
 		GUI.init();
-		TreasureChests.init();
 		Enchantments.init();
 		Villages.init();
 

@@ -1,7 +1,5 @@
 package cyano.electricadvantage.init;
 
-import net.minecraft.enchantment.Enchantment;
-import net.minecraftforge.fml.common.FMLLog;
 //import cyano.electricadvantage.enchanments.*;
 
 public abstract class Enchantments {
@@ -15,13 +13,5 @@ public abstract class Enchantments {
 		
 		initDone = true;
 	}
-	
-	private static Enchantment addEnchantment(Enchantment e){
-		Enchantment.addToBookList(e);
-		return e;
-	}
-	
-	private static int getNextEnchantmentID(){
-		return Enchantment.enchantmentsBookList.length;
-	}
+
 }

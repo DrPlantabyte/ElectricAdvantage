@@ -1,20 +1,19 @@
 package cyano.electricadvantage.init;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-
+import cyano.electricadvantage.ElectricAdvantage;
+import cyano.electricadvantage.items.BatteryItem;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.model.ModelResourceLocation;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
-import cyano.electricadvantage.ElectricAdvantage;
-import cyano.electricadvantage.common.IRechargeableItem;
-import cyano.electricadvantage.items.BatteryItem;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 public abstract class Items {
 

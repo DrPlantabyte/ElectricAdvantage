@@ -1,16 +1,16 @@
 package cyano.electricadvantage.init;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import cyano.electricadvantage.ElectricAdvantage;
-import cyano.electricadvantage.blocks.*;
+import cyano.electricadvantage.blocks.ElectricConduitBlock;
+import cyano.electricadvantage.blocks.ElectricScaffoldBlock;
+import cyano.electricadvantage.blocks.Ore;
+import cyano.electricadvantage.blocks.PumpPipeBlock;
 import cyano.electricadvantage.machines.*;
 import cyano.poweradvantage.api.GUIBlock;
 import cyano.poweradvantage.blocks.BlockPowerSwitch;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.model.ModelResourceLocation;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -18,6 +18,9 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public abstract class Blocks {
 	private static final Map<String,Block> allBlocks = new HashMap<>();

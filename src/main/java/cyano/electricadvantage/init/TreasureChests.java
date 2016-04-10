@@ -50,8 +50,8 @@ public class TreasureChests {
 			"                },\n" +
 			"                {\n" +
 			"                    \"type\": \"item\",\n" +
-			"                    \"name\": \"electricadvantage:psu\"\n" +
-			"                    \"weight\": 6\n" +
+			"                    \"name\": \"electricadvantage:psu\",\n" +
+			"                    \"weight\": 6,\n" +
 			"                    \"functions\": [\n" +
 			"                        {\n" +
 			"                            \"function\": \"set_count\",\n" +
@@ -65,7 +65,7 @@ public class TreasureChests {
 			"                {\n" +
 			"                    \"type\": \"item\",\n" +
 			"                    \"name\": \"electricadvantage:electric_conduit\",\n" +
-			"                    \"weight\": 12\n" +
+			"                    \"weight\": 12,\n" +
 			"                    \"functions\": [\n" +
 			"                        {\n" +
 			"                            \"function\": \"set_count\",\n" +
@@ -78,8 +78,8 @@ public class TreasureChests {
 			"                },\n" +
 			"                {\n" +
 			"                    \"type\": \"item\",\n" +
-			"                    \"name\": \"electricadvantage:led_bar\"\n" +
-			"                    \"weight\": 6\n" +
+			"                    \"name\": \"electricadvantage:led_bar\",\n" +
+			"                    \"weight\": 6,\n" +
 			"                    \"functions\": [\n" +
 			"                        {\n" +
 			"                            \"function\": \"set_count\",\n" +
@@ -92,8 +92,8 @@ public class TreasureChests {
 			"                },\n" +
 			"                {\n" +
 			"                    \"type\": \"item\",\n" +
-			"                    \"name\": \"electricadvantage:solder\"\n" +
-			"                    \"weight\": 6\n" +
+			"                    \"name\": \"electricadvantage:solder\",\n" +
+			"                    \"weight\": 6,\n" +
 			"                    \"functions\": [\n" +
 			"                        {\n" +
 			"                            \"function\": \"set_count\",\n" +
@@ -106,8 +106,8 @@ public class TreasureChests {
 			"                },\n" +
 			"                {\n" +
 			"                    \"type\": \"item\",\n" +
-			"                    \"name\": \"electricadvantage:integrated_circuit\"\n" +
-			"                    \"weight\": 3\n" +
+			"                    \"name\": \"electricadvantage:integrated_circuit\",\n" +
+			"                    \"weight\": 3,\n" +
 			"                    \"functions\": [\n" +
 			"                        {\n" +
 			"                            \"function\": \"set_count\",\n" +
@@ -120,8 +120,8 @@ public class TreasureChests {
 			"                },\n" +
 			"                {\n" +
 			"                    \"type\": \"item\",\n" +
-			"                    \"name\": \"electricadvantage:lead_acid_battery\"\n" +
-			"                    \"weight\": 8\n" +
+			"                    \"name\": \"electricadvantage:lead_acid_battery\",\n" +
+			"                    \"weight\": 8,\n" +
 			"                    \"functions\": [\n" +
 			"                        {\n" +
 			"                            \"function\": \"set_count\",\n" +
@@ -134,8 +134,8 @@ public class TreasureChests {
 			"                },\n" +
 			"                {\n" +
 			"                    \"type\": \"item\",\n" +
-			"                    \"name\": \"electricadvantage:nickel_hydride_battery\"\n" +
-			"                    \"weight\": 4\n" +
+			"                    \"name\": \"electricadvantage:nickel_hydride_battery\",\n" +
+			"                    \"weight\": 4,\n" +
 			"                    \"functions\": [\n" +
 			"                        {\n" +
 			"                            \"function\": \"set_count\",\n" +
@@ -148,8 +148,8 @@ public class TreasureChests {
 			"                },\n" +
 			"                {\n" +
 			"                    \"type\": \"item\",\n" +
-			"                    \"name\": \"electricadvantage:alkaline_battery\"\n" +
-			"                    \"weight\": 2\n" +
+			"                    \"name\": \"electricadvantage:alkaline_battery\",\n" +
+			"                    \"weight\": 2,\n" +
 			"                    \"functions\": [\n" +
 			"                        {\n" +
 			"                            \"function\": \"set_count\",\n" +
@@ -162,8 +162,8 @@ public class TreasureChests {
 			"                },\n" +
 			"                {\n" +
 			"                    \"type\": \"item\",\n" +
-			"                    \"name\": \"electricadvantage:lithium_battery\"\n" +
-			"                    \"weight\": 1\n" +
+			"                    \"name\": \"electricadvantage:lithium_battery\",\n" +
+			"                    \"weight\": 1,\n" +
 			"                    \"functions\": [\n" +
 			"                        {\n" +
 			"                            \"function\": \"set_count\",\n" +

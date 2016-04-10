@@ -23,7 +23,7 @@ public class GrowthChamberControllerBlock extends cyano.poweradvantage.api.simpl
 
 	
 	public GrowthChamberControllerBlock() {
-		super(Material.piston, 0.75f, Power.GROWTHCHAMBER_POWER, Power.ELECTRIC_POWER);
+		super(Material.piston, 0.75f, Power.GROWTHCHAMBER_POWER, Power.ELECTRIC_POWER, Fluids.fluidConduit_general);
 	}
 
 	@Override
@@ -55,6 +55,7 @@ public class GrowthChamberControllerBlock extends cyano.poweradvantage.api.simpl
 	public void onBlockAdded(World w, BlockPos coord, IBlockState state){
 		super.onBlockAdded(w, coord, state);
 		ConduitRegistry.getInstance().conduitBlockPlacedEvent(w, w.provider.getDimension(), coord, cyano.poweradvantage.init.Fluids.fluidConduit_general);
+		ConduitRegistry.getInstance().conduitBlockPlacedEvent(w, w.provider.getDimension(), coord, Power.GROWTHCHAMBER_POWER);
 		ConduitRegistry.getInstance().conduitBlockPlacedEvent(w, w.provider.getDimension(), coord, Power.ELECTRIC_POWER);
 	}
 	
@@ -65,6 +66,7 @@ public class GrowthChamberControllerBlock extends cyano.poweradvantage.api.simpl
 	public void onBlockDestroyedByPlayer(World w, BlockPos coord, IBlockState state){
 		super.onBlockDestroyedByPlayer(w, coord, state);
 		ConduitRegistry.getInstance().conduitBlockRemovedEvent(w, w.provider.getDimension(), coord, cyano.poweradvantage.init.Fluids.fluidConduit_general);
+		ConduitRegistry.getInstance().conduitBlockRemovedEvent(w, w.provider.getDimension(), coord, Power.GROWTHCHAMBER_POWER);
 		ConduitRegistry.getInstance().conduitBlockRemovedEvent(w, w.provider.getDimension(), coord, Power.ELECTRIC_POWER);
 	}
 	/**
@@ -74,6 +76,7 @@ public class GrowthChamberControllerBlock extends cyano.poweradvantage.api.simpl
 	public void onBlockDestroyedByExplosion(World w, BlockPos coord, Explosion boom){
 		super.onBlockDestroyedByExplosion(w, coord, boom);
 		ConduitRegistry.getInstance().conduitBlockRemovedEvent(w, w.provider.getDimension(), coord, Fluids.fluidConduit_general);
+		ConduitRegistry.getInstance().conduitBlockRemovedEvent(w, w.provider.getDimension(), coord, Power.GROWTHCHAMBER_POWER);
 		ConduitRegistry.getInstance().conduitBlockRemovedEvent(w, w.provider.getDimension(), coord, Power.ELECTRIC_POWER);
 	}
 

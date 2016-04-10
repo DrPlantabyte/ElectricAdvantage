@@ -32,12 +32,12 @@ javadoc {
     failOnError = false
 }
 
-version = "2.0.0"
+version = "2.0.1"
 group= "cyano.electricadvantage" 
 archivesBaseName = "ElectricAdvantage"
 
 minecraft {
-	version = "1.9-12.16.0.1832-1.9"
+	version = "1.9-12.16.0.1854-1.9"
 	runDir = "run"
 	mappings = "snapshot_20160312"
 }

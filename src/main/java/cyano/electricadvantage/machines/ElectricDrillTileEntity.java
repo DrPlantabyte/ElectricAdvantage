@@ -89,7 +89,7 @@ public class ElectricDrillTileEntity extends ElectricMachineTileEntity{
 							playSoundEffect(targetBlockCoord.getX()+0.5, targetBlockCoord.getY()+0.5, targetBlockCoord.getZ()+0.5, targetBlocks[0].getStepSound().getBreakSound(), 0.5f, 1f);
 							playSoundEffect(getPos().getX()+0.5, getPos().getY()+0.5, getPos().getZ()+0.5, SoundEvents.block_sand_break, 0.5f, 1f);
 							BlockPos[] targets = this.getArea(targetBlockCoord);
-							for(int i = 0; i < 5; i++)
+							for(int i = 0; i < targets.length; i++)
 								if(canMine(targets[i])){
 									getWorld().setBlockToAir(targets[i]);
 								}
@@ -251,7 +251,7 @@ public class ElectricDrillTileEntity extends ElectricMachineTileEntity{
 				// currently drilling a block
 				// block revalidation
 				BlockPos[] targets = getArea(targetBlockCoord);
-				for(int i = 0; i < 5; i++){
+				for(int i = 0; i < targets.length; i++){
 					if(!getWorld().getBlockState(targets[i]).getBlock().equals(targetBlocks[i])){
 						// Block changed! Invalidate!
 						untargetBlock();
@@ -312,9 +312,9 @@ public class ElectricDrillTileEntity extends ElectricMachineTileEntity{
 		progress = 0;
 		targetBlockCoord = pos;
 		progressGoal = 0;
-		targetBlocks = new Block[5];
-		targetBlockItems = new ArrayList<>(5);
-		for(int i = 0; i < 5; i++){
+		targetBlocks = new Block[targets.length];
+		targetBlockItems = new ArrayList<>(targets.length);
+		for(int i = 0; i < targets.length; i++){
 			targetBlocks[i] = getWorld().getBlockState(targets[i]).getBlock();
 			progressGoal += this.getBlockStrength(targets[i]);
 			targetBlockItems.addAll(targetBlocks[i].getDrops(getWorld(), targets[i], getWorld().getBlockState(targets[i]), 0));

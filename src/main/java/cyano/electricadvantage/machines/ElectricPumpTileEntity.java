@@ -319,7 +319,7 @@ public class ElectricPumpTileEntity extends ElectricMachineTileEntity implements
 	 */
 	@Override
 	public float addEnergy(float amount, ConduitType type){
-		if(Fluids.isFluidType(type)){
+		if(Fluids.isFluidType(type) && type != Fluids.fluidConduit_general){
 			if(amount > 0 && this.canFill(null, Fluids.conduitTypeToFluid(type))){
 				return this.fill(null, new FluidStack(Fluids.conduitTypeToFluid(type),(int)amount), true);
 			} else if (amount < 0 && this.canDrain(null, Fluids.conduitTypeToFluid(type))){

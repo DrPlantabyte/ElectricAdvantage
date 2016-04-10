@@ -184,7 +184,7 @@ public abstract class ElectricMachineTileEntity extends cyano.poweradvantage.api
 
 	public int numberOfInputSlots(){return inputSlots.length;}
 	public int numberOfOutputSlots(){return outputSlots.length;}
-	public int numberOfOtherputSlots(){return otherSlots.length;}
+	public int numberOfOtherSlots(){return otherSlots.length;}
 
 	
 	@Override
@@ -374,9 +374,7 @@ public abstract class ElectricMachineTileEntity extends cyano.poweradvantage.api
 		return subtractEnergy(amount,Power.ELECTRIC_POWER);
 	}
 
-	public void setEnergy(float amount){
-		super.setEnergy(amount,Power.ELECTRIC_POWER);
-	}
+	public void setEnergy(float amount){ setEnergy(amount,Power.ELECTRIC_POWER); }
 
 
 	public ConduitType getType() {return Power.ELECTRIC_POWER;}

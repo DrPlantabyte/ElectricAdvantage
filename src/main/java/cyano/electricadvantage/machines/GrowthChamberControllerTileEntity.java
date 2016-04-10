@@ -266,7 +266,7 @@ public class GrowthChamberControllerTileEntity extends cyano.poweradvantage.api.
 	 */
 	@Override
 	public void setEnergy(float amount,ConduitType type) {
-		if(Fluids.isFluidType(type)){
+		if(Fluids.isFluidType(type) && type != Fluids.fluidConduit_general){
 			getTank().setFluid(new FluidStack(Fluids.conduitTypeToFluid(type),(int)amount));
 		} else if(ConduitType.areSameType(type, Power.ELECTRIC_POWER)){
 			this.addEnergy(amount / ELECTRICITY_PER_UNIT, Power.GROWTHCHAMBER_POWER);

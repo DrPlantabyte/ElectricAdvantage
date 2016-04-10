@@ -241,12 +241,12 @@ public class ElectricStillTileEntity extends ElectricMachineTileEntity implement
 		return redstone;
 	}
 	/**
-	 * Determines whether this block/entity should receive energy 
+	 * Determines whether this block/entity should receive energy
 	 * @return true if this block/entity should receive energy
 	 */
 	@Override
 	public boolean isPowerSink(ConduitType p){
-		return ConduitType.areSameType(Power.ELECTRIC_POWER,p);
+		return ConduitType.areSameType(Power.ELECTRIC_POWER,p) || Fluids.isFluidType(p);
 	}
 	/**
 	 * Determines whether this block/entity can provide energy
@@ -266,7 +266,7 @@ public class ElectricStillTileEntity extends ElectricMachineTileEntity implement
 	 */
 	@Override
 	public float addEnergy(float amount, ConduitType type){
-		if(Fluids.isFluidType(type)){
+		if(Fluids.isFluidType(type) && type != Fluids.fluidConduit_general){
 			if(amount > 0){
 				if(this.canFill(null, Fluids.conduitTypeToFluid(type))){
 					return this.fill(null, new FluidStack(Fluids.conduitTypeToFluid(type),(int)amount), true);
@@ -289,7 +289,7 @@ public class ElectricStillTileEntity extends ElectricMachineTileEntity implement
 		if(Fluids.isFluidType(offer) 
 				&& DistillationRecipeRegistry.getInstance().getDistillationRecipeForFluid( Fluids.conduitTypeToFluid(offer)) != null){
 			if(canDistill(Fluids.conduitTypeToFluid(offer))){
-				if(getInputTank().getFluidAmount() > 0 
+				if(getInputTank().getFluidAmount() > 0
 						&& Fluids.conduitTypeToFluid(offer).equals(getInputTank().getFluid().getFluid()) == false) {
 					// check that the existing fluid is compatible
 					return PowerRequest.REQUEST_NOTHING;

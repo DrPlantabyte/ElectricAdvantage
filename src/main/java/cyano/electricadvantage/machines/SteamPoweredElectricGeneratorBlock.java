@@ -58,7 +58,16 @@ public class SteamPoweredElectricGeneratorBlock extends ElectricGeneratorBlock{
 	public ConduitType[] getTypes(){
 		return types;
 	}
-	
+
+	@Override
+	public boolean isPowerSink(ConduitType pt){
+		return ConduitType.areSameType(STEAM_POWER,pt);
+	}
+	@Override
+	public boolean isPowerSource(ConduitType pt){
+		return ConduitType.areSameType(Power.ELECTRIC_POWER,pt);
+	}
+
 	///// end multi-type overrides /////
 	
 }

@@ -161,7 +161,7 @@ public abstract class ElectricGeneratorTileEntity extends cyano.poweradvantage.a
 	}
 
 	public void setEnergy(float amount){
-		super.setEnergy(amount,Power.ELECTRIC_POWER);
+		setEnergy(amount,Power.ELECTRIC_POWER);
 	}
 
 	public ConduitType getType() {return Power.ELECTRIC_POWER;}

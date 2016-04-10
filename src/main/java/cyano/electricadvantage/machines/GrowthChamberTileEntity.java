@@ -2,6 +2,8 @@ package cyano.electricadvantage.machines;
 
 import cyano.electricadvantage.init.Power;
 import cyano.electricadvantage.util.farming.VirtualCrop;
+import cyano.poweradvantage.api.ConduitType;
+import cyano.poweradvantage.api.PowerRequest;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
@@ -21,7 +23,7 @@ public class GrowthChamberTileEntity extends ElectricMachineTileEntity {
 	private final VirtualCrop[] crops = new VirtualCrop[GROWTH_AREA];
 	
 	public GrowthChamberTileEntity() {
-		super(GrowthChamberTileEntity.class.getName(),Power.GROWTHCHAMBER_POWER, ENERGY_PER_TICK*16, GROWTH_AREA, 6, 0);
+		super(GrowthChamberTileEntity.class.getSimpleName(),Power.GROWTHCHAMBER_POWER, ENERGY_PER_TICK*16, GROWTH_AREA, 6, 0);
 	}
 
 
@@ -43,7 +45,7 @@ public class GrowthChamberTileEntity extends ElectricMachineTileEntity {
 					flagSync = true;
 				}
 			}
-			if(hasRedstoneSignal() || getEnergy() < ENERGY_PER_TICK){
+			if(hasRedstoneSignal() || getEnergy(Power.GROWTHCHAMBER_POWER) < ENERGY_PER_TICK){
 				active = false;
 				for(int slot = 0; slot < GROWTH_AREA; slot++){
 					if(progression[slot] > 0){
@@ -127,7 +129,7 @@ public class GrowthChamberTileEntity extends ElectricMachineTileEntity {
 
 	@Override
 	public void prepareDataFieldsForSync() {
-		dataArray[0] = Float.floatToIntBits(this.getEnergy());
+		dataArray[0] = Float.floatToIntBits(this.getEnergy(Power.GROWTHCHAMBER_POWER));
 		System.arraycopy(progression, 0, dataArray, 1, progression.length);
 		System.arraycopy(progressionMax, 0, dataArray, 1+GROWTH_AREA, progressionMax.length);
 	}
@@ -135,7 +137,7 @@ public class GrowthChamberTileEntity extends ElectricMachineTileEntity {
 
 	@Override
 	public boolean isPowered() {
-		return this.getEnergy() > ENERGY_PER_TICK;
+		return this.getEnergy(Power.GROWTHCHAMBER_POWER) > ENERGY_PER_TICK;
 	}
 
 
@@ -220,5 +222,22 @@ public class GrowthChamberTileEntity extends ElectricMachineTileEntity {
 			oldInventory[i] = (newInventory[i] == null ? null : newInventory[i].copy());
 		}
 		return changes;
+	}
+
+	@Override
+	public boolean isPowerSink(ConduitType t){
+		return ConduitType.areSameType(Power.GROWTHCHAMBER_POWER,t);
+	}
+
+	@Override
+	public PowerRequest getPowerRequest(ConduitType t){
+		if( ConduitType.areSameType(Power.GROWTHCHAMBER_POWER,t)){
+			return new PowerRequest(
+					PowerRequest.MEDIUM_PRIORITY,
+					this.getEnergyCapacity(Power.GROWTHCHAMBER_POWER) - this.getEnergy(Power.GROWTHCHAMBER_POWER),
+					this
+			);
+		}
+		return PowerRequest.REQUEST_NOTHING;
 	}
 }

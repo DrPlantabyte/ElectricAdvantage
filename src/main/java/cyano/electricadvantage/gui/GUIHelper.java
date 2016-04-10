@@ -41,6 +41,10 @@ public class GUIHelper {
 			GUIContainer guiContainer, int x, int y, float z,
 			ResourceLocation displayImage){
 
-		FluidTankGUI.drawFluidBar(fs,barHeight,xPos,yPos,displayImage,guiContainer,x,y,z);
+		final int w = 16;
+		final int barSlotHeight = 60;
+		final int h = (int)(barSlotHeight * barHeight);
+
+		FluidTankGUI.drawFluidFilledRectangle(guiContainer, fs,x+xPos,y+yPos+barSlotHeight-h,w,h,z);
 	}
 }

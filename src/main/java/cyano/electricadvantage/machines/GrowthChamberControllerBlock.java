@@ -23,7 +23,7 @@ public class GrowthChamberControllerBlock extends cyano.poweradvantage.api.simpl
 
 	
 	public GrowthChamberControllerBlock() {
-		super(Material.piston, 0.75f, Power.GROWTHCHAMBER_POWER, Power.ELECTRIC_POWER, Fluids.fluidConduit_general);
+		super(Material.PISTON, 0.75f, Power.GROWTHCHAMBER_POWER, Power.ELECTRIC_POWER, Fluids.fluidConduit_general);
 	}
 
 	@Override

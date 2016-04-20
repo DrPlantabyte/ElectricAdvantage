@@ -7,7 +7,7 @@ import net.minecraft.world.World;
 public class GrowthChamberBlock extends ElectricMachineBlock{
 
 	public GrowthChamberBlock(){
-		super(Material.piston,Power.GROWTHCHAMBER_POWER);
+		super(Material.PISTON,Power.GROWTHCHAMBER_POWER);
 	}
 
 	@Override

@@ -67,7 +67,7 @@ public class ElectricPumpTileEntity extends ElectricMachineTileEntity implements
 						w.setBlockState(target, cyano.electricadvantage.init.Blocks.pump_pipe_electric.getDefaultState());
 						this.subtractEnergy(ENERGY_COST_PIPE, Power.ELECTRIC_POWER);
 						timeUntilNextPump = PIPE_INTERVAL;
-						playSoundEffect(target.getX()+0.5, target.getY()+0.5, target.getZ()+0.5, SoundEvents.block_stone_step, 0.3f, 1f);
+						playSoundEffect(target.getX()+0.5, target.getY()+0.5, target.getZ()+0.5, SoundEvents.BLOCK_STONE_STEP, 0.3f, 1f);
 					} else {
 						// pump fluids
 						BlockPos fluidSource = null;
@@ -92,14 +92,14 @@ public class ElectricPumpTileEntity extends ElectricMachineTileEntity implements
 						timeUntilNextPump = PUMP_INTERVAL;
 					}
 					if(success){
-						playSoundEffect(getPos().getX()+0.5, getPos().getY()+0.5, getPos().getZ()+0.5, SoundEvents.item_bucket_fill, 0.5f, 1f);
-						playSoundEffect(getPos().getX()+0.5, getPos().getY()+0.5, getPos().getZ()+0.5, SoundEvents.block_piston_extend, 0.3f, 1f);
+						playSoundEffect(getPos().getX()+0.5, getPos().getY()+0.5, getPos().getZ()+0.5, SoundEvents.ITEM_BUCKET_FILL, 0.5f, 1f);
+						playSoundEffect(getPos().getX()+0.5, getPos().getY()+0.5, getPos().getZ()+0.5, SoundEvents.BLOCK_PISTON_EXTEND, 0.3f, 1f);
 						timeToSound = 14;
 					}
 				}
 			}
 			if(timeToSound == 1){
-				playSoundEffect(getPos().getX()+0.5, getPos().getY()+0.5, getPos().getZ()+0.5, SoundEvents.block_piston_contract, 0.3f, 1f);
+				playSoundEffect(getPos().getX()+0.5, getPos().getY()+0.5, getPos().getZ()+0.5, SoundEvents.BLOCK_PISTON_CONTRACT, 0.3f, 1f);
 			}
 			if(timeToSound > 0) timeToSound--;
 		}

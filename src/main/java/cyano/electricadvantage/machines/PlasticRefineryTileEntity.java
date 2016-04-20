@@ -56,7 +56,7 @@ public class PlasticRefineryTileEntity extends ElectricMachineTileEntity impleme
 					// done
 					getTank().drain(OIL_PER_INGOT, true);
 					this.insertItemToOutputSlots(new ItemStack(Items.petrolplastic_ingot,1));
-					playSoundEffect(getPos().getX()+0.5, getPos().getY()+0.5, getPos().getZ()+0.5, SoundEvents.block_anvil_land, 0.15f, 1f);
+					playSoundEffect(getPos().getX()+0.5, getPos().getY()+0.5, getPos().getZ()+0.5, SoundEvents.BLOCK_ANVIL_LAND, 0.15f, 1f);
 					fabTime = 0;
 					if(wasActive){
 						this.setActiveState(false);

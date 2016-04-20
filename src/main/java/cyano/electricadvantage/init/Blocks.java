@@ -87,11 +87,11 @@ public abstract class Blocks {
 		electric_still = (GUIBlock)addBlock(new ElectricStillBlock(),"electric_still");
 		plastic_refinery = (GUIBlock)addBlock(new PlasticRefineryBlock(),"plastic_refinery");
 		pump_pipe_electric = addBlock(new PumpPipeBlock(),"pump_pipe_electric");
-		pump_pipe_electric.setCreativeTab(CreativeTabs.tabAllSearch);
+		pump_pipe_electric.setCreativeTab(CreativeTabs.SEARCH);
 		
 		// required OreDictionary entries
-		OreDictionary.registerOre("blockDirt", net.minecraft.init.Blocks.dirt);
-		OreDictionary.registerOre("blockDirt", net.minecraft.init.Blocks.grass);
+		OreDictionary.registerOre("blockDirt", net.minecraft.init.Blocks.DIRT);
+		OreDictionary.registerOre("blockDirt", net.minecraft.init.Blocks.GRASS);
 		
 		initDone = true;
 	}

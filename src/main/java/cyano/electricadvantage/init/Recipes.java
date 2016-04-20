@@ -10,7 +10,6 @@ import net.minecraftforge.oredict.ShapelessOreRecipe;
 import cyano.basemetals.registry.CrusherRecipeRegistry;
 import cyano.poweradvantage.PowerAdvantage;
 import cyano.poweradvantage.RecipeMode;
-import cyano.electricadvantage.ElectricAdvantage;
 
 public abstract class Recipes {
 
@@ -24,8 +23,8 @@ public abstract class Recipes {
 		RecipeMode recipeMode = PowerAdvantage.recipeMode;
 		
 		// Recipes for all recipe modes
-		OreDictionary.registerOre("blockBrick", net.minecraft.init.Blocks.brick_block);
-		OreDictionary.registerOre("gunpowder", net.minecraft.init.Items.gunpowder);
+		OreDictionary.registerOre("blockBrick", net.minecraft.init.Blocks.BRICK_BLOCK);
+		OreDictionary.registerOre("gunpowder", net.minecraft.init.Items.GUNPOWDER);
 		GameRegistry.addSmelting(Items.lithium_powder,new ItemStack(Items.lithium_ingot),0.5f);
 		GameRegistry.addSmelting(Blocks.lithium_ore,new ItemStack(Items.lithium_ingot),0.5f);
 		CrusherRecipeRegistry.addNewCrusherRecipe("oreLithium",new ItemStack(Items.lithium_powder,2));
@@ -44,8 +43,8 @@ public abstract class Recipes {
 		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(Items.solder_blend,3),"dustTin","dustTin","dustSilver"));
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Blocks.led_bar,3),"ggg","xxx","ccc",'g',"paneGlass",'x',"microchip",'c',"wire"));
 		
-		GameRegistry.addRecipe(batteryRecipe(Items.lead_acid_battery,"ingotLead","sulfur",net.minecraft.init.Items.water_bucket));
-		GameRegistry.addRecipe(batteryRecipe(Items.nickel_hydride_battery,"ingotNickel","dustRedstone",net.minecraft.init.Items.water_bucket));
+		GameRegistry.addRecipe(batteryRecipe(Items.lead_acid_battery,"ingotLead","sulfur",net.minecraft.init.Items.WATER_BUCKET));
+		GameRegistry.addRecipe(batteryRecipe(Items.nickel_hydride_battery,"ingotNickel","dustRedstone",net.minecraft.init.Items.WATER_BUCKET));
 		GameRegistry.addRecipe(batteryRecipe(Items.alkaline_battery,"ingotIron","gunpowder","ingotZinc"));
 		GameRegistry.addRecipe(batteryRecipe(Items.lithium_battery,"ingotLithium","dustRedstone","dustCarbon"));
 		
@@ -92,15 +91,15 @@ public abstract class Recipes {
 		GameRegistry.addRecipe(electricMachineRecipe(Blocks.laser_turret, "gemDiamond", "gemEmerald"));
 		GameRegistry.addRecipe(electricMachineRecipe(Blocks.laser_turret, "gemEmerald", "gemDiamond"));
 		GameRegistry.addRecipe(electricMachineRecipe(Blocks.laser_drill, "blockDiamond"));
-		GameRegistry.addRecipe(electricMachineRecipe(Blocks.fabricator, net.minecraft.init.Blocks.crafting_table));
-		GameRegistry.addRecipe(electricMachineRecipe(Blocks.growth_chamber, net.minecraft.init.Items.flower_pot, "microchip"));
-		GameRegistry.addRecipe(electricMachineRecipe(Blocks.growth_chamber_controller, net.minecraft.init.Items.flower_pot, "circuitBoard"));
+		GameRegistry.addRecipe(electricMachineRecipe(Blocks.fabricator, net.minecraft.init.Blocks.CRAFTING_TABLE));
+		GameRegistry.addRecipe(electricMachineRecipe(Blocks.growth_chamber, net.minecraft.init.Items.FLOWER_POT, "microchip"));
+		GameRegistry.addRecipe(electricMachineRecipe(Blocks.growth_chamber_controller, net.minecraft.init.Items.FLOWER_POT, "circuitBoard"));
 		GameRegistry.addRecipe(electricMachineRecipe(Blocks.oven, "paneGlass", "PSU"));
 
-		GameRegistry.addRecipe(new ShapedOreRecipe(Blocks.electric_switch," L ","pfp",'L',net.minecraft.init.Blocks.lever,'p',"wire",'f',"frameSteel"));
-		GameRegistry.addRecipe(electricMachineRecipe(Blocks.electric_still, net.minecraft.init.Items.bucket, net.minecraft.init.Items.bucket));
-		GameRegistry.addRecipe(electricMachineRecipe(Blocks.electric_pump, net.minecraft.init.Blocks.piston, net.minecraft.init.Items.bucket));
-		GameRegistry.addRecipe(electricMachineRecipe(Blocks.plastic_refinery, net.minecraft.init.Blocks.piston, "sprocket"));
+		GameRegistry.addRecipe(new ShapedOreRecipe(Blocks.electric_switch," L ","pfp",'L',net.minecraft.init.Blocks.LEVER,'p',"wire",'f',"frameSteel"));
+		GameRegistry.addRecipe(electricMachineRecipe(Blocks.electric_still, net.minecraft.init.Items.BUCKET, net.minecraft.init.Items.BUCKET));
+		GameRegistry.addRecipe(electricMachineRecipe(Blocks.electric_pump, net.minecraft.init.Blocks.PISTON, net.minecraft.init.Items.BUCKET));
+		GameRegistry.addRecipe(electricMachineRecipe(Blocks.plastic_refinery, net.minecraft.init.Blocks.PISTON, "sprocket"));
 		
 		
 		initDone = true;

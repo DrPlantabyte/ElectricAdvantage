@@ -44,7 +44,7 @@ public class VirtualCrop {
 		}
 		if(customRecipes.get(r) != null){
 			return customRecipes.get(r).copy();
-		} else if(i == Items.reeds
+		} else if(i == Items.REEDS
 				|| b instanceof net.minecraft.block.BlockMushroom
 				|| b instanceof net.minecraft.block.BlockCactus
 				|| b instanceof net.minecraft.block.BlockBush

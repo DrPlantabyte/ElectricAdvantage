@@ -40,7 +40,7 @@ public class ElectricDrillBlock extends GUIBlock implements ITypedConduit {
 
 
 	public ElectricDrillBlock(){
-		super(Material.piston);
+		super(Material.PISTON);
 		this.type = Power.ELECTRIC_POWER;
 		types[0] = this.type;
 		super.setHardness(0.75f);

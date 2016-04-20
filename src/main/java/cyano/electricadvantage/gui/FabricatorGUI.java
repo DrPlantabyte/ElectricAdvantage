@@ -3,7 +3,6 @@ package cyano.electricadvantage.gui;
 import cyano.electricadvantage.ElectricAdvantage;
 import cyano.electricadvantage.machines.ElectricMachineTileEntity;
 import cyano.poweradvantage.api.simple.SimpleMachineGUI;
-import cyano.poweradvantage.api.simple.SimpleMachineGUI.GUIContainer;
 import cyano.poweradvantage.math.Integer2D;
 import net.minecraft.util.ResourceLocation;
 

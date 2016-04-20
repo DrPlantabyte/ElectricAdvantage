@@ -17,7 +17,7 @@ import java.util.List;
 public class ElectricScaffoldBlock extends cyano.poweradvantage.api.simple.BlockSimplePowerConduit{
 
 	public ElectricScaffoldBlock() {
-		super(Material.piston, 0.75f, 2f/16f, Power.ELECTRIC_POWER);
+		super(Material.PISTON, 0.75f, 2f/16f, Power.ELECTRIC_POWER);
 	}
 
 	@Override

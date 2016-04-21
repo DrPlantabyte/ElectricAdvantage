@@ -4,6 +4,9 @@ import cyano.electricadvantage.ElectricAdvantage;
 import cyano.electricadvantage.machines.ElectricMachineTileEntity;
 import cyano.poweradvantage.api.simple.SimpleMachineGUI;
 import cyano.poweradvantage.math.Integer2D;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.Slot;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
 public class FabricatorGUI extends SimpleMachineGUI{
@@ -20,6 +23,17 @@ public class FabricatorGUI extends SimpleMachineGUI{
 						
 						91,34
 						));
+
+		for(int i = 12; i <= 13; i++)super.specialSlots.put(i, (SlotContext c)->new Slot(c.machineInventory,c.slotIndex,c.screenPositionX,c.screenPositionY){
+			@Override
+			public void onPickupFromSlot(EntityPlayer player, ItemStack stack)
+			{
+				stack.onCrafting(player.getEntityWorld(), player, stack.stackSize);
+				super.onPickupFromSlot(player, stack);
+			}
+			@Override
+			public boolean isItemValid(ItemStack stack){ return false; }
+		});
 	}
 	
 	/**

@@ -34,6 +34,8 @@ public abstract class Recipes {
 		
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Blocks.electric_conduit,6),"xxx","ccc","xxx",'x',"plastic",'c',"ingotCopper"));
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Blocks.electric_conduit,6),"xxx","ccc","xxx",'x',"rubber",'c',"ingotCopper"));
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Blocks.electric_conduit,1),"xx","cc",'x',"plastic",'c',"rodCopper"));
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Blocks.electric_conduit,1),"xx","cc",'x',"rubber",'c',"rodCopper"));
 		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(Items.blank_circuit_board,2),"plastic","plateCopper"));
 		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(Items.control_circuit,1),Items.blank_circuit_board,"microchip","solder"));
 		GameRegistry.addSmelting(Items.silicon_blend, new ItemStack(Items.silicon_ingot), 0.5f);

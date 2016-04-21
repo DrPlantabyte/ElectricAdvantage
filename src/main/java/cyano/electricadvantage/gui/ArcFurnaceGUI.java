@@ -4,6 +4,9 @@ import cyano.electricadvantage.ElectricAdvantage;
 import cyano.electricadvantage.machines.ElectricMachineTileEntity;
 import cyano.poweradvantage.api.simple.SimpleMachineGUI;
 import cyano.poweradvantage.math.Integer2D;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.Slot;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
 public class ArcFurnaceGUI extends SimpleMachineGUI{
@@ -12,6 +15,16 @@ public class ArcFurnaceGUI extends SimpleMachineGUI{
 		super(new ResourceLocation(ElectricAdvantage.MODID+":textures/gui/container/electric_furnace_gui.png"), 
 				Integer2D.fromCoordinates(12,34, 12,55, 12,76, 12,97, 
 						124,45, 145,45, 124,66, 145,66, 124,87, 145,87));
+		for(int i = 4; i < 10; i++)super.specialSlots.put(i, (SlotContext c)->new Slot(c.machineInventory,c.slotIndex,c.screenPositionX,c.screenPositionY){
+			@Override
+			public void onPickupFromSlot(EntityPlayer player, ItemStack stack)
+			{
+				stack.onCrafting(player.getEntityWorld(), player, stack.stackSize);
+				super.onPickupFromSlot(player, stack);
+			}
+			@Override
+			public boolean isItemValid(ItemStack stack){ return false; }
+		});
 	}
 	
 	/**

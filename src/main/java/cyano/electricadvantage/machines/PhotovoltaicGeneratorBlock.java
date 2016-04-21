@@ -8,8 +8,8 @@ import net.minecraft.world.World;
 public class PhotovoltaicGeneratorBlock extends ElectricGeneratorBlock{
 
 	public PhotovoltaicGeneratorBlock(){
-		super(Material.rock);
-		this.setStepSound(SoundType.GLASS);
+		super(Material.ROCK);
+		this.setSoundType(SoundType.GLASS);
 	}
 	
 	@Override

@@ -36,7 +36,7 @@ public class ElectricOvenTileEntity extends ElectricMachineTileEntity{
 							setInputSlot(0,null);
 						}
 						progress = 0;
-						playSoundEffect(getPos().getX()+0.5, getPos().getY()+0.5, getPos().getZ()+0.5, SoundEvents.entity_experience_orb_pickup, 0.5f, 1.0f);
+						playSoundEffect(getPos().getX()+0.5, getPos().getY()+0.5, getPos().getZ()+0.5, SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, 0.5f, 1.0f);
 					}
 					active = true;
 				} else {

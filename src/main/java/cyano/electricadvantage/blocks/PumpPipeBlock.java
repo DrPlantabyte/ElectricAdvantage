@@ -22,7 +22,7 @@ public class PumpPipeBlock extends Block{
 	private static final AxisAlignedBB bounds = new AxisAlignedBB(0.25,0.00,0.25,0.75,1.00,0.75);
 
 	public PumpPipeBlock() {
-		super(Material.iron);
+		super(Material.IRON);
 		this.setHardness(5.0F).setResistance(10.0F);
 	}
 

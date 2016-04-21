@@ -64,7 +64,7 @@ public class GrowthChamberTileEntity extends ElectricMachineTileEntity {
 								List<ItemStack> harvest = crops[slot].getHarvest();
 								if(harvest != null && (!harvest.isEmpty()) 
 										&& this.hasSpaceForItemInOutputSlots(harvest.get(0))){
-									playSoundEffect(getPos().getX()+0.5, getPos().getY()+0.5, getPos().getZ()+0.5, SoundEvents.block_grass_break, 0.35f, 1f);
+									playSoundEffect(getPos().getX()+0.5, getPos().getY()+0.5, getPos().getZ()+0.5, SoundEvents.BLOCK_GRASS_BREAK, 0.35f, 1f);
 									for(ItemStack i : harvest){
 										ItemStack remainder = this.insertItemToOutputSlots(i);
 										if(remainder != null){

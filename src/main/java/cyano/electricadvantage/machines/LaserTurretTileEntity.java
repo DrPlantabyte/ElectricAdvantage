@@ -76,9 +76,9 @@ public class LaserTurretTileEntity extends ElectricMachineTileEntity implements 
 	
 	public LaserTurretTileEntity(){
 		super(LaserTurretTileEntity.class.getSimpleName(),MAX_BUFFER,0,0,0);
-		SoundEvent soundEvent = SoundEvent.soundEventRegistry.getObject(new ResourceLocation(ElectricAdvantage.INSTANCE.LASER_SOUND));
+		SoundEvent soundEvent = SoundEvent.REGISTRY.getObject(new ResourceLocation(ElectricAdvantage.INSTANCE.LASER_SOUND));
 		if(soundEvent == null){
-			LASER_SOUND = SoundEvents.entity_endermen_teleport;
+			LASER_SOUND = SoundEvents.ENTITY_ENDERMEN_TELEPORT;
 		} else {
 			LASER_SOUND = soundEvent;
 		}
@@ -243,7 +243,7 @@ public class LaserTurretTileEntity extends ElectricMachineTileEntity implements 
 			((EntityLivingBase)e).attackEntityFrom(Power.laser_damage, ATTACK_DAMAGE);
 			BlockPos bp = e.getPosition();
 			if(getWorld().isAirBlock(bp) && !getWorld().isAirBlock(bp.down())){
-				getWorld().setBlockState(bp, Blocks.fire.getDefaultState());
+				getWorld().setBlockState(bp, Blocks.FIRE.getDefaultState());
 			}
 			if(playerOwner != null && !playerOwner.isEmpty()){
 				EntityPlayer p = getWorld().getPlayerEntityByName(playerOwner);

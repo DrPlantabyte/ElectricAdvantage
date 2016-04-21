@@ -51,7 +51,7 @@ public class ElectricStillTileEntity extends ElectricMachineTileEntity implement
 					}
 					this.subtractEnergy(electricityPerDistill, Power.ELECTRIC_POWER);
 					if(timeSinceSound > 200){
-						playSoundEffect(getPos().getX()+0.5, getPos().getY()+0.5, getPos().getZ()+0.5, SoundEvents.block_lava_ambient, 0.3f, 1.5f);
+						playSoundEffect(getPos().getX()+0.5, getPos().getY()+0.5, getPos().getZ()+0.5, SoundEvents.BLOCK_LAVA_AMBIENT, 0.3f, 1.5f);
 						timeSinceSound = 0;
 					}
 					timeSinceSound++;

@@ -26,7 +26,7 @@ public abstract class ElectricMachineBlock extends cyano.poweradvantage.api.simp
 	public static final PropertyBool POWERED = PropertyBool.create("powered");
 
 	public ElectricMachineBlock() {
-		this(Material.piston);
+		this(Material.PISTON);
 	}
 
 	public ElectricMachineBlock(Material m, ConduitType type) {

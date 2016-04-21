@@ -73,7 +73,7 @@ public class ElectricFabricatorTileEntity extends ElectricMachineTileEntity {
 				case CRAFT_COMPLETE:{
                     if(canCraft()) {
                         doCraft();
-                        playSoundEffect(getPos().getX() + 0.5, getPos().getY() + 0.5, getPos().getZ() + 0.5, SoundEvents.block_anvil_land, 0.15f, 1f);
+                        playSoundEffect(getPos().getX() + 0.5, getPos().getY() + 0.5, getPos().getZ() + 0.5, SoundEvents.BLOCK_ANVIL_LAND, 0.15f, 1f);
                     }
 					state = FSM.READY;
 					break;

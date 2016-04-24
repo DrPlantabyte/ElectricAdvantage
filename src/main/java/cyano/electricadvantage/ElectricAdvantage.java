@@ -35,7 +35,7 @@ public class ElectricAdvantage
 	
 	public final Set<String> PLASTIC_FLUID_MATERIALS = new HashSet<>();
 
-	
+	// TODO: figure out why metal blocks are causing the Automated Assembler to hang and time-out players from a server
 
 	public String LASER_SOUND = "block.note.bass";
 	/**

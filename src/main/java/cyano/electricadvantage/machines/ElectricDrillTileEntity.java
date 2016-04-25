@@ -86,7 +86,7 @@ public class ElectricDrillTileEntity extends ElectricMachineTileEntity{
 						progress++;
 						if(progress >= progressGoal){
 							// Mined it!
-							playSoundEffect(targetBlockCoord.getX()+0.5, targetBlockCoord.getY()+0.5, targetBlockCoord.getZ()+0.5, targetBlocks[0].getSoundType().getBreakSound(), 0.5f, 1f);
+							playSoundEffect(targetBlockCoord.getX()+0.5, targetBlockCoord.getY()+0.5, targetBlockCoord.getZ()+0.5, targetBlocks[0].getSoundType().getPlaceSound(), 0.5f, 1f);
 							playSoundEffect(getPos().getX()+0.5, getPos().getY()+0.5, getPos().getZ()+0.5, SoundEvents.BLOCK_SAND_BREAK, 0.5f, 1f);
 							BlockPos[] targets = this.getArea(targetBlockCoord);
 							for(int i = 0; i < targets.length; i++)

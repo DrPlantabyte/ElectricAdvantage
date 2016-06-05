@@ -1,15 +1,5 @@
 package cyano.electricadvantage.util.crafting;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
-
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -22,6 +12,11 @@ import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
+import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
 public class RecipeDeconstructor {
 
 	private static final boolean enableDebugOutput = false;
@@ -29,7 +24,7 @@ public class RecipeDeconstructor {
 	private static RecipeDeconstructor instance = null;
 	private static final Lock initLock = new ReentrantLock();
 	
-	public static int RECURSION_LIMIT = 10;
+	public static int RECURSION_LIMIT = 5;
 	
 
 	private Map<ItemRecord,List<IRecipe>> recipeCache = null;
@@ -108,7 +103,7 @@ public class RecipeDeconstructor {
 	 * @param serializedInventory The inventory to use, serialized into a SerializedInventory 
 	 * instance
 	 * @param output Atomic reference used to pass the actual product of crafting back to the caller
-	 * @param resursionDepth Used to control how deep the recursion goes. Use 0 if you are calling 
+	 * @param recursionDepth Used to control how deep the recursion goes. Use 0 if you are calling
 	 * this method.
 	 * @return Returns the new inventory after crafting, or null if the item cannot be crafted from 
 	 * the provided inventory

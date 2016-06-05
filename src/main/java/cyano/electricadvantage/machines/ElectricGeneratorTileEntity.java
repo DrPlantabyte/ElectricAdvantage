@@ -34,6 +34,15 @@ public abstract class ElectricGeneratorTileEntity extends cyano.poweradvantage.a
 		}
 	}
 
+	public ElectricGeneratorTileEntity(String name,int numInputSlots, ConduitType[] types, float[] energyBuffers) {
+		super(types, energyBuffers, name);
+		inventory = new ItemStack[numInputSlots];
+		inputSlots = new int[numInputSlots];
+		for(int i = 0; i < inventory.length; i++){
+			if(i < inputSlots.length)inputSlots[i] = i;
+		}
+	}
+
 
 	private boolean redstone = false;
 	private float oldEnergy = 0f;

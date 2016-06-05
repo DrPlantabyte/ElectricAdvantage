@@ -18,10 +18,13 @@ public class LaserTurretBlock extends ElectricMachineBlock {
 
 	private final AxisAlignedBB baseBounds = new AxisAlignedBB(0.0f, 0.0f, 0.0f, 1.0f, 0.25f, 1.0f);
 	private final AxisAlignedBB shaftBounds = new AxisAlignedBB(0.25f, 0.25f, 0.25f, 0.75f, 1.0f, 0.75f);
-	
-	public LaserTurretBlock() {
+
+	// Evil laser turrets target players and not hostile mobs
+	public final boolean evil;
+	public LaserTurretBlock(boolean isEvil) {
 		super();
 		this.setHardness(5.0F).setResistance(100.0F);
+		this.evil = isEvil;
 	}
 
 	@Override

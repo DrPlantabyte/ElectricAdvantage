@@ -29,7 +29,7 @@ public class ElectricAdvantage
 	/** The display name for this mod */
 	public static final String NAME = "Electric Advantage";
 	/** The version of this mod, in the format major.minor.update */
-	public static final String VERSION = "2.0.3";
+	public static final String VERSION = "2.0.4";
 
 	public static ElectricAdvantage INSTANCE = null;
 	

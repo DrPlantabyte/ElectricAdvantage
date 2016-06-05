@@ -41,7 +41,7 @@ public class ElectricPumpTileEntity extends ElectricMachineTileEntity implements
 	
 
 	public ElectricPumpTileEntity() {
-		super(ElectricPumpTileEntity.class.getSimpleName(), ENERGY_COST_PUMP + 256 * ENERGY_COST_VERTICAL, 0, 0, 0);
+		super(ElectricPumpTileEntity.class.getSimpleName(), 0, 0, 0, new ConduitType[]{Power.ELECTRIC_POWER, Fluids.fluidConduit_general},new float[]{ENERGY_COST_PUMP + 256 * ENERGY_COST_VERTICAL,1000f});
 		tank = new FluidTank(FluidContainerRegistry.BUCKET_VOLUME);
 	}
 	

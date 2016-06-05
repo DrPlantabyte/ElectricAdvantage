@@ -1,0 +1,20 @@
+{
+    "variants": {
+        "active=true,facing=east,powered=true":   { "model": "electricadvantage:laser_turret",  "y": 90  },
+        "active=true,facing=north,powered=true":  { "model": "electricadvantage:laser_turret"   },
+        "active=true,facing=south,powered=true":  { "model": "electricadvantage:laser_turret",  "y": 180 },
+        "active=true,facing=west,powered=true":   { "model": "electricadvantage:laser_turret",  "y": 270 },
+        "active=false,facing=east,powered=true":   { "model": "electricadvantage:laser_turret",  "y": 90  },
+        "active=false,facing=north,powered=true":  { "model": "electricadvantage:laser_turret"   },
+        "active=false,facing=south,powered=true":  { "model": "electricadvantage:laser_turret",  "y": 180 },
+        "active=false,facing=west,powered=true":   { "model": "electricadvantage:laser_turret",  "y": 270 },
+        "active=false,facing=east,powered=false":  { "model": "electricadvantage:laser_turret", "y": 90  },
+        "active=false,facing=north,powered=false": { "model": "electricadvantage:laser_turret"  },
+        "active=false,facing=south,powered=false": { "model": "electricadvantage:laser_turret", "y": 180 },
+        "active=false,facing=west,powered=false":  { "model": "electricadvantage:laser_turret", "y": 270 },
+        "active=true,facing=east,powered=false":  { "model": "electricadvantage:laser_turret", "y": 90  },
+        "active=true,facing=north,powered=false": { "model": "electricadvantage:laser_turret"  },
+        "active=true,facing=south,powered=false": { "model": "electricadvantage:laser_turret", "y": 180 },
+        "active=true,facing=west,powered=false":  { "model": "electricadvantage:laser_turret", "y": 270 }
+    }
+}

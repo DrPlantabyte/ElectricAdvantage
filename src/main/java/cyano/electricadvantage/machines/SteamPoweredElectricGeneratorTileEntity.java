@@ -25,7 +25,7 @@ public class SteamPoweredElectricGeneratorTileEntity extends ElectricGeneratorTi
 	private final int[] dataArray = new int[3];
 	
 	public SteamPoweredElectricGeneratorTileEntity() {
-		super(SteamPoweredElectricGeneratorTileEntity.class.getSimpleName(), 0);
+		super(SteamPoweredElectricGeneratorTileEntity.class.getSimpleName(), 0, new ConduitType[]{Power.ELECTRIC_POWER,STEAM_POWER}, new float[]{1000f,32f});
 	}
 
 	@Override public void powerUpdate(){

@@ -28,7 +28,7 @@ public class ElectricStillTileEntity extends ElectricMachineTileEntity implement
 	private final int[] dataSyncArray = new int[5];
 	
 	public ElectricStillTileEntity() {
-		super(ElectricStillTileEntity.class.getSimpleName(), 0, 0, 0);
+		super(ElectricStillTileEntity.class.getSimpleName(), 0, 0, 0, new ConduitType[]{Power.ELECTRIC_POWER, Fluids.fluidConduit_general},new float[]{500f,1000f});
 		outputTank = new FluidTank(FluidContainerRegistry.BUCKET_VOLUME );
 		inputTank = new FluidTank(FluidContainerRegistry.BUCKET_VOLUME);
 	}

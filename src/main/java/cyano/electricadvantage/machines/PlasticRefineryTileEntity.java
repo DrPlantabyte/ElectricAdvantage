@@ -31,7 +31,7 @@ public class PlasticRefineryTileEntity extends ElectricMachineTileEntity impleme
 	
 	public PlasticRefineryTileEntity() {
 		super(PlasticRefineryTileEntity.class.getSimpleName(), 
-				0, 1, 0);
+				0, 1, 0, new ConduitType[]{Power.ELECTRIC_POWER, Fluids.fluidConduit_general},new float[]{500f,2000f});
 		tank = new FluidTank(FluidContainerRegistry.BUCKET_VOLUME * 2);
 	}
 

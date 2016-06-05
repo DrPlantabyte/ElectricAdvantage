@@ -41,6 +41,7 @@ public abstract class Blocks {
 	public static GUIBlock rock_crusher;
 	public static GUIBlock laser_drill;
 	public static GUIBlock laser_turret;
+	public static GUIBlock laser_turret_evil;
 	public static GUIBlock fabricator;
 	public static GUIBlock growth_chamber;
 	public static GUIBlock growth_chamber_controller;
@@ -64,7 +65,10 @@ public abstract class Blocks {
 		sulfur_ore = addBlock(new Ore(new ItemStack(Items.sulfur_powder,1),0,3),"sulfur_ore","oreSulfur");
 		
 		electric_track = addBlock(new ElectricScaffoldBlock(),"electric_track");
-		laser_turret = (GUIBlock)addBlock(new LaserTurretBlock(),"laser_turret");
+		laser_turret = (GUIBlock)addBlock(new LaserTurretBlock(false),"laser_turret");
+		laser_turret_evil = (GUIBlock)addBlock(new LaserTurretBlock(true),"laser_turret_evil");
+		laser_turret_evil.setUnlocalizedName(ElectricAdvantage.MODID+".laser_turret");
+		laser_turret_evil.setCreativeTab(null);
 		led_bar = addBlock(new LEDBlock(),"led_bar");
 
 		photovoltaic_generator = (GUIBlock)addBlock(new PhotovoltaicGeneratorBlock(),"photovoltaic_generator");

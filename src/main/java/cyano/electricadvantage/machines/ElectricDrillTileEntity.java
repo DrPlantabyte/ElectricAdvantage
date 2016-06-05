@@ -185,6 +185,7 @@ public class ElectricDrillTileEntity extends ElectricMachineTileEntity{
 		this.progress = dataSyncArray[1];
 		progressGoal = dataSyncArray[2];
 		laserLength = dataSyncArray[3];
+		updateFacing();
 	}
 	private float oldEnergy = 0;
 	private int oldProgress = 0;
@@ -380,7 +381,12 @@ public class ElectricDrillTileEntity extends ElectricMachineTileEntity{
 		return facingCache;
 	}
 	private void updateFacing(){
+		final EnumFacing old = facingCache;
 		facingCache = (EnumFacing)worldObj.getBlockState(getPos()).getValue(ElectricDrillBlock.FACING);
+		if(old != null && old != facingCache){
+			untargetBlock();
+			this.sync();
+		}
 	}
 	
 	

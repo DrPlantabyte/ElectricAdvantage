@@ -2,6 +2,7 @@ package cyano.electricadvantage.machines;
 
 import cyano.electricadvantage.ElectricAdvantage;
 import cyano.electricadvantage.init.Power;
+import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureType;
@@ -73,7 +74,8 @@ public class LaserTurretTileEntity extends ElectricMachineTileEntity implements 
 	
 	/** rotation speed (non-idle), in degrees per tick */
 	public final float speed = 9f;
-	
+
+
 	public LaserTurretTileEntity(){
 		super(LaserTurretTileEntity.class.getSimpleName(),MAX_BUFFER,0,0,0);
 		SoundEvent soundEvent = SoundEvent.REGISTRY.getObject(new ResourceLocation(ElectricAdvantage.INSTANCE.LASER_SOUND));
@@ -139,23 +141,46 @@ public class LaserTurretTileEntity extends ElectricMachineTileEntity implements 
 			// Server side only
 			if(isActive){
 				if(targetLocked == false){
+					final Block thisBlock = getWorld().getBlockState(getPos()).getBlock();
+					final boolean isEvil;
+					if(thisBlock instanceof LaserTurretBlock
+							&& ((LaserTurretBlock)thisBlock).evil){
+						isEvil = true;
+					} else {
+						isEvil = false;
+					}
 					double x = this.getOpticPosition().xCoord;
 					double y = this.getOpticPosition().yCoord;
 					double z = this.getOpticPosition().zCoord;
 					List<Entity> entities = w.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(x-TARGET_RANGE, y-TARGET_RANGE, z-TARGET_RANGE, x+TARGET_RANGE, y+TARGET_RANGE, z+TARGET_RANGE));
 					final double maxRangeSquared = TARGET_RANGE * TARGET_RANGE;
-					for(Entity e : entities){
-						if(e.getPositionVector().squareDistanceTo(getOpticPosition()) > maxRangeSquared) continue;
-						if(e instanceof EntityPlayer){
-							if(isEnemy((EntityPlayer)e)){
-								setTarget(e);
-								break;
+					if(isEvil){
+						for (Entity e : entities) {
+							if (!(
+									e.isCreatureType(EnumCreatureType.MONSTER, false)
+									|| e.isCreatureType(EnumCreatureType.AMBIENT, false)
+								)
+							) {
+								if (canSeeEntity(e)) {
+									setTarget(e);
+									break;
+								}
 							}
 						}
-						if(e.isCreatureType(EnumCreatureType.MONSTER, false)){
-							if(canSeeEntity(e)){
-								setTarget(e);
-								break;
+					} else {
+						for (Entity e : entities) {
+							if (e.getPositionVector().squareDistanceTo(getOpticPosition()) > maxRangeSquared) continue;
+							if (e instanceof EntityPlayer) {
+								if (isEnemy((EntityPlayer) e)) {
+									setTarget(e);
+									break;
+								}
+							}
+							if (e.isCreatureType(EnumCreatureType.MONSTER, false)) {
+								if (canSeeEntity(e)) {
+									setTarget(e);
+									break;
+								}
 							}
 						}
 					}

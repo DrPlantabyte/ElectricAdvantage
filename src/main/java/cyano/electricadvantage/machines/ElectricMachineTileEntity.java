@@ -50,6 +50,20 @@ public abstract class ElectricMachineTileEntity extends cyano.poweradvantage.api
 	public ElectricMachineTileEntity(String name,int numInputSlots, int numOutputSlots, int numOtherSlots) {
 		this(name,500f,numInputSlots,numOutputSlots,numOtherSlots);
 	}
+	public ElectricMachineTileEntity(String name,int numInputSlots, int numOutputSlots, int numOtherSlots, ConduitType[] energyTypes, float[] energyBuffers) {
+		super(energyTypes, energyBuffers, name);
+		inventory = new ItemStack[numInputSlots+numOutputSlots+numOtherSlots];
+		inputSlots = new int[numInputSlots];
+		outputSlots = new int[numOutputSlots];
+		ioSlots = new int[numInputSlots+numOutputSlots];
+		otherSlots = new int[numOtherSlots];
+		for(int i = 0; i < inventory.length; i++){
+			if(i < inputSlots.length)inputSlots[i] = i;
+			if(i < outputSlots.length)outputSlots[i] = inputSlots.length + i;
+			if(i < ioSlots.length)ioSlots[i] = i;
+			if(i < otherSlots.length)otherSlots[i] = inputSlots.length + outputSlots.length + i;
+		}
+	}
 	
 	private boolean redstone = false;
 	private float oldEnergy = 0f;

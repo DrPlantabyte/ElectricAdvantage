@@ -15,10 +15,10 @@ import net.minecraftforge.oredict.OreDictionary;
 public class GrowthChamberControllerTileEntity extends cyano.poweradvantage.api.simple.TileEntitySimplePowerMachine implements IFluidHandler{
 
 
-	static final float ELECTRICITY_PER_UNIT = 4f;
-	static final float WATER_PER_UNIT = 0.25f;
-	static final float SOIL_PER_UNIT = 1.25e-4f;
-	static final float SOIL_PER_BLOCK = 1f;
+	static final float ELECTRICITY_PER_UNIT = 8f;
+	static final float WATER_PER_UNIT = 2.0f;
+	static final float SOIL_PER_UNIT = 1.0f;
+	static final float SOIL_PER_BLOCK = 1000f;
 	static final float MAX_SOIL = SOIL_PER_BLOCK * 1.5f;
 	static final int OUT_OF_DATE_LIMIT = 30;
 
@@ -29,7 +29,7 @@ public class GrowthChamberControllerTileEntity extends cyano.poweradvantage.api.
 	private float soil = 0f;
 
 	private static final ConduitType[] types = new ConduitType[]{Power.GROWTHCHAMBER_POWER,Power.ELECTRIC_POWER,Fluids.fluidConduit_general};
-	private static final float[] capacities = {100F, 100F, 2000F};
+	private static final float[] capacities = {1000F, 100F, 2000F};
 
 	private final int[] dataSyncArray = new int[4];
 
@@ -54,6 +54,18 @@ public class GrowthChamberControllerTileEntity extends cyano.poweradvantage.api.
 					inventory[0] = null;
 				}
 			}
+			float powerGen = lowest(
+					getEnergyCapacity(Power.GROWTHCHAMBER_POWER) - getEnergy(Power.GROWTHCHAMBER_POWER),
+					getEnergy(Power.ELECTRIC_POWER) / ELECTRICITY_PER_UNIT,
+					soil / SOIL_PER_UNIT,
+					getTank().getFluidAmount() / WATER_PER_UNIT
+			);
+			if (powerGen > (1f / WATER_PER_UNIT)) {
+				this.addEnergy(powerGen,Power.GROWTHCHAMBER_POWER);
+				this.subtractEnergy(powerGen * ELECTRICITY_PER_UNIT,Power.ELECTRIC_POWER);
+				this.soil -= powerGen * SOIL_PER_UNIT;
+				this.getTank().drain(Math.max(1,(int)(powerGen * WATER_PER_UNIT)),true);
+			}
 			if(timeSinceLastPowerRequest < OUT_OF_DATE_LIMIT){
 				timeSinceLastPowerRequest++;
 			}
@@ -70,7 +82,13 @@ public class GrowthChamberControllerTileEntity extends cyano.poweradvantage.api.
 		return false;
 	}
 
-
+	private static float lowest(float... numbers){
+		float low = Float.MAX_VALUE;
+		for(int i = 0; i < numbers.length; i++){
+			if(numbers[i] < low) low = numbers[i];
+		}
+		return low;
+	}
 
 	private boolean hasRedstoneSignal() {
 		return getWorld().isBlockPowered(getPos());
@@ -242,22 +260,9 @@ public class GrowthChamberControllerTileEntity extends cyano.poweradvantage.api.
 			} else {
 				return 0;
 			}
-		} else if(ConduitType.areSameType(type, Power.ELECTRIC_POWER)){
-			// electricity
-			float capacity = (this.getEnergyCapacity(Power.GROWTHCHAMBER_POWER) - this.getEnergy(Power.GROWTHCHAMBER_POWER));
-			capacity = Math.min(capacity, soil / SOIL_PER_UNIT);
-			capacity = Math.min(capacity, tank.getFluidAmount() / WATER_PER_UNIT);
-			float delta = Math.min(ELECTRICITY_PER_UNIT * capacity,amount);
-			this.addEnergy(delta / ELECTRICITY_PER_UNIT, Power.GROWTHCHAMBER_POWER);
-			soil -= delta * SOIL_PER_UNIT;
-			tank.drain(Math.max(1, (int)(delta * WATER_PER_UNIT)), true);
-			return delta;
-		} else if(ConduitType.areSameType(type, Power.GROWTHCHAMBER_POWER)){
-			// greenhouse energy
+		} else {
 			return super.addEnergy(amount, type);
 		}
-		// unsupported energy type
-		return 0;
 	}
 	/**
 	 * Sets the tank contents using the energy API method
@@ -268,9 +273,7 @@ public class GrowthChamberControllerTileEntity extends cyano.poweradvantage.api.
 	public void setEnergy(float amount,ConduitType type) {
 		if(Fluids.isFluidType(type) && type != Fluids.fluidConduit_general){
 			getTank().setFluid(new FluidStack(Fluids.conduitTypeToFluid(type),(int)amount));
-		} else if(ConduitType.areSameType(type, Power.ELECTRIC_POWER)){
-			this.addEnergy(amount / ELECTRICITY_PER_UNIT, Power.GROWTHCHAMBER_POWER);
-		} else if(ConduitType.areSameType(type, Power.GROWTHCHAMBER_POWER)){
+		} else {
 			super.setEnergy(amount, type);
 		}
 	}

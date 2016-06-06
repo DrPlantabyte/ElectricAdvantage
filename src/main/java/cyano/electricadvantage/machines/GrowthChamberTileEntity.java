@@ -15,7 +15,7 @@ import java.util.List;
 
 public class GrowthChamberTileEntity extends ElectricMachineTileEntity {
 
-	private static final int TICKS_PER_GROWTH = 61;
+	private static final int TICKS_PER_GROWTH = 100;
 	private static final float ENERGY_PER_TICK = 1;
 	private static final int GROWTH_AREA = 3;
 	private final int[] progression = new int[GROWTH_AREA];
@@ -23,7 +23,7 @@ public class GrowthChamberTileEntity extends ElectricMachineTileEntity {
 	private final VirtualCrop[] crops = new VirtualCrop[GROWTH_AREA];
 	
 	public GrowthChamberTileEntity() {
-		super(GrowthChamberTileEntity.class.getSimpleName(),Power.GROWTHCHAMBER_POWER, ENERGY_PER_TICK*16, GROWTH_AREA, 6, 0);
+		super(GrowthChamberTileEntity.class.getSimpleName(),Power.GROWTHCHAMBER_POWER, ENERGY_PER_TICK*64, GROWTH_AREA, 6, 0);
 	}
 
 
@@ -57,7 +57,9 @@ public class GrowthChamberTileEntity extends ElectricMachineTileEntity {
 				for(int slot = 0; slot < GROWTH_AREA; slot++){
 					if(crops[slot] != null){
 						active = true;
+						if(getEnergy(Power.GROWTHCHAMBER_POWER) < ENERGY_PER_TICK) break;
 						progression[slot]++;
+						subtractEnergy(ENERGY_PER_TICK,Power.GROWTHCHAMBER_POWER);
 						if(progression[slot] % TICKS_PER_GROWTH == 0){
 							if(crops[slot].grow()){
 								// Growth done!
@@ -100,9 +102,7 @@ public class GrowthChamberTileEntity extends ElectricMachineTileEntity {
 						progressionMax[slot] = 0;
 					}
 				}
-				if(active){
-					subtractEnergy(ENERGY_PER_TICK, getType());
-				}
+
 			}
 			if(flagSync){
 				this.sync();
@@ -110,7 +110,7 @@ public class GrowthChamberTileEntity extends ElectricMachineTileEntity {
 			this.setActiveState(active);
 		}
 	}
-	
+
 
 	
 	

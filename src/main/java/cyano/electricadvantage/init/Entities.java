@@ -64,7 +64,6 @@ public abstract class Entities {
 		} else if(name.startsWith("Entity")){
 			name = name.substring("Entity".length(),name.length());
 		}
-		EntityRegistry.registerGlobalEntityID(entityClass,name,EntityRegistry.findGlobalUniqueEntityId());
 		EntityRegistry.registerModEntity(entityClass, name, entityIndex++, ElectricAdvantage.INSTANCE, 64, 1, true);
 	}
 	

@@ -12,7 +12,6 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
-import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.util.ITickable;
@@ -487,7 +486,7 @@ public class LaserTurretTileEntity extends ElectricMachineTileEntity implements 
 	 * Turns the data field NBT into a network packet
 	 */
 	@Override 
-	public Packet getDescriptionPacket(){
+	public SPacketUpdateTileEntity getUpdatePacket(){
 		NBTTagCompound nbtTag = new NBTTagCompound();
 		nbtTag.setFloat("energy", getEnergy());
 		nbtTag.setBoolean("lock", targetLocked);

@@ -209,9 +209,10 @@ public abstract class ElectricMachineTileEntity extends cyano.poweradvantage.api
 	public abstract float[] getProgress();
 	
 	@Override
-	public void writeToNBT(NBTTagCompound tagRoot){
+	public NBTTagCompound writeToNBT(NBTTagCompound tagRoot){
 		super.writeToNBT(tagRoot);
 		saveTo(tagRoot);
+		return tagRoot;
 	}
 
 	@Override
@@ -324,7 +325,7 @@ public abstract class ElectricMachineTileEntity extends cyano.poweradvantage.api
 				x - range, y - range, z - range,
 				x + range, y + range, z + range));
 		for(EntityPlayerMP player : players){
-			player.playerNetServerHandler.sendPacket(new SPacketCustomSound(sound.getRegistryName().toString(), SoundCategory.BLOCKS,
+			player.connection.sendPacket(new SPacketCustomSound(sound.getRegistryName().toString(), SoundCategory.BLOCKS,
 					x, y, z, (float)volume, (float)pitch));
 		}
 	}

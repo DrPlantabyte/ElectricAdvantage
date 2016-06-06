@@ -22,7 +22,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Mod(modid = ElectricAdvantage.MODID, version = ElectricAdvantage.VERSION, name=ElectricAdvantage.NAME, 
-		dependencies = "required-after:poweradvantage;required-after:basemetals")
+		dependencies = "required-after:poweradvantage;required-after:basemetals",
+		acceptedMinecraftVersions = "[1.9,)")
 public class ElectricAdvantage
 {/** The identifier for this mod */
 	public static final String MODID = "electricadvantage";

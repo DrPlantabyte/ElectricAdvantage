@@ -23,14 +23,14 @@ import java.util.Set;
 
 @Mod(modid = ElectricAdvantage.MODID, version = ElectricAdvantage.VERSION, name=ElectricAdvantage.NAME, 
 		dependencies = "required-after:poweradvantage;required-after:basemetals",
-		acceptedMinecraftVersions = "[1.9.4,)")
+		acceptedMinecraftVersions = "[1.10.2,)")
 public class ElectricAdvantage
 {/** The identifier for this mod */
 	public static final String MODID = "electricadvantage";
 	/** The display name for this mod */
 	public static final String NAME = "Electric Advantage";
 	/** The version of this mod, in the format major.minor.update */
-	public static final String VERSION = "2.1.0";
+	public static final String VERSION = "2.2.0";
 
 	public static ElectricAdvantage INSTANCE = null;
 	
